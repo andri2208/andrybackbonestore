@@ -37,12 +37,45 @@
         .btn-primary { background: var(--primary); color: white; }
 
         /* 3. Keranjang View */
-        .cart-item { background: white; padding: 15px; border-radius: 8px; margin-bottom: 10px; display: flex; gap: 15px; align-items: center; position: relative; }
+/* Item di Keranjang */
+.cart-item { 
+    background: white; 
+    padding: 12px; 
+    border-radius: 8px; 
+    margin-bottom: 12px; 
+    display: flex; 
+    gap: 12px; 
+    align-items: center; 
+    border: 1px solid #eee;
+    position: relative; 
+}
         .cart-item img { width: 70px; height: 70px; border-radius: 5px; object-fit: cover; }
         .cart-item-info { flex-grow: 1; }
         .qty-control { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
         .btn-qty { width: 30px; height: 30px; border: 1px solid #ddd; background: white; border-radius: 4px; cursor: pointer; }
-        .btn-delete { color: #ff4757; background: none; border: none; font-size: 1.2rem; cursor: pointer; position: absolute; top: 10px; right: 10px; }
+
+        /* Tombol Hapus (Sampah) */
+.btn-delete { 
+    color: #ff4757; 
+    background: #fff0f0; 
+    border: 1px solid #ffebeb; 
+    padding: 8px;
+    border-radius: 6px;
+    font-size: 1.1rem; 
+    cursor: pointer; 
+    position: absolute; 
+    bottom: 12px; 
+    right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+        
+        .btn-delete:hover {
+    background: #ff4757;
+    color: white;
+}
+        
         .cart-footer { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 15px; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; }
 
         /* Toast Popup */
@@ -156,43 +189,33 @@
     }
 
     function renderIsiKeranjang() {
-        const list = document.getElementById('cart-items-list');
-        const footer = document.getElementById('cart-footer');
-        const emptyMsg = document.getElementById('empty-cart-msg');
-
-        if (keranjang.length === 0) {
-            list.innerHTML = "";
-            footer.style.display = "none";
-            emptyMsg.style.display = "block";
-            return;
-        }
-
-        emptyMsg.style.display = "none";
-        footer.style.display = "flex";
-        
-        let total = 0;
-        list.innerHTML = keranjang.map((item, idx) => {
-            total += (item.harga * item.qty);
-            return `
-                <div class="cart-item">
-                    <img src="${item.foto}">
-                    <div class="cart-item-info">
-                        <div style="font-weight:bold; font-size:0.9rem;">${item.nama}</div>
-                        <div style="color:var(--primary); font-size:0.85rem; margin-top:3px;">Rp ${item.harga.toLocaleString()}</div>
-                        <div class="qty-control">
-                            <button class="btn-qty" onclick="ubahQty(${idx}, -1)">-</button>
-                            <span>${item.qty}</span>
-                            <button class="btn-qty" onclick="ubahQty(${idx}, 1)">+</button>
-                        </div>
+    const list = document.getElementById('cart-items-list');
+    let total = 0;
+    
+    list.innerHTML = keranjang.map((item, idx) => {
+        total += (item.harga * item.qty);
+        return `
+            <div class="cart-item">
+                <img src="${item.foto}" style="width:70px; height:70px; object-fit:cover; border-radius:4px;">
+                <div class="cart-item-info">
+                    <div style="font-weight:bold; font-size:0.9rem; padding-right:30px;">${item.nama}</div>
+                    <div style="color:var(--primary); font-weight:bold; margin-top:4px;">Rp ${item.harga.toLocaleString()}</div>
+                    
+                    <div class="qty-control" style="margin-top:10px; display:flex; align-items:center; gap:10px;">
+                        <button class="btn-qty" onclick="ubahQty(${idx}, -1)">-</button>
+                        <span style="font-weight:bold;">${item.qty}</span>
+                        <button class="btn-qty" onclick="ubahQty(${idx}, 1)">+</button>
                     </div>
-                    <button class="btn-delete" onclick="hapusItem(${idx})">🗑</button>
                 </div>
-            `;
-        }).join('');
-        
-        document.getElementById('cart-total').innerText = "Rp " + total.toLocaleString('id-ID');
-        document.getElementById('cart-count').innerText = keranjang.reduce((s, i) => s + i.qty, 0);
-    }
+                <button class="btn-delete" onclick="hapusItem(${idx})" title="Hapus Barang">
+                    🗑️
+                </button>
+            </div>
+        `;
+    }).join('');
+    
+    document.getElementById('cart-total').innerText = "Rp " + total.toLocaleString('id-ID');
+}
 
     function tambahKeKeranjang() {
         const ada = keranjang.find(x => x.id === produkAktif.id);
@@ -249,3 +272,4 @@
 </script>
 </body>
 </html>
+
