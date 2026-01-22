@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Andry Backbone Store - Full Checkout</title>
+    <title>Andry Backbone Store - Auto Shipping</title>
     <style>
         :root { --primary: #ee4d2d; --dark: #212121; --bg: #f5f5f5; --white: #ffffff; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; color: #333; }
@@ -36,25 +36,29 @@
 
         /* Detail */
         .product-wrapper { background: var(--white); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
-        .detail-img { width: 100%; max-height: 450px; object-fit: contain; }
+        .detail-img { width: 100%; max-height: 400px; object-fit: contain; }
         .detail-info { padding: 20px; }
         .btn { flex: 1; padding: 12px; border-radius: 8px; font-weight: bold; border: none; cursor: pointer; }
         .btn-outline { border: 1px solid var(--primary); color: var(--primary); background: #fff5f2; }
         .btn-primary { background: var(--primary); color: white; width: 100%; margin-top: 10px; }
 
-        /* Form Alamat & Ongkir */
+        /* Checkout Form */
         .shipping-form { background: white; padding: 15px; border-radius: 8px; margin-top: 20px; border: 1px solid #ddd; }
-        .shipping-form h3 { margin-top: 0; font-size: 1rem; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        .form-group { margin-bottom: 10px; }
+        .form-group { margin-bottom: 15px; }
         .form-group label { display: block; font-size: 0.8rem; color: #666; margin-bottom: 5px; }
-        .form-control { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        .form-control { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; font-size: 0.9rem; }
 
         /* Keranjang */
-        .cart-item { background: var(--white); padding: 12px; border-radius: 8px; margin-bottom: 10px; display: flex; gap: 12px; border: 1px solid #eee; position: relative; }
-        .cart-item img { width: 60px; height: 60px; border-radius: 5px; }
-        .btn-delete { position: absolute; top: 10px; right: 10px; border: none; background: none; color: #ff4d4d; font-size: 1.2rem; cursor: pointer; }
+        .cart-item { background: var(--white); padding: 10px; border-radius: 8px; margin-bottom: 10px; display: flex; gap: 12px; border: 1px solid #eee; position: relative; }
+        .cart-item img { width: 50px; height: 50px; border-radius: 5px; }
+        .btn-delete { position: absolute; top: 10px; right: 10px; border: none; background: none; color: #ff4d4d; cursor: pointer; }
 
-        .cart-footer { position: sticky; bottom: 0; background: white; padding: 15px; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); margin-top: 20px; border-radius: 8px; }
+        /* Summary Footer */
+        .summary-box { background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #ddd; margin-top: 20px; }
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem; }
+        .summary-total { border-top: 2px dashed #eee; padding-top: 10px; margin-top: 10px; font-weight: bold; font-size: 1.1rem; color: var(--primary); }
+
+        .cart-footer { position: sticky; bottom: 0; background: white; padding: 15px; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); margin-top: 20px; }
         #toast { visibility: hidden; background: #333; color: white; padding: 10px 20px; position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); border-radius: 20px; z-index: 3000; }
         #toast.show { visibility: visible; }
 
@@ -98,44 +102,48 @@
 <div id="cart-view" class="view">
     <div id="cart-items-list"></div>
     
-    <div id="form-alamat" class="shipping-form" style="display:none;">
-        <h3>Data Pengiriman</h3>
-        <div class="form-group">
-            <label>Nama Penerima</label>
-            <input type="text" id="cust-name" class="form-control" placeholder="Nama Lengkap">
+    <div id="checkout-area" style="display:none;">
+        <div class="shipping-form">
+            <h3 style="margin:0 0 15px 0; font-size:1rem;">Data Pengiriman</h3>
+            <div class="form-group">
+                <label>Nama Penerima</label>
+                <input type="text" id="cust-name" class="form-control" placeholder="Nama Lengkap">
+            </div>
+            <div class="form-group">
+                <label>Wilayah / Kota Tujuan (Ongkir Otomatis)</label>
+                <select id="cust-region" class="form-control" onchange="hitungSemua()">
+                    <option value="0" data-ongkir="0">-- Pilih Wilayah --</option>
+                    <option value="Jabodetabek" data-ongkir="10000">Jabodetabek (Rp 10.000)</option>
+                    <option value="Jawa Barat" data-ongkir="15000">Jawa Barat (Rp 15.000)</option>
+                    <option value="Jawa Tengah" data-ongkir="20000">Jawa Tengah (Rp 20.000)</option>
+                    <option value="Jawa Timur" data-ongkir="25000">Jawa Timur (Rp 25.000)</option>
+                    <option value="Luar Jawa" data-ongkir="40000">Luar Jawa (Rp 40.000)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Alamat Lengkap (Jl, No Rumah, RT/RW, Kec)</label>
+                <textarea id="cust-address" class="form-control" rows="2" placeholder="Tulis alamat detail..."></textarea>
+            </div>
         </div>
-        <div class="form-group">
-            <label>Alamat Lengkap (Kecamatan & Kota)</label>
-            <textarea id="cust-address" class="form-control" rows="3" placeholder="Contoh: Jl. Merdeka No. 1, Kec. Ciawi, Bogor"></textarea>
+
+        <div class="summary-box">
+            <div class="summary-row"><span>Subtotal Produk</span> <span id="subtotal-produk">Rp 0</span></div>
+            <div class="summary-row"><span>Ongkos Kirim</span> <span id="biaya-ongkir">Rp 0</span></div>
+            <div class="summary-row summary-total"><span>Total Bayar</span> <span id="total-akhir">Rp 0</span></div>
         </div>
-        <div class="form-group">
-            <label>Pilih Kurir</label>
-            <select id="cust-courier" class="form-control">
-                <option value="JNE">JNE (Reguler/YES)</option>
-                <option value="J&T">J&T</option>
-                <option value="SiCepat">SiCepat</option>
-                <option value="Gojek/Grab">Gojek/Grab (Sameday/Instant)</option>
-                <option value="Ambil Sendiri">Ambil di Toko</option>
-            </select>
+
+        <div class="cart-footer">
+            <button class="btn btn-primary" onclick="checkoutWA()">Pesan Via WhatsApp</button>
         </div>
     </div>
 
     <div id="empty-cart" style="text-align:center; padding:50px 0; display:none;">
         <p>Keranjang kosong</p>
-        <button class="btn btn-outline" onclick="tampilkanKatalog()">Belanja Yuk</button>
-    </div>
-
-    <div class="cart-footer" id="cart-footer" style="display:none;">
-        <div style="margin-bottom:15px;">
-            <small>Total Belanja:</small><br>
-            <strong id="cart-total" style="color:var(--primary); font-size:1.4rem;">Rp 0</strong>
-            <p style="font-size:0.7rem; color:#888; margin:5px 0 0 0;">*Belum termasuk ongkos kirim</p>
-        </div>
-        <button class="btn btn-primary" onclick="checkoutWA()">Kirim Pesanan ke WhatsApp</button>
+        <button class="btn btn-outline" onclick="tampilkanKatalog()">Cari Produk</button>
     </div>
 </div>
 
-<div id="toast">Produk ditambahkan!</div>
+<div id="toast">Ditambahkan!</div>
 
 <script>
     const linkGSheet = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRtNoerhDtHch7TNHVbItg23RG4nneoZ8hv5MBR1Cr40iU5alO8a2O4EUR90YgleMH4-E-6zGJsEgcN/pub?output=csv";
@@ -165,7 +173,7 @@
                 catBar.innerHTML += `<button class="cat-btn" onclick="filterKategori('${kat}', this)">${kat}</button>`;
             });
             renderKatalog(semuaProduk);
-        } catch(e) { console.error("Gagal muat Sheets"); }
+        } catch(e) { console.error("Data gagal dimuat"); }
     }
 
     function renderKatalog(data) {
@@ -201,30 +209,35 @@
         document.getElementById('main-desc').innerText = produkAktif.desc;
     }
 
+    function hitungSemua() {
+        const subtotal = keranjang.reduce((s, i) => s + (i.harga * i.qty), 0);
+        const selectRegion = document.getElementById('cust-region');
+        const ongkir = parseInt(selectRegion.options[selectRegion.selectedIndex].getAttribute('data-ongkir')) || 0;
+        
+        document.getElementById('subtotal-produk').innerText = "Rp " + subtotal.toLocaleString('id-ID');
+        document.getElementById('biaya-ongkir').innerText = "Rp " + ongkir.toLocaleString('id-ID');
+        document.getElementById('total-akhir').innerText = "Rp " + (subtotal + ongkir).toLocaleString('id-ID');
+    }
+
     function renderIsiKeranjang() {
         const list = document.getElementById('cart-items-list');
         if (keranjang.length === 0) {
-            list.innerHTML = ""; document.getElementById('cart-footer').style.display = "none";
-            document.getElementById('form-alamat').style.display = "none";
+            list.innerHTML = ""; document.getElementById('checkout-area').style.display = "none";
             document.getElementById('empty-cart').style.display = "block"; return;
         }
         document.getElementById('empty-cart').style.display = "none";
-        document.getElementById('cart-footer').style.display = "block";
-        document.getElementById('form-alamat').style.display = "block";
+        document.getElementById('checkout-area').style.display = "block";
         
-        let total = 0;
-        list.innerHTML = keranjang.map((item, idx) => {
-            total += (item.harga * item.qty);
-            return `<div class="cart-item">
+        list.innerHTML = keranjang.map((item, idx) => `
+            <div class="cart-item">
                 <img src="${item.foto}">
                 <div style="flex-grow:1;">
                     <div style="font-weight:bold; font-size:0.8rem;">${item.nama}</div>
-                    <div style="color:var(--primary); font-size:0.9rem;">${item.qty} x Rp ${item.harga.toLocaleString()}</div>
+                    <div style="color:var(--primary); font-size:0.85rem;">${item.qty} x Rp ${item.harga.toLocaleString()}</div>
                 </div>
                 <button class="btn-delete" onclick="hapusItem(${idx})">🗑️</button>
-            </div>`;
-        }).join('');
-        document.getElementById('cart-total').innerText = "Rp " + total.toLocaleString('id-ID');
+            </div>`).join('');
+        hitungSemua();
     }
 
     function switchView(v) {
@@ -250,14 +263,15 @@
     function checkoutWA() {
         const nama = document.getElementById('cust-name').value;
         const alamat = document.getElementById('cust-address').value;
-        const kurir = document.getElementById('cust-courier').value;
+        const region = document.getElementById('cust-region').value;
+        const subtotal = keranjang.reduce((s, i) => s + (i.harga * i.qty), 0);
+        const ongkir = parseInt(document.getElementById('cust-region').options[document.getElementById('cust-region').selectedIndex].getAttribute('data-ongkir')) || 0;
 
-        if(!nama || !alamat) return alert("Mohon isi Nama dan Alamat pengiriman!");
+        if(!nama || !alamat || region == "0") return alert("Mohon lengkapi Nama, Wilayah, dan Alamat!");
 
         const daftar = keranjang.map(i => `- ${i.nama} (x${i.qty})`).join("\n");
-        const total = keranjang.reduce((s, i) => s + (i.harga * i.qty), 0);
+        const pesan = `Halo Andry Backbone Store,\nSaya mau pesan:\n\n${daftar}\n\n*Detail Biaya:*\nSubtotal: Rp ${subtotal.toLocaleString()}\nOngkir (${region}): Rp ${ongkir.toLocaleString()}\n*Total Bayar: Rp ${(subtotal+ongkir).toLocaleString()}*\n\n*Data Pengiriman:*\nNama: ${nama}\nAlamat: ${alamat}\nWilayah: ${region}`;
         
-        const pesan = `Halo Andry Backbone Store, saya mau pesan:\n\n${daftar}\n\n*Total: Rp ${total.toLocaleString('id-ID')}*\n\n*Data Pengiriman:*\nNama: ${nama}\nAlamat: ${alamat}\nKurir: ${kurir}\n\nMohon totalan beserta ongkirnya.`;
         window.open(`https://wa.me/${nomorWA}?text=${encodeURIComponent(pesan)}`);
     }
 
