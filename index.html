@@ -3,72 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Andry Backbone Store</title>
+    <title>Andry Backbone Store - Pro</title>
     <style>
-        :root { --primary: #ee4d2d; --dark: #2c3e50; --light: #f4f7f6; --success: #25d366; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--light); margin: 0; padding-bottom: 100px; color: #333; }
+        :root { --primary: #ee4d2d; --dark: #212121; --gray: #757575; --bg: #f5f5f5; --success: #25d366; }
+        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: var(--bg); margin: 0; padding-bottom: 80px; color: #333; }
         
-        header { background: var(--dark); color: white; text-align: center; padding: 15px; cursor: pointer; }
-        
+        /* Navbar */
+        nav { background: white; padding: 15px; position: sticky; top: 0; z-index: 1000; box-shadow: 0 1px 10px rgba(0,0,0,0.1); display: flex; align-items: center; }
+        .back-icon { font-size: 24px; cursor: pointer; margin-right: 15px; color: var(--primary); }
+        .nav-title { font-weight: bold; font-size: 1.1rem; flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
         /* Katalog View */
-        .container { max-width: 1000px; margin: auto; padding: 10px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .card { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05); display: flex; flex-direction: column; border: 1px solid #eee; text-decoration: none; color: inherit; }
+        .catalog-container { max-width: 1000px; margin: auto; padding: 10px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .card { background: white; border-radius: 4px; overflow: hidden; text-decoration: none; color: inherit; display: flex; flex-direction: column; }
         .card img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; }
-        .card-body { padding: 8px; flex-grow: 1; }
-        .card-body h3 { font-size: 0.85rem; margin: 0; height: 2.4em; overflow: hidden; }
-        .price { color: var(--primary); font-weight: bold; font-size: 0.95rem; margin: 5px 0; }
+        .card-info { padding: 10px; flex-grow: 1; }
+        .card-info h3 { font-size: 0.85rem; margin: 0; height: 2.4em; overflow: hidden; font-weight: normal; line-height: 1.3; }
+        .card-price { color: var(--primary); font-weight: bold; font-size: 1rem; margin-top: 8px; }
 
         /* Detail View */
-        #detail-view { display: none; max-width: 600px; margin: auto; background: white; min-height: 100vh; padding-bottom: 50px; }
-        .btn-back { padding: 15px; display: inline-block; cursor: pointer; color: var(--primary); font-weight: bold; }
-        .detail-img { width: 100%; aspect-ratio: 1/1; object-fit: cover; }
-        .detail-info { padding: 20px; }
-        .detail-desc { line-height: 1.6; color: #555; white-space: pre-line; margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px; }
+        #detail-view { display: none; background: var(--bg); min-height: 100vh; }
+        .product-main { background: white; margin-bottom: 10px; }
+        .detail-img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; }
+        .detail-header { padding: 15px; background: white; }
+        .detail-price { font-size: 1.6rem; color: var(--primary); font-weight: bold; margin-bottom: 10px; }
+        .detail-title { font-size: 1.1rem; line-height: 1.4; margin: 0; font-weight: 500; }
+        
+        .product-desc { background: white; padding: 15px; margin-top: 10px; }
+        .desc-title { font-weight: bold; margin-bottom: 10px; border-left: 4px solid var(--primary); padding-left: 10px; }
+        .desc-text { font-size: 0.95rem; color: #555; line-height: 1.6; white-space: pre-line; }
 
-        /* Cart Bar */
-        .cart-bar { position: fixed; bottom: 0; width: 100%; background: white; padding: 15px; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; }
-        .btn-add-large { background: var(--primary); color: white; border: none; padding: 12px 25px; border-radius: 5px; font-weight: bold; cursor: pointer; width: 100%; }
-        .btn-wa { background: var(--success); color: white; padding: 12px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; }
+        /* Bottom Bar (Beli) */
+        .bottom-action { position: fixed; bottom: 0; width: 100%; background: white; border-top: 1px solid #ddd; padding: 10px 15px; display: flex; gap: 10px; box-sizing: border-box; }
+        .btn-cart { flex: 1; border: 1px solid var(--primary); color: var(--primary); background: #fff5f1; padding: 12px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        .btn-buy { flex: 1; background: var(--primary); color: white; border: none; padding: 12px; border-radius: 4px; font-weight: bold; cursor: pointer; }
 
-        @media (min-width: 600px) { .container { grid-template-columns: repeat(4, 1fr); } }
+        /* Badge Keranjang */
+        #cart-count { background: var(--primary); color: white; font-size: 10px; padding: 2px 6px; border-radius: 10px; position: absolute; top: 10px; right: 10px; }
+
+        @media (min-width: 600px) { .catalog-container { grid-template-columns: repeat(4, 1fr); } }
     </style>
 </head>
 <body>
 
-<header onclick="window.location.href='index.html'">
-    <h1>🛠️ Andry Backbone Store</h1>
-</header>
+<nav id="navbar">
+    <span class="back-icon" id="btn-back" style="display:none;" onclick="tampilkanKatalog()">←</span>
+    <span class="nav-title" id="nav-text">Andry Backbone Store</span>
+    <div onclick="window.scrollTo(0, document.body.scrollHeight)" style="position: relative; cursor:pointer;">
+        🛒<span id="cart-count">0</span>
+    </div>
+</nav>
 
 <div id="catalog-view">
-    <div class="container" id="produk-list">
-        <p style="text-align:center; grid-column: 1/-1;">Memuat produk...</p>
+    <div class="catalog-container" id="produk-list">
+        <p style="text-align:center; grid-column: 1/-1;">Sedang memuat...</p>
     </div>
 </div>
 
 <div id="detail-view">
-    <div class="btn-back" onclick="tampilkanKatalog()">← Kembali ke Katalog</div>
-    <img id="main-img" class="detail-img" src="">
-    <div class="detail-info">
-        <h2 id="main-nama"></h2>
-        <div id="main-harga" class="price" style="font-size: 1.5rem;"></div>
-        <div id="main-desc" class="detail-desc"></div>
-        <br>
-        <button id="btn-tambah" class="btn-add-large"> Tambah ke Keranjang</button>
+    <div class="product-main">
+        <img id="main-img" class="detail-img" src="">
+        <div class="detail-header">
+            <div id="main-price" class="detail-price"></div>
+            <h1 id="main-title" class="detail-title"></h1>
+        </div>
+    </div>
+    
+    <div class="product-desc">
+        <div class="desc-title">Deskripsi Produk</div>
+        <div id="main-desc" class="desc-text"></div>
     </div>
 </div>
 
-<div class="cart-bar" id="cart-footer">
-    <div id="cart-status">
-        <small>Total Belanja:</small><br>
-        <strong id="total-txt" style="color:var(--primary)">Rp 0</strong>
-    </div>
-    <a href="#" class="btn-wa" onclick="kirimWA()">Checkout WA</a>
+<div class="bottom-action">
+    <button class="btn-cart" onclick="tambahKeKeranjang()">+ Keranjang</button>
+    <button class="btn-buy" onclick="checkoutWA()">Beli Sekarang</button>
 </div>
 
 <script>
     const linkGSheet = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRtNoerhDtHch7TNHVbItg23RG4nneoZ8hv5MBR1Cr40iU5alO8a2O4EUR90YgleMH4-E-6zGJsEgcN/pub?output=csv";
     const nomorWA = "628123456789"; 
     let semuaProduk = [];
+    let produkAktif = null;
     let keranjang = [];
 
     async function init() {
@@ -83,11 +99,8 @@
 
         renderKatalog();
         
-        // Cek jika URL punya parameter ID (misal: index.html?id=0)
         const urlParams = new URLSearchParams(window.location.search);
-        if(urlParams.has('id')) {
-            tampilkanDetail(urlParams.get('id'));
-        }
+        if(urlParams.has('id')) tampilkanDetail(urlParams.get('id'));
     }
 
     function renderKatalog() {
@@ -97,9 +110,9 @@
             list.innerHTML += `
                 <div class="card" onclick="updateURL(${p.id})">
                     <img src="${p.foto}">
-                    <div class="card-body">
+                    <div class="card-info">
                         <h3>${p.nama}</h3>
-                        <div class="price">Rp ${p.harga.toLocaleString('id-ID')}</div>
+                        <div class="card-price">Rp ${p.harga.toLocaleString('id-ID')}</div>
                     </div>
                 </div>`;
         });
@@ -112,23 +125,19 @@
     }
 
     function tampilkanDetail(id) {
-        const p = semuaProduk[id];
-        if(!p) return;
+        produkAktif = semuaProduk[id];
+        if(!produkAktif) return;
         
         document.getElementById('catalog-view').style.display = 'none';
         document.getElementById('detail-view').style.display = 'block';
+        document.getElementById('btn-back').style.display = 'block';
+        document.getElementById('nav-text').innerText = "Detail Produk";
         window.scrollTo(0,0);
 
-        document.getElementById('main-img').src = p.foto;
-        document.getElementById('main-nama').innerText = p.nama;
-        document.getElementById('main-harga').innerText = "Rp " + p.harga.toLocaleString('id-ID');
-        document.getElementById('main-desc').innerText = p.desc;
-        
-        document.getElementById('btn-tambah').onclick = () => {
-            keranjang.push(p);
-            updateCart();
-            alert("Berhasil ditambah!");
-        };
+        document.getElementById('main-img').src = produkAktif.foto;
+        document.getElementById('main-title').innerText = produkAktif.nama;
+        document.getElementById('main-price').innerText = "Rp " + produkAktif.harga.toLocaleString('id-ID');
+        document.getElementById('main-desc').innerText = produkAktif.desc;
     }
 
     function tampilkanKatalog() {
@@ -136,18 +145,34 @@
         window.history.pushState({path:cleanURL},'',cleanURL);
         document.getElementById('catalog-view').style.display = 'block';
         document.getElementById('detail-view').style.display = 'none';
+        document.getElementById('btn-back').style.display = 'none';
+        document.getElementById('nav-text').innerText = "Andry Backbone Store";
+        produkAktif = null;
     }
 
-    function updateCart() {
-        const total = keranjang.reduce((sum, item) => sum + item.harga, 0);
-        document.getElementById('total-txt').innerText = "Rp " + total.toLocaleString('id-ID');
+    function tambahKeKeranjang() {
+        if(!produkAktif) return alert("Pilih produk dulu!");
+        keranjang.push(produkAktif);
+        document.getElementById('cart-count').innerText = keranjang.length;
+        alert("Dimasukkan ke keranjang!");
     }
 
-    function kirimWA() {
-        if(keranjang.length === 0) return alert("Keranjang masih kosong");
-        const teks = keranjang.map(i => `- ${i.nama}`).join("\n");
-        const total = keranjang.reduce((sum, item) => sum + item.harga, 0);
-        const pesan = `Halo Andry Backbone, saya mau pesan:\n\n${teks}\n\nTotal: Rp ${total.toLocaleString('id-ID')}`;
+    function checkoutWA() {
+        let listPesan = "";
+        let total = 0;
+
+        if(produkAktif && keranjang.length === 0) {
+            // Jika langsung klik beli dari halaman detail tanpa isi keranjang
+            listPesan = `- ${produkAktif.nama}`;
+            total = produkAktif.harga;
+        } else if (keranjang.length > 0) {
+            listPesan = keranjang.map(i => `- ${i.nama}`).join("\n");
+            total = keranjang.reduce((sum, item) => sum + item.harga, 0);
+        } else {
+            return alert("Keranjang kosong!");
+        }
+
+        const pesan = `Halo Andry Backbone, saya mau order:\n\n${listPesan}\n\nTotal: Rp ${total.toLocaleString('id-ID')}`;
         window.open(`https://wa.me/${nomorWA}?text=${encodeURIComponent(pesan)}`);
     }
 
