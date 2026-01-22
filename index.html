@@ -137,9 +137,15 @@
 </nav>
 
 <div id="catalog-view" class="view active-view">
-    <div style="margin-bottom: 20px;">
-        <input type="text" id="input-search" placeholder="Cari produk..." onkeyup="jalankanFilter()" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px;">
+    <div style="margin-bottom: 15px;">
+        <input type="text" id="input-search" placeholder="Cari produk..." onkeyup="jalankanFilter()" 
+               style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;">
     </div>
+
+    <div id="category-bar" style="margin-bottom: 20px; display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px;">
+        <button class="cat-btn active" onclick="filterKategori('Semua', this)">Semua</button>
+    </div>
+
     <div class="catalog-grid" id="produk-list"></div>
 </div>
 
@@ -334,6 +340,7 @@
 </script>
 </body>
 </html>
+
 
 
 
