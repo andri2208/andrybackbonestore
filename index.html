@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Andry Backbone Store - Pro Search</title>
+    <title>Andry Backbone Store - Full Checkout</title>
     <style>
         :root { --primary: #ee4d2d; --dark: #212121; --bg: #f5f5f5; --white: #ffffff; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; color: #333; }
@@ -16,53 +16,49 @@
         .cart-icon-wrapper { position: relative; cursor: pointer; font-size: 1.5rem; }
         #cart-count { background: var(--primary); color: white; font-size: 10px; padding: 2px 6px; border-radius: 10px; position: absolute; top: -5px; right: -10px; border: 1px solid white; }
 
-        /* Search Bar Area */
+        /* Search & Category */
         .search-container { background: white; padding: 10px 15px; }
-        .search-box { width: 100%; padding: 10px 15px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 0.9rem; outline: none; transition: 0.3s; }
-        .search-box:focus { border-color: var(--primary); }
-
-        /* Kategori Tabs */
+        .search-box { width: 100%; padding: 10px 15px; border: 1px solid #ddd; border-radius: 8px; outline: none; }
         .category-wrapper { background: var(--white); padding: 5px 15px 15px; overflow-x: auto; white-space: nowrap; display: flex; gap: 8px; border-bottom: 1px solid #eee; }
-        .category-wrapper::-webkit-scrollbar { display: none; }
         .cat-btn { padding: 6px 15px; border-radius: 20px; border: 1px solid #ddd; background: #f9f9f9; cursor: pointer; font-size: 0.8rem; }
         .cat-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
 
-        /* View Layout */
+        /* Views */
         .view { display: none; padding: 15px; max-width: 1100px; margin: auto; }
         .active-view { display: block; }
 
-        /* Katalog Grid */
+        /* Katalog */
         .catalog-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
         .card { background: var(--white); border-radius: 8px; overflow: hidden; border: 1px solid #eee; cursor: pointer; }
         .card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; }
         .card-info { padding: 10px; }
-        .card-price { color: var(--primary); font-weight: bold; font-size: 1rem; margin-top: 5px; }
+        .card-price { color: var(--primary); font-weight: bold; }
 
-        /* Detail Page */
+        /* Detail */
         .product-wrapper { background: var(--white); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
-        .detail-img { width: 100%; max-height: 450px; object-fit: contain; background: #fff; }
+        .detail-img { width: 100%; max-height: 450px; object-fit: contain; }
         .detail-info { padding: 20px; }
-        .action-buttons { display: flex; gap: 10px; margin: 20px 0; }
-        .btn { flex: 1; padding: 12px; border-radius: 8px; font-weight: bold; border: none; font-size: 0.9rem; cursor: pointer; }
+        .btn { flex: 1; padding: 12px; border-radius: 8px; font-weight: bold; border: none; cursor: pointer; }
         .btn-outline { border: 1px solid var(--primary); color: var(--primary); background: #fff5f2; }
-        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary { background: var(--primary); color: white; width: 100%; margin-top: 10px; }
+
+        /* Form Alamat & Ongkir */
+        .shipping-form { background: white; padding: 15px; border-radius: 8px; margin-top: 20px; border: 1px solid #ddd; }
+        .shipping-form h3 { margin-top: 0; font-size: 1rem; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .form-group { margin-bottom: 10px; }
+        .form-group label { display: block; font-size: 0.8rem; color: #666; margin-bottom: 5px; }
+        .form-control { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
 
         /* Keranjang */
-        .cart-item { background: var(--white); padding: 12px; border-radius: 8px; margin-bottom: 12px; display: flex; gap: 12px; align-items: center; position: relative; border: 1px solid #eee; }
-        .cart-item img { width: 65px; height: 65px; border-radius: 6px; object-fit: cover; }
-        .btn-qty { width: 28px; height: 28px; border: 1px solid #ccc; background: white; border-radius: 4px; font-weight: bold; }
-        .btn-delete { position: absolute; bottom: 12px; right: 12px; color: #ff4d4d; background: #fff0f0; border: none; padding: 6px 10px; border-radius: 5px; cursor: pointer; }
-        .cart-footer { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 15px; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; }
+        .cart-item { background: var(--white); padding: 12px; border-radius: 8px; margin-bottom: 10px; display: flex; gap: 12px; border: 1px solid #eee; position: relative; }
+        .cart-item img { width: 60px; height: 60px; border-radius: 5px; }
+        .btn-delete { position: absolute; top: 10px; right: 10px; border: none; background: none; color: #ff4d4d; font-size: 1.2rem; cursor: pointer; }
 
-        /* Toast Popup */
-        #toast { visibility: hidden; background: rgba(0,0,0,0.8); color: white; padding: 12px 25px; position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); border-radius: 25px; z-index: 3000; font-size: 0.8rem; }
+        .cart-footer { position: sticky; bottom: 0; background: white; padding: 15px; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); margin-top: 20px; border-radius: 8px; }
+        #toast { visibility: hidden; background: #333; color: white; padding: 10px 20px; position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); border-radius: 20px; z-index: 3000; }
         #toast.show { visibility: visible; }
 
-        @media (min-width: 768px) {
-            .catalog-grid { grid-template-columns: repeat(4, 1fr); }
-            .product-wrapper { flex-direction: row; }
-            .detail-img { max-width: 45%; }
-        }
+        @media (min-width: 768px) { .catalog-grid { grid-template-columns: repeat(4, 1fr); } .product-wrapper { flex-direction: row; } }
     </style>
 </head>
 <body>
@@ -78,45 +74,64 @@
 </nav>
 
 <div id="filter-section">
-    <div class="search-container">
-        <input type="text" id="input-search" class="search-box" placeholder="Cari produk..." onkeyup="jalankanFilter()">
-    </div>
-    <div id="category-bar" class="category-wrapper">
-        <button class="cat-btn active" onclick="filterKategori('Semua', this)">Semua</button>
-    </div>
+    <div class="search-container"><input type="text" id="input-search" class="search-box" placeholder="Cari barang..." onkeyup="jalankanFilter()"></div>
+    <div id="category-bar" class="category-wrapper"><button class="cat-btn active" onclick="filterKategori('Semua', this)">Semua</button></div>
 </div>
 
-<div id="catalog-view" class="view active-view">
-    <div class="catalog-grid" id="produk-list"></div>
-</div>
+<div id="catalog-view" class="view active-view"><div class="catalog-grid" id="produk-list"></div></div>
 
 <div id="detail-view" class="view">
     <div class="product-wrapper">
         <img id="main-img" class="detail-img">
         <div class="detail-info">
-            <h1 id="main-title" style="margin:0; font-size:1.3rem;"></h1>
+            <h1 id="main-title"></h1>
             <div id="main-price" class="card-price" style="font-size:1.8rem; margin:10px 0;"></div>
-            <div class="action-buttons">
+            <div style="display:flex; gap:10px;">
                 <button class="btn btn-outline" onclick="tambahKeKeranjang()">+ Keranjang</button>
-                <button class="btn btn-primary" onclick="beliLangsung()">Beli Sekarang</button>
+                <button class="btn btn-primary" onclick="beliLangsung()" style="margin:0;">Beli Sekarang</button>
             </div>
-            <div style="border-top:1px solid #eee; padding-top:15px;">
-                <b style="font-size:0.8rem; color:#888;">DESKRIPSI PRODUK</b>
-                <p id="main-desc" style="font-size:0.95rem; line-height:1.6; color:#555;"></p>
-            </div>
+            <p id="main-desc" style="margin-top:20px; color:#666; line-height:1.6;"></p>
         </div>
     </div>
 </div>
 
 <div id="cart-view" class="view">
     <div id="cart-items-list"></div>
-    <div id="empty-cart" style="text-align:center; padding:50px 0; display:none;">
-        <p style="color:#999;">Keranjang belanja kosong</p>
-        <button class="btn btn-outline" onclick="tampilkanKatalog()">Mulai Belanja</button>
+    
+    <div id="form-alamat" class="shipping-form" style="display:none;">
+        <h3>Data Pengiriman</h3>
+        <div class="form-group">
+            <label>Nama Penerima</label>
+            <input type="text" id="cust-name" class="form-control" placeholder="Nama Lengkap">
+        </div>
+        <div class="form-group">
+            <label>Alamat Lengkap (Kecamatan & Kota)</label>
+            <textarea id="cust-address" class="form-control" rows="3" placeholder="Contoh: Jl. Merdeka No. 1, Kec. Ciawi, Bogor"></textarea>
+        </div>
+        <div class="form-group">
+            <label>Pilih Kurir</label>
+            <select id="cust-courier" class="form-control">
+                <option value="JNE">JNE (Reguler/YES)</option>
+                <option value="J&T">J&T</option>
+                <option value="SiCepat">SiCepat</option>
+                <option value="Gojek/Grab">Gojek/Grab (Sameday/Instant)</option>
+                <option value="Ambil Sendiri">Ambil di Toko</option>
+            </select>
+        </div>
     </div>
-    <div class="cart-footer" id="cart-footer">
-        <div><small>Total Bayar:</small><br><strong id="cart-total" style="color:var(--primary); font-size:1.1rem;">Rp 0</strong></div>
-        <button class="btn btn-primary" onclick="checkoutWA()" style="flex:0 0 160px;">Checkout WA</button>
+
+    <div id="empty-cart" style="text-align:center; padding:50px 0; display:none;">
+        <p>Keranjang kosong</p>
+        <button class="btn btn-outline" onclick="tampilkanKatalog()">Belanja Yuk</button>
+    </div>
+
+    <div class="cart-footer" id="cart-footer" style="display:none;">
+        <div style="margin-bottom:15px;">
+            <small>Total Belanja:</small><br>
+            <strong id="cart-total" style="color:var(--primary); font-size:1.4rem;">Rp 0</strong>
+            <p style="font-size:0.7rem; color:#888; margin:5px 0 0 0;">*Belum termasuk ongkos kirim</p>
+        </div>
+        <button class="btn btn-primary" onclick="checkoutWA()">Kirim Pesanan ke WhatsApp</button>
     </div>
 </div>
 
@@ -132,36 +147,29 @@
     let kategoriTerpilih = "Semua";
 
     async function init() {
-        const res = await fetch(linkGSheet);
-        const csv = await res.text();
-        const rows = csv.split("\n").slice(1);
-        let kategoriSet = new Set();
+        try {
+            const res = await fetch(linkGSheet);
+            const csv = await res.text();
+            const rows = csv.split("\n").slice(1);
+            let kategoriSet = new Set();
+            semuaProduk = rows.map((row, idx) => {
+                const col = row.split(/[,;](?=(?:(?:[^"]*"){2})*[^"]*$)/);
+                if(col.length < 3) return null;
+                const kat = col[2] ? col[2].replace(/"/g, "").trim() : "Lainnya";
+                kategoriSet.add(kat);
+                return { id: idx, nama: col[0].replace(/"/g, "").trim(), harga: parseInt(col[1].replace(/[^\d]/g, "")) || 0, kategori: kat, foto: col[3].trim(), desc: col[4].replace(/"/g, "").trim() };
+            }).filter(p => p !== null);
 
-        semuaProduk = rows.map((row, idx) => {
-            const col = row.split(/[,;](?=(?:(?:[^"]*"){2})*[^"]*$)/);
-            if(col.length < 3) return null;
-            const kat = col[2] ? col[2].replace(/"/g, "").trim() : "Lainnya";
-            kategoriSet.add(kat);
-            return { id: idx, nama: col[0].replace(/"/g, "").trim(), harga: parseInt(col[1].replace(/[^\d]/g, "")) || 0, kategori: kat, foto: col[3].trim(), desc: col[4].replace(/"/g, "").trim() };
-        }).filter(p => p !== null);
-
-        const catBar = document.getElementById('category-bar');
-        Array.from(kategoriSet).sort().forEach(kat => {
-            catBar.innerHTML += `<button class="cat-btn" onclick="filterKategori('${kat}', this)">${kat}</button>`;
-        });
-
-        renderKatalog(semuaProduk);
-        const params = new URLSearchParams(window.location.search);
-        if(params.has('id')) tampilkanDetail(params.get('id'));
+            const catBar = document.getElementById('category-bar');
+            Array.from(kategoriSet).sort().forEach(kat => {
+                catBar.innerHTML += `<button class="cat-btn" onclick="filterKategori('${kat}', this)">${kat}</button>`;
+            });
+            renderKatalog(semuaProduk);
+        } catch(e) { console.error("Gagal muat Sheets"); }
     }
 
     function renderKatalog(data) {
-        const list = document.getElementById('produk-list');
-        if(data.length === 0) {
-            list.innerHTML = `<p style="grid-column:1/-1; text-align:center; padding:20px; color:#999;">Produk tidak ditemukan...</p>`;
-            return;
-        }
-        list.innerHTML = data.map(p => `
+        document.getElementById('produk-list').innerHTML = data.map(p => `
             <div class="card" onclick="tampilkanDetail(${p.id})">
                 <img src="${p.foto}">
                 <div class="card-info">
@@ -172,12 +180,8 @@
     }
 
     function jalankanFilter() {
-        const keyword = document.getElementById('input-search').value.toLowerCase();
-        const filtered = semuaProduk.filter(p => {
-            const cocokNama = p.nama.toLowerCase().includes(keyword);
-            const cocokKat = (kategoriTerpilih === "Semua") || (p.kategori === kategoriTerpilih);
-            return cocokNama && cocokKat;
-        });
+        const kw = document.getElementById('input-search').value.toLowerCase();
+        const filtered = semuaProduk.filter(p => p.nama.toLowerCase().includes(kw) && (kategoriTerpilih === "Semua" || p.kategori === kategoriTerpilih));
         renderKatalog(filtered);
     }
 
@@ -185,8 +189,7 @@
         kategoriTerpilih = kat;
         document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        jalankanFilter(); // Jalankan pencarian sekaligus filter kategori
-        tampilkanKatalog();
+        jalankanFilter();
     }
 
     function tampilkanDetail(id) {
@@ -196,28 +199,27 @@
         document.getElementById('main-title').innerText = produkAktif.nama;
         document.getElementById('main-price').innerText = "Rp " + produkAktif.harga.toLocaleString('id-ID');
         document.getElementById('main-desc').innerText = produkAktif.desc;
-        window.history.pushState(null, null, `?id=${id}`);
     }
 
     function renderIsiKeranjang() {
         const list = document.getElementById('cart-items-list');
-        const footer = document.getElementById('cart-footer');
-        const empty = document.getElementById('empty-cart');
-        if (keranjang.length === 0) { list.innerHTML = ""; footer.style.display = "none"; empty.style.display = "block"; return; }
-        empty.style.display = "none"; footer.style.display = "flex";
+        if (keranjang.length === 0) {
+            list.innerHTML = ""; document.getElementById('cart-footer').style.display = "none";
+            document.getElementById('form-alamat').style.display = "none";
+            document.getElementById('empty-cart').style.display = "block"; return;
+        }
+        document.getElementById('empty-cart').style.display = "none";
+        document.getElementById('cart-footer').style.display = "block";
+        document.getElementById('form-alamat').style.display = "block";
+        
         let total = 0;
         list.innerHTML = keranjang.map((item, idx) => {
             total += (item.harga * item.qty);
             return `<div class="cart-item">
                 <img src="${item.foto}">
                 <div style="flex-grow:1;">
-                    <div style="font-weight:bold; font-size:0.9rem;">${item.nama}</div>
-                    <div style="color:var(--primary); font-weight:bold; margin:5px 0;">Rp ${item.harga.toLocaleString()}</div>
-                    <div style="display:flex; align-items:center; gap:10px;">
-                        <button class="btn-qty" onclick="ubahQty(${idx}, -1)">-</button>
-                        <span>${item.qty}</span>
-                        <button class="btn-qty" onclick="ubahQty(${idx}, 1)">+</button>
-                    </div>
+                    <div style="font-weight:bold; font-size:0.8rem;">${item.nama}</div>
+                    <div style="color:var(--primary); font-size:0.9rem;">${item.qty} x Rp ${item.harga.toLocaleString()}</div>
                 </div>
                 <button class="btn-delete" onclick="hapusItem(${idx})">🗑️</button>
             </div>`;
@@ -225,35 +227,38 @@
         document.getElementById('cart-total').innerText = "Rp " + total.toLocaleString('id-ID');
     }
 
-    function switchView(viewId) {
-        document.querySelectorAll('.view').forEach(v => v.classList.remove('active-view'));
-        document.getElementById(viewId).classList.add('active-view');
-        document.getElementById('btn-back').style.display = (viewId === 'catalog-view') ? 'none' : 'block';
-        document.getElementById('filter-section').style.display = (viewId === 'catalog-view') ? 'block' : 'none';
-        document.getElementById('nav-text').innerText = (viewId === 'cart-view') ? 'Keranjang Belanja' : 'Andry Backbone Store';
-        if(viewId === 'catalog-view') window.history.pushState(null, null, window.location.pathname);
+    function switchView(v) {
+        document.querySelectorAll('.view').forEach(x => x.classList.remove('active-view'));
+        document.getElementById(v).classList.add('active-view');
+        document.getElementById('filter-section').style.display = (v==='catalog-view'?'block':'none');
+        document.getElementById('btn-back').style.display = (v==='catalog-view'?'none':'block');
         window.scrollTo(0,0);
     }
 
     function tambahKeKeranjang() {
         const ada = keranjang.find(x => x.id === produkAktif.id);
         if (ada) ada.qty++; else keranjang.push({ ...produkAktif, qty: 1 });
-        updateCartCount();
-        showToast("✓ Ditambahkan ke keranjang");
+        document.getElementById('cart-count').innerText = keranjang.reduce((s, i) => s + i.qty, 0);
+        const t = document.getElementById('toast'); t.className = "show"; setTimeout(() => t.className = "", 2000);
     }
 
-    function ubahQty(idx, d) { keranjang[idx].qty += d; if (keranjang[idx].qty < 1) keranjang[idx].qty = 1; renderIsiKeranjang(); updateCartCount(); }
-    function hapusItem(idx) { keranjang.splice(idx, 1); renderIsiKeranjang(); updateCartCount(); }
-    function updateCartCount() { document.getElementById('cart-count').innerText = keranjang.reduce((s, i) => s + i.qty, 0); }
-    function tampilkanKatalog() { switchView('catalog-view'); }
-    function tampilkanKeranjang() { switchView('cart-view'); renderIsiKeranjang(); }
+    function hapusItem(idx) { keranjang.splice(idx, 1); renderIsiKeranjang(); document.getElementById('cart-count').innerText = keranjang.reduce((s, i) => s + i.qty, 0); }
     function beliLangsung() { tambahKeKeranjang(); tampilkanKeranjang(); }
-    function showToast(m) { const t = document.getElementById('toast'); t.innerText = m; t.className = "show"; setTimeout(() => t.className = "", 2000); }
+    function tampilkanKeranjang() { switchView('cart-view'); renderIsiKeranjang(); }
+    function tampilkanKatalog() { switchView('catalog-view'); }
 
     function checkoutWA() {
+        const nama = document.getElementById('cust-name').value;
+        const alamat = document.getElementById('cust-address').value;
+        const kurir = document.getElementById('cust-courier').value;
+
+        if(!nama || !alamat) return alert("Mohon isi Nama dan Alamat pengiriman!");
+
         const daftar = keranjang.map(i => `- ${i.nama} (x${i.qty})`).join("\n");
         const total = keranjang.reduce((s, i) => s + (i.harga * i.qty), 0);
-        window.open(`https://wa.me/${nomorWA}?text=${encodeURIComponent('Halo Andry Backbone, saya mau pesan:\n\n' + daftar + '\n\nTotal: Rp ' + total.toLocaleString('id-ID'))}`);
+        
+        const pesan = `Halo Andry Backbone Store, saya mau pesan:\n\n${daftar}\n\n*Total: Rp ${total.toLocaleString('id-ID')}*\n\n*Data Pengiriman:*\nNama: ${nama}\nAlamat: ${alamat}\nKurir: ${kurir}\n\nMohon totalan beserta ongkirnya.`;
+        window.open(`https://wa.me/${nomorWA}?text=${encodeURIComponent(pesan)}`);
     }
 
     init();
