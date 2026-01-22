@@ -246,24 +246,37 @@
     let produkAktif = null;
 
     async function init() {
-        const res = await fetch(linkGSheet);
-        const csv = await res.text();
-        const rows = csv.split("\n").slice(1);
-        semuaProduk = rows.map((row, idx) => {
-            const col = row.split(/[,;](?=(?:(?:[^"]*"){2})*[^"]*$)/);
-            if(col.length < 3) return null;
-            return { 
-                id: idx, 
-                nama: col[0].replace(/"/g, "").trim(), 
-                harga: parseInt(col[1].replace(/[^\d]/g, "")) || 0, 
-                kategori: col[2]?.trim(), 
-                foto: col[3]?.trim(), 
-                desc: col[4]?.replace(/"/g, "").trim(), 
-                berat: parseInt(col[5]) || 0 
-            };
-        }).filter(p => p !== null);
-        renderKatalog(semuaProduk);
-    }
+    const res = await fetch(linkGSheet);
+    const csv = await res.text();
+    const rows = csv.split("\n").slice(1);
+    let kategoriSet = new Set(); // Tempat menyimpan nama kategori unik
+
+    semuaProduk = rows.map((row, idx) => {
+        const col = row.split(/[,;](?=(?:(?:[^"]*"){2})*[^"]*$)/);
+        if(col.length < 3) return null;
+        
+        const kat = col[2]?.replace(/"/g, "").trim() || "Lainnya";
+        kategoriSet.add(kat); // Masukkan kategori ke Set
+
+        return { 
+            id: idx, 
+            nama: col[0].replace(/"/g, "").trim(), 
+            harga: parseInt(col[1].replace(/[^\d]/g, "")) || 0, 
+            kategori: kat, 
+            foto: col[3]?.trim(), 
+            desc: col[4]?.replace(/"/g, "").trim(), 
+            berat: parseInt(col[5]) || 0 
+        };
+    }).filter(p => p !== null);
+
+    // MEMBUAT TOMBOL KATEGORI SECARA OTOMATIS
+    const catBar = document.getElementById('category-bar');
+    Array.from(kategoriSet).sort().forEach(kat => {
+        catBar.innerHTML += `<button class="cat-btn" onclick="filterKategori('${kat}', this)">${kat}</button>`;
+    });
+
+    renderKatalog(semuaProduk);
+}
 
     function renderKatalog(data) {
         document.getElementById('produk-list').innerHTML = data.map(p => `
@@ -361,6 +374,7 @@
 </script>
 </body>
 </html>
+
 
 
 
