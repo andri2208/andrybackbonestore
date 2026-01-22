@@ -21,32 +21,47 @@
         .card-info h3 { font-size: 0.85rem; margin: 0; height: 2.6em; overflow: hidden; font-weight: normal; }
         .card-price { color: var(--primary); font-weight: bold; font-size: 1rem; margin-top: 8px; }
 
-        /* Detail View Layout */
+        /* Detail View */
         #detail-view { display: none; max-width: 900px; margin: 15px auto; padding: 0 10px; }
         .product-wrapper { display: flex; flex-direction: column; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 15px rgba(0,0,0,0.05); }
-        
         .detail-img-container { flex: 1; background: #fff; display: flex; justify-content: center; align-items: center; }
         .detail-img { width: 100%; max-height: 450px; object-fit: contain; }
-        
         .detail-info-container { flex: 1; padding: 20px; }
         .detail-price { font-size: 1.8rem; color: var(--primary); font-weight: bold; margin-bottom: 10px; }
         .detail-title { font-size: 1.2rem; margin: 0 0 15px 0; font-weight: 600; line-height: 1.4; }
         
-        /* Area Tombol Kompak */
+        /* Tombol */
         .action-buttons { display: flex; gap: 10px; margin-bottom: 25px; }
-        .btn-small-cart { flex: 1; padding: 10px; border: 1px solid var(--primary); color: var(--primary); background: white; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 0.85rem; }
-        .btn-small-buy { flex: 1; padding: 10px; background: var(--primary); color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 0.85rem; }
+        .btn-small-cart { flex: 1; padding: 12px; border: 1px solid var(--primary); color: var(--primary); background: white; border-radius: 6px; font-weight: bold; cursor: pointer; }
+        .btn-small-buy { flex: 1; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
 
-        .desc-section { border-top: 1px solid #eee; padding-top: 15px; }
-        .desc-title { font-weight: bold; font-size: 0.9rem; margin-bottom: 8px; color: var(--dark); }
-        .desc-text { font-size: 0.9rem; color: #666; line-height: 1.6; white-space: pre-line; }
+        /* Toast Popup (Pesan Otomatis Hilang) */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 16px;
+            position: fixed;
+            z-index: 2000;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-size: 0.9rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+
+        @keyframes fadein { from { bottom: 0; opacity: 0; } to { bottom: 30px; opacity: 1; } }
+        @keyframes fadeout { from { bottom: 30px; opacity: 1; } to { bottom: 0; opacity: 0; } }
 
         /* Media Query Desktop */
         @media (min-width: 768px) {
             .catalog-container { grid-template-columns: repeat(4, 1fr); }
             .product-wrapper { flex-direction: row; }
             .detail-img-container { max-width: 45%; border-right: 1px solid #eee; }
-            .detail-info-container { padding: 40px; }
         }
 
         #cart-count { background: var(--primary); color: white; font-size: 10px; padding: 2px 6px; border-radius: 10px; position: absolute; top: -5px; right: -10px; border: 1px solid white; }
@@ -73,23 +88,22 @@
         <div class="detail-img-container">
             <img id="main-img" class="detail-img" src="">
         </div>
-        
         <div class="detail-info-container">
             <h1 id="main-title" class="detail-title"></h1>
             <div id="main-price" class="detail-price"></div>
-            
             <div class="action-buttons">
                 <button class="btn-small-cart" onclick="tambahKeKeranjang()">+ Keranjang</button>
                 <button class="btn-small-buy" onclick="beliSekarang()">Beli Sekarang</button>
             </div>
-
-            <div class="desc-section">
-                <div class="desc-title">DESKRIPSI PRODUK</div>
-                <div id="main-desc" class="desc-text"></div>
+            <div style="border-top:1px solid #eee; padding-top:15px;">
+                <div style="font-weight:bold; font-size:0.9rem; margin-bottom:8px;">DESKRIPSI PRODUK</div>
+                <div id="main-desc" style="font-size:0.9rem; color:#666; line-height:1.6; white-space:pre-line;"></div>
             </div>
         </div>
     </div>
 </div>
+
+<div id="toast">Produk ditambahkan ke keranjang!</div>
 
 <script>
     const linkGSheet = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRtNoerhDtHch7TNHVbItg23RG4nneoZ8hv5MBR1Cr40iU5alO8a2O4EUR90YgleMH4-E-6zGJsEgcN/pub?output=csv";
@@ -106,9 +120,8 @@
             const rows = data.split("\n").slice(1);
             semuaProduk = rows.map((row, index) => {
                 const col = row.split(",");
-                if(col.length < 2) return null;
-                return { id: index, nama: col[0], harga: parseInt(col[1]), kategori: col[2], foto: col[3], desc: col[4] };
-            }).filter(p => p !== null);
+                return { id: index, nama: col[0], harga: parseInt(col[1]), foto: col[3], desc: col[4] };
+            });
             renderKatalog();
             const urlParams = new URLSearchParams(window.location.search);
             if(urlParams.has('id')) tampilkanDetail(urlParams.get('id'));
@@ -157,14 +170,20 @@
         document.getElementById('detail-view').style.display = 'none';
         document.getElementById('btn-back').style.display = 'none';
         document.getElementById('nav-text').innerText = "Andry Backbone Store";
-        produkAktif = null;
+    }
+
+    function showToast(pesan) {
+        const toast = document.getElementById("toast");
+        toast.innerText = pesan;
+        toast.className = "show";
+        setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
     }
 
     function tambahKeKeranjang() {
         if(!produkAktif) return;
         keranjang.push(produkAktif);
         document.getElementById('cart-count').innerText = keranjang.length;
-        alert("Berhasil ditambah!");
+        showToast("✓ " + produkAktif.nama + " ditambah!");
     }
 
     function beliSekarang() {
