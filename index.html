@@ -3,33 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Katalog Perkakas Pro - Filter</title>
+    <title>Katalog Toko Perkakas Cuan</title>
     <style>
-        :root { --primary: #e67e22; --dark: #2c3e50; --light: #f4f7f6; }
-        body { font-family: 'Arial', sans-serif; background: var(--light); margin: 0; padding-bottom: 100px; }
-        header { background: var(--dark); color: white; text-align: center; padding: 20px; }
+        :root { --primary: #e67e22; --dark: #2c3e50; --light: #f4f7f6; --success: #25d366; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--light); margin: 0; padding-bottom: 120px; color: #333; }
         
-        /* Gaya Tombol Filter */
-        .filter-container { text-align: center; padding: 15px; background: white; position: sticky; top: 0; z-index: 90; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .filter-btn { background: none; border: 2px solid var(--primary); color: var(--primary); padding: 8px 15px; border-radius: 20px; cursor: pointer; font-weight: bold; margin: 5px; }
+        /* Header */
+        header { background: var(--dark); color: white; text-align: center; padding: 25px 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        header h1 { margin: 0; font-size: 1.8rem; }
+        header p { margin: 5px 0 0; opacity: 0.8; }
+
+        /* Filter Kategori */
+        .filter-container { text-align: center; padding: 15px; background: white; position: sticky; top: 0; z-index: 90; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .filter-btn { background: none; border: 2px solid var(--primary); color: var(--primary); padding: 8px 18px; border-radius: 25px; cursor: pointer; font-weight: bold; margin: 5px; transition: 0.3s; }
         .filter-btn.active { background: var(--primary); color: white; }
 
-        .container { max-width: 1000px; margin: auto; padding: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        /* Grid Produk */
+        .container { max-width: 1000px; margin: auto; padding: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
         
-        .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 1px solid #ddd; display: block; }
-        .card img { width: 100%; height: 200px; object-fit: cover; }
-        .card-body { padding: 15px; }
-        .price { color: var(--primary); font-weight: bold; font-size: 1.2em; }
+        .card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 6px 15px rgba(0,0,0,0.1); border: 1px solid #eee; transition: 0.3s; }
+        .card:hover { transform: translateY(-5px); }
+        .card img { width: 100%; height: 220px; object-fit: cover; }
+        .card-body { padding: 20px; }
+        .card-body h3 { margin: 0 0 10px; font-size: 1.3rem; }
+        .price { color: var(--primary); font-weight: bold; font-size: 1.4em; margin-bottom: 15px; }
         
+        .btn-add { width: 100%; background: var(--primary); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; }
+        .btn-add:active { transform: scale(0.98); }
+
         /* Floating Cart Bar */
-        .cart-bar { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 15px 25px; box-shadow: 0 -5px 15px rgba(0,0,0,0.2); display: flex; justify-content: space-between; align-items: center; z-index: 1000; }
-        .btn-checkout { background: #25d366; color: white; text-decoration: none; padding: 12px 20px; border-radius: 30px; font-weight: bold; }
+        .cart-bar { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 15px 25px; box-shadow: 0 -5px 20px rgba(0,0,0,0.15); display: flex; justify-content: space-between; align-items: center; z-index: 1000; }
+        .cart-info input { padding: 10px; border-radius: 8px; border: 1px solid #ccc; width: 160px; margin-bottom: 8px; display: block; }
+        .btn-checkout { background: var(--success); color: white; text-decoration: none; padding: 15px 25px; border-radius: 50px; font-weight: bold; font-size: 1rem; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3); }
+
+        /* Modal */
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); animation: fadeIn 0.3s; }
+        .modal-content { background-color: white; margin: 15% auto; padding: 40px 20px; border-radius: 20px; width: 85%; max-width: 400px; text-align: center; }
+        @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
     </style>
 </head>
 <body>
 
 <header>
     <h1>🛠️ Perkakas Cuan Center</h1>
+    <p>Solusi Alat Teknik Terpercaya</p>
 </header>
 
 <div class="filter-container">
@@ -40,46 +57,56 @@
 
 <div class="container" id="produk-list">
     <div class="card" data-category="mesin">
-        <img src="bor.jpg" alt="Bor">
+        <img src="https://images.unsplash.com/photo-1581147036324-c17ac41dfa6c?w=400" alt="Bor">
         <div class="card-body">
-            <h3>Bor Listrik</h3>
-            <p class="price">Rp 250,000</p>
-            <button style="width:100%; padding:10px; cursor:pointer;" onclick="tambahKeKeranjang('Bor Listrik', 250000)">+ Keranjang</button>
+            <h3>Bor Listrik Pro</h3>
+            <p class="price">Rp 250.000</p>
+            <button class="btn-add" onclick="tambahKeKeranjang('Bor Listrik Pro', 250000)">+ Tambah Keranjang</button>
         </div>
     </div>
 
     <div class="card" data-category="manual">
-        <img src="kunci-inggris.jpg" alt="Kunci">
+        <img src="https://images.unsplash.com/photo-1586864387917-f74e18d2600c?w=400" alt="Kunci">
         <div class="card-body">
-            <h3>Kunci Inggris</h3>
-            <p class="price">Rp 45,000</p>
-            <button style="width:100%; padding:10px; cursor:pointer;" onclick="tambahKeKeranjang('Kunci Inggris', 45000)">+ Keranjang</button>
+            <h3>Kunci Inggris 10"</h3>
+            <p class="price">Rp 45.000</p>
+            <button class="btn-add" onclick="tambahKeKeranjang('Kunci Inggris 10', 45000)">+ Tambah Keranjang</button>
         </div>
     </div>
 
+    <div class="card" data-category="manual">
+        <img src="https://images.unsplash.com/photo-1530124566582-ab61277d16e3?w=400" alt="Obeng">
+        <div class="card-body">
+            <h3>Set Obeng 7-in-1</h3>
+            <p class="price">Rp 15.000</p>
+            <button class="btn-add" onclick="tambahKeKeranjang('Set Obeng 7-in-1', 15000)">+ Tambah Keranjang</button>
+        </div>
     </div>
+</div>
 
 <div class="cart-bar">
-    <div style="display: flex; flex-direction: column; gap: 5px;">
-        <input type="text" id="nama-pembeli" placeholder="Masukkan Nama Anda..." style="padding: 8px; border-radius: 5px; border: 1px solid #ccc; width: 150px;">
-        <div>
-            <strong>Total: <span id="cart-total">Rp 0</span></strong>
-        </div>
+    <div class="cart-info">
+        <input type="text" id="nama-pembeli" placeholder="Nama Anda...">
+        <strong>Total: <span id="cart-total" style="color:var(--primary)">Rp 0</span></strong>
     </div>
     <a href="#" class="btn-checkout" onclick="kirimWA()">Pesan via WA</a>
+</div>
+
+<div id="modalTerimaKasih" class="modal">
+    <div class="modal-content">
+        <h2 style="color:var(--success)">🎉 Berhasil!</h2>
+        <p>Terima kasih sudah memilih kami.<br>Browser Anda akan segera membuka WhatsApp.</p>
+        <button class="btn-add" onclick="tutupModal()">Tutup</button>
+    </div>
 </div>
 
 <script>
     let keranjang = [];
     let totalHarga = 0;
 
-    // FUNGSI FILTER
     function filterBarang(kategori, btn) {
-        // Update tombol aktif
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-
-        // Sembunyikan/Tampilkan barang
         let cards = document.querySelectorAll('.card');
         cards.forEach(card => {
             if (kategori === 'semua' || card.getAttribute('data-category') === kategori) {
@@ -94,45 +121,29 @@
         keranjang.push({nama, harga});
         totalHarga += harga;
         document.getElementById('cart-total').innerText = "Rp " + totalHarga.toLocaleString('id-ID');
+        alert(nama + " masuk keranjang!");
+    }
+
+    function tutupModal() {
+        document.getElementById('modalTerimaKasih').style.display = "none";
     }
 
     function kirimWA() {
-        if (keranjang.length === 0) return alert("Keranjang kosong!");
-        let nomorWA = "628123456789"; 
-        let pesan = "Halo, saya mau pesan:\n" + keranjang.map(i => "- " + i.nama).join("\n") + "\n\nTotal: Rp " + totalHarga.toLocaleString('id-ID');
-        window.open(`https://wa.me/${nomorWA}?text=${encodeURIComponent(pesan)}`, '_blank');
-    }
-
-    function kirimWA() {
-        // Ambil nilai nama dari input
         let namaUser = document.getElementById('nama-pembeli').value;
-
-        if (namaUser.trim() === "") {
-            alert("Silakan masukkan nama Anda terlebih dahulu agar kami bisa melayani dengan baik.");
-            return;
-        }
-
-        if (keranjang.length === 0) {
-            alert("Keranjang masih kosong!");
-            return;
-        }
+        if (namaUser.trim() === "") return alert("Isi nama dulu ya!");
+        if (keranjang.length === 0) return alert("Pilih barang dulu!");
 
         let nomorWA = "628123456789"; // GANTI DENGAN NOMOR WA KAMU
-        
-        // Membuat pesan dengan nama pembeli
-        let pesan = `Halo Toko Perkakas Jaya,\nSaya *${namaUser}* ingin memesan:\n\n`;
-        
-        keranjang.forEach((item, index) => {
-            pesan += `${index + 1}. ${item.nama} - Rp ${item.harga.toLocaleString('id-ID')}\n`;
-        });
+        let daftarBelanja = keranjang.map((item, i) => `${i+1}. ${item.nama} (Rp ${item.harga.toLocaleString('id-ID')})`).join("\n");
+        let pesan = `Halo Toko Perkakas Cuan,\nSaya *${namaUser}* ingin memesan:\n\n${daftarBelanja}\n\n*Total: Rp ${totalHarga.toLocaleString('id-ID')}*`;
 
-        pesan += `\n*Total Tagihan: Rp ${totalHarga.toLocaleString('id-ID')}*`;
-        
-        let url = `https://wa.me/${nomorWA}?text=${encodeURIComponent(pesan)}`;
-        window.open(url, '_blank');
+        document.getElementById('modalTerimaKasih').style.display = "block";
+
+        setTimeout(() => {
+            window.open(`https://wa.me/${nomorWA}?text=${encodeURIComponent(pesan)}`, '_blank');
+        }, 1500);
     }
 </script>
 
 </body>
 </html>
-
