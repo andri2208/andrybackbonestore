@@ -125,6 +125,27 @@
         
         #toast { visibility: hidden; background: #333; color: white; padding: 15px 30px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 5px; z-index: 3000; }
         #toast.show { visibility: visible; }
+
+        /* Style Tombol Kategori */
+.cat-btn {
+    padding: 8px 15px;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    background: #fff;
+    cursor: pointer;
+    white-space: nowrap; /* Agar tombol tidak turun ke bawah */
+    font-size: 0.85rem;
+    transition: 0.3s;
+}
+        .cat-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+        /* Sembunyikan scrollbar di area kategori agar estetik */
+#category-bar::-webkit-scrollbar {
+    display: none;
+}
     </style>
 </head>
 <body>
@@ -340,6 +361,7 @@
 </script>
 </body>
 </html>
+
 
 
 
