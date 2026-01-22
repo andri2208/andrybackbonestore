@@ -3,117 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Katalog Toko Perkakas Cuan</title>
+    <title>Katalog Perkakas Otomatis</title>
     <style>
         :root { --primary: #e67e22; --dark: #2c3e50; --light: #f4f7f6; --success: #25d366; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--light); margin: 0; padding-bottom: 120px; color: #333; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--light); margin: 0; padding-bottom: 120px; }
         
-        /* Header */
-        header { background: var(--dark); color: white; text-align: center; padding: 25px 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-        header h1 { margin: 0; font-size: 1.8rem; }
-        header p { margin: 5px 0 0; opacity: 0.8; }
-
-        /* Filter Kategori */
-        .filter-container { text-align: center; padding: 15px; background: white; position: sticky; top: 0; z-index: 90; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .filter-btn { background: none; border: 2px solid var(--primary); color: var(--primary); padding: 8px 18px; border-radius: 25px; cursor: pointer; font-weight: bold; margin: 5px; transition: 0.3s; }
+        header { background: var(--dark); color: white; text-align: center; padding: 20px; }
+        
+        /* Filter */
+        .filter-container { text-align: center; padding: 15px; background: white; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .filter-btn { border: 2px solid var(--primary); background: none; color: var(--primary); padding: 8px 15px; border-radius: 20px; cursor: pointer; font-weight: bold; margin: 3px; }
         .filter-btn.active { background: var(--primary); color: white; }
 
-        /* Grid Produk */
-        .container { max-width: 1000px; margin: auto; padding: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        /* Grid */
+        .container { max-width: 1000px; margin: auto; padding: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
+        .card img { width: 100%; height: 200px; object-fit: cover; background: #eee; }
+        .card-body { padding: 15px; flex-grow: 1; }
+        .price { color: var(--primary); font-weight: bold; font-size: 1.2em; }
         
-        .card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 6px 15px rgba(0,0,0,0.1); border: 1px solid #eee; transition: 0.3s; }
-        .card:hover { transform: translateY(-5px); }
-        .card img { width: 100%; height: 220px; object-fit: cover; }
-        .card-body { padding: 20px; }
-        .card-body h3 { margin: 0 0 10px; font-size: 1.3rem; }
-        .price { color: var(--primary); font-weight: bold; font-size: 1.4em; margin-bottom: 15px; }
-        
-        .btn-add { width: 100%; background: var(--primary); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; }
-        .btn-add:active { transform: scale(0.98); }
+        .btn-add { width: 100%; background: var(--primary); color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; }
 
-        /* Floating Cart Bar */
-        .cart-bar { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 15px 25px; box-shadow: 0 -5px 20px rgba(0,0,0,0.15); display: flex; justify-content: space-between; align-items: center; z-index: 1000; }
-        .cart-info input { padding: 10px; border-radius: 8px; border: 1px solid #ccc; width: 160px; margin-bottom: 8px; display: block; }
-        .btn-checkout { background: var(--success); color: white; text-decoration: none; padding: 15px 25px; border-radius: 50px; font-weight: bold; font-size: 1rem; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3); }
+        /* Cart Bar */
+        .cart-bar { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 15px; box-shadow: 0 -5px 15px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; z-index: 1000; }
+        .cart-bar input { padding: 10px; border-radius: 5px; border: 1px solid #ccc; width: 140px; }
+        .btn-checkout { background: var(--success); color: white; text-decoration: none; padding: 12px 20px; border-radius: 25px; font-weight: bold; }
 
         /* Modal */
-        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); animation: fadeIn 0.3s; }
-        .modal-content { background-color: white; margin: 15% auto; padding: 40px 20px; border-radius: 20px; width: 85%; max-width: 400px; text-align: center; }
-        @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); }
+        .modal-content { background: white; margin: 20% auto; padding: 30px; border-radius: 15px; width: 80%; max-width: 350px; text-align: center; }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>🛠️ Perkakas Cuan Center</h1>
-    <p>Solusi Alat Teknik Terpercaya</p>
+    <h1>🛠️ Toko Perkakas Otomatis</h1>
+    <p>Data dikelola via Google Sheets</p>
 </header>
 
 <div class="filter-container">
     <button class="filter-btn active" onclick="filterBarang('semua', this)">Semua</button>
     <button class="filter-btn" onclick="filterBarang('mesin', this)">Mesin</button>
-    <button class="filter-btn" onclick="filterBarang('manual', this)">Alat Manual</button>
+    <button class="filter-btn" onclick="filterBarang('manual', this)">Manual</button>
 </div>
 
 <div class="container" id="produk-list">
-    <div class="card" data-category="mesin">
-        <img src="https://images.unsplash.com/photo-1581147036324-c17ac41dfa6c?w=400" alt="Bor">
-        <div class="card-body">
-            <h3>Bor Listrik Pro</h3>
-            <p class="price">Rp 250.000</p>
-            <button class="btn-add" onclick="tambahKeKeranjang('Bor Listrik Pro', 250000)">+ Tambah Keranjang</button>
-        </div>
-    </div>
-
-    <div class="card" data-category="manual">
-        <img src="https://images.unsplash.com/photo-1586864387917-f74e18d2600c?w=400" alt="Kunci">
-        <div class="card-body">
-            <h3>Kunci Inggris 10"</h3>
-            <p class="price">Rp 45.000</p>
-            <button class="btn-add" onclick="tambahKeKeranjang('Kunci Inggris 10', 45000)">+ Tambah Keranjang</button>
-        </div>
-    </div>
-
-    <div class="card" data-category="manual">
-        <img src="https://images.unsplash.com/photo-1530124566582-ab61277d16e3?w=400" alt="Obeng">
-        <div class="card-body">
-            <h3>Set Obeng 7-in-1</h3>
-            <p class="price">Rp 15.000</p>
-            <button class="btn-add" onclick="tambahKeKeranjang('Set Obeng 7-in-1', 15000)">+ Tambah Keranjang</button>
-        </div>
-    </div>
+    <p id="loading">Sedang mengambil data barang...</p>
 </div>
 
 <div class="cart-bar">
-    <div class="cart-info">
+    <div style="display:flex; flex-direction:column; gap:5px;">
         <input type="text" id="nama-pembeli" placeholder="Nama Anda...">
-        <strong>Total: <span id="cart-total" style="color:var(--primary)">Rp 0</span></strong>
+        <strong>Total: <span id="cart-total">Rp 0</span></strong>
     </div>
     <a href="#" class="btn-checkout" onclick="kirimWA()">Pesan via WA</a>
 </div>
 
 <div id="modalTerimaKasih" class="modal">
     <div class="modal-content">
-        <h2 style="color:var(--success)">🎉 Berhasil!</h2>
-        <p>Terima kasih sudah memilih kami.<br>Browser Anda akan segera membuka WhatsApp.</p>
-        <button class="btn-add" onclick="tutupModal()">Tutup</button>
+        <h2>✅ Terkirim!</h2>
+        <p>Mengarahkan ke WhatsApp...</p>
+        <button class="btn-add" onclick="tutupModal()">Oke</button>
     </div>
 </div>
 
 <script>
+    // 1. GANTI LINK INI DENGAN LINK CSV DARI GOOGLE SHEETS KAMU
+    const linkGSheet = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRtNoerhDtHch7TNHVbItg23RG4nneoZ8hv5MBR1Cr40iU5alO8a2O4EUR90YgleMH4-E-6zGJsEgcN/pub?output=csv";
+    // 2. GANTI NOMOR WHATSAPP KAMU
+    const nomorWA = "628123456789";
+
     let keranjang = [];
     let totalHarga = 0;
 
-    function filterBarang(kategori, btn) {
+    async function loadProduk() {
+        try {
+            const response = await fetch(linkGSheet);
+            const data = await response.text();
+            const rows = data.split("\n").slice(1);
+            const container = document.getElementById('produk-list');
+            container.innerHTML = "";
+
+            rows.forEach(row => {
+                const col = row.split(",");
+                if(col.length >= 4) {
+                    const [nama, harga, kategori, foto] = col;
+                    container.innerHTML += `
+                        <div class="card" data-category="${kategori.trim().toLowerCase()}">
+                            <img src="${foto.trim()}" alt="${nama}">
+                            <div class="card-body">
+                                <h3>${nama}</h3>
+                                <p class="price">Rp ${parseInt(harga).toLocaleString('id-ID')}</p>
+                                <button class="btn-add" onclick="tambahKeKeranjang('${nama}', ${harga})">+ Keranjang</button>
+                            </div>
+                        </div>`;
+                }
+            });
+        } catch (e) {
+            document.getElementById('loading').innerText = "Gagal memuat data. Pastikan link CSV benar.";
+        }
+    }
+
+    function filterBarang(kat, btn) {
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        let cards = document.querySelectorAll('.card');
-        cards.forEach(card => {
-            if (kategori === 'semua' || card.getAttribute('data-category') === kategori) {
-                card.style.display = "block";
-            } else {
-                card.style.display = "none";
-            }
+        document.querySelectorAll('.card').forEach(c => {
+            c.style.display = (kat === 'semua' || c.dataset.category === kat) ? "block" : "none";
         });
     }
 
@@ -121,28 +116,20 @@
         keranjang.push({nama, harga});
         totalHarga += harga;
         document.getElementById('cart-total').innerText = "Rp " + totalHarga.toLocaleString('id-ID');
-        alert(nama + " masuk keranjang!");
     }
 
-    function tutupModal() {
-        document.getElementById('modalTerimaKasih').style.display = "none";
-    }
+    function tutupModal() { document.getElementById('modalTerimaKasih').style.display = "none"; }
 
     function kirimWA() {
-        let namaUser = document.getElementById('nama-pembeli').value;
-        if (namaUser.trim() === "") return alert("Isi nama dulu ya!");
-        if (keranjang.length === 0) return alert("Pilih barang dulu!");
-
-        let nomorWA = "628123456789"; // GANTI DENGAN NOMOR WA KAMU
-        let daftarBelanja = keranjang.map((item, i) => `${i+1}. ${item.nama} (Rp ${item.harga.toLocaleString('id-ID')})`).join("\n");
-        let pesan = `Halo Toko Perkakas Cuan,\nSaya *${namaUser}* ingin memesan:\n\n${daftarBelanja}\n\n*Total: Rp ${totalHarga.toLocaleString('id-ID')}*`;
-
+        let nama = document.getElementById('nama-pembeli').value;
+        if (!nama || keranjang.length === 0) return alert("Isi nama dan pilih barang!");
+        
+        let pesan = `Halo, saya *${nama}* ingin pesan:\n` + keranjang.map(i => "- " + i.nama).join("\n") + `\n\n*Total: Rp ${totalHarga.toLocaleString('id-ID')}*`;
         document.getElementById('modalTerimaKasih').style.display = "block";
-
-        setTimeout(() => {
-            window.open(`https://wa.me/${nomorWA}?text=${encodeURIComponent(pesan)}`, '_blank');
-        }, 1500);
+        setTimeout(() => { window.open(`https://wa.me/${nomorWA}?text=${encodeURIComponent(pesan)}`, '_blank'); }, 1500);
     }
+
+    loadProduk();
 </script>
 
 </body>
