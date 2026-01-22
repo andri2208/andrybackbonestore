@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANDRY BACKBONE STORE</title>
+    <style>
+        :root { --primary: #d35400; --dark: #2c3e50; --light: #ecf0f1; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--light); margin: 0; padding: 20px; }
+        header { text-align: center; padding: 20px; background: var(--dark); color: white; border-radius: 10px; margin-bottom: 20px; }
+        
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        
+        .card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: 0.3s; }
+        .card:hover { transform: translateY(-5px); }
+        .card img { width: 100%; height: 180px; object-fit: cover; background: #ddd; }
+        .card-content { padding: 15px; }
+        .price { color: var(--primary); font-size: 1.2rem; font-weight: bold; }
+        
+        .btn-wa { 
+            display: block; text-align: center; background: #25d366; color: white; 
+            text-decoration: none; padding: 10px; border-radius: 5px; margin-top: 10px; font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>ANDRY BACKBONE STORE</h1>
+        <p>Koleksi Bilah Berkualitas - Harga Bersahabat</p>
+    </header>
+
+    <div class="grid-container">
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1581147036324-c17ac41dfa6c?w=400" alt="Bor Listrik">
+            <div class="card-content">
+                <h3>Bor Listrik Impact</h3>
+                <p class="price">Rp 250.000</p>
+                <p>Mesin bor kuat untuk tembok dan besi. Awet dan bertenaga.</p>
+                <a href="https://wa.me/6281574938272?text=Halo, saya ingin pesan Bor Listrik" class="btn-wa">Pesan via WA</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1586864387917-f74e18d2600c?w=400" alt="Kunci Inggris">
+            <div class="card-content">
+                <h3>Kunci Inggris 10"</h3>
+                <p class="price">Rp 45.000</p>
+                <p>Bahan Chrome Vanadium, tahan karat dan presisi tinggi.</p>
+                <a href="https://wa.me/6281574938272?text=Halo, saya ingin pesan Kunci Inggris" class="btn-wa">Pesan via WA</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1530124566582-ab61277d16e3?w=400" alt="Obeng Set">
+            <div class="card-content">
+                <h3>Set Obeng 7 in 1</h3>
+                <p class="price">Rp 15.000</p>
+                <p>Satu set lengkap untuk berbagai jenis baut. Gagang anti slip.</p>
+                <a href="https://wa.me/6281574938272?text=Halo, saya ingin pesan Obeng Set" class="btn-wa">Pesan via WA</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
