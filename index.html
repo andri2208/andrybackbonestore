@@ -116,6 +116,35 @@
         grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     }
 }
+
+        /* Styling daftar ringkasan di keranjang (opsional) */
+.cart-item-list {
+    font-size: 0.8rem;
+    max-height: 100px;
+    overflow-y: auto;
+    margin-bottom: 5px;
+    border-top: 1px solid #eee;
+    padding-top: 5px;
+}
+.btn-hapus-kecil {
+    color: red;
+    cursor: pointer;
+    font-weight: bold;
+    margin-left: 10px;
+    border: none;
+    background: none;
+}
+.btn-reset {
+    background: #ff4757;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+        
     </style>
 </head>
 <body>
@@ -151,9 +180,11 @@
 </div>
 
 <div class="cart-bar">
-    <div style="display:flex; flex-direction:column;">
-        <input type="text" id="nama-pembeli" placeholder="Nama Anda..." style="padding:8px; margin-bottom:5px;">
-        <strong>Total: <span id="cart-total">Rp 0</span></strong>
+    <div style="display:flex; flex-direction:column; width: 60%;">
+        <button class="btn-reset" onclick="resetKeranjang()">Reset Keranjang</button>
+        <input type="text" id="nama-pembeli" placeholder="Nama Anda..." style="padding:8px; margin-bottom:5px; border-radius:5px; border:1px solid #ccc;">
+        <strong>Total: <span id="cart-total" style="color:var(--primary)">Rp 0</span></strong>
+        <div id="ringkasan-belanja" class="cart-item-list"></div>
     </div>
     <a href="#" class="btn-checkout" onclick="kirimWA()">Pesan WA</a>
 </div>
@@ -207,11 +238,38 @@
     function tutupDetail() { document.getElementById('modalDetail').style.display = "none"; }
 
     function tambahKeKeranjang(nama, harga) {
-        keranjang.push({nama, harga});
-        totalHarga += harga;
-        document.getElementById('cart-total').innerText = "Rp " + totalHarga.toLocaleString('id-ID');
-        alert(nama + " ditambahkan!");
+    keranjang.push({ nama, harga });
+    updateTampilanKeranjang();
+}
+
+    function hapusItem(index) {
+    keranjang.splice(index, 1); // Menghapus 1 item berdasarkan urutan
+    updateTampilanKeranjang();
+}
+
+    function resetKeranjang() {
+    if (confirm("Kosongkan keranjang belanja?")) {
+        keranjang = [];
+        updateTampilanKeranjang();
     }
+}
+
+    function updateTampilanKeranjang() {
+    const listElement = document.getElementById('ringkasan-belanja');
+    const totalElement = document.getElementById('cart-total');
+    
+    // Hitung Ulang Total
+    totalHarga = keranjang.reduce((sum, item) => sum + item.harga, 0);
+    totalElement.innerText = "Rp " + totalHarga.toLocaleString('id-ID');
+
+    // Update Tampilan Daftar Barang
+    listElement.innerHTML = keranjang.map((item, index) => `
+        <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
+            <span>${item.nama}</span>
+            <button class="btn-hapus-kecil" onclick="hapusItem(${index})">✕</button>
+        </div>
+    `).join("");
+}
 
     function filterBarang(kat, btn) {
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -220,6 +278,8 @@
             c.style.display = (kat === 'semua' || c.dataset.category === kat) ? "block" : "none";
         });
     }
+
+    
 
     function kirimWA() {
         let nama = document.getElementById('nama-pembeli').value;
@@ -232,6 +292,7 @@
 </script>
 </body>
 </html>
+
 
 
 
