@@ -137,11 +137,12 @@
     font-size: 0.85rem;
     transition: 0.3s;
 }
-        .cat-btn.active {
-    background: var(--primary);
-    color: white;
-    border-color: var(--primary);
+      .cat-btn.active {
+    background: #ee4d2d !important;
+    color: white !important;
+    border-color: #ee4d2d !important;
 }
+        
         /* Sembunyikan scrollbar di area kategori agar estetik */
 #category-bar::-webkit-scrollbar {
     display: none;
@@ -355,6 +356,37 @@
         renderKatalog(semuaProduk.filter(p => p.nama.toLowerCase().includes(kw)));
     }
 
+    let kategoriTerpilih = "Semua"; // Variabel global untuk menyimpan status kategori
+
+function filterKategori(kat, btn) {
+    // 1. Simpan kategori yang diklik ke variabel global
+    kategoriTerpilih = kat;
+
+    // 2. Ubah tampilan tombol agar yang aktif berwarna orange
+    const semuaTombol = document.querySelectorAll('.cat-btn');
+    semuaTombol.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    // 3. Panggil fungsi filter untuk memperbarui daftar produk
+    jalankanFilter();
+}
+
+// GANTI fungsi jalankanFilter lama kamu dengan yang ini:
+function jalankanFilter() {
+    const kw = document.getElementById('input-search').value.toLowerCase();
+    
+    const hasilFilter = semuaProduk.filter(p => {
+        // Cek apakah nama produk mengandung kata kunci pencarian
+        const cocokNama = p.nama.toLowerCase().includes(kw);
+        // Cek apakah kategori produk sesuai dengan tombol yang diklik
+        const cocokKategori = (kategoriTerpilih === "Semua" || p.kategori === kategoriTerpilih);
+        
+        return cocokNama && cocokKategori;
+    });
+
+    renderKatalog(hasilFilter);
+}
+
     function checkoutWA() {
         const addr = document.getElementById('cust-addr').value;
         const region = document.getElementById('cust-region').value;
@@ -374,6 +406,7 @@
 </script>
 </body>
 </html>
+
 
 
 
