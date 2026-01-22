@@ -9,39 +9,58 @@
         body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: var(--bg); margin: 0; padding-bottom: 80px; color: #333; }
         
         /* Navbar */
-        nav { background: white; padding: 15px; position: sticky; top: 0; z-index: 1000; box-shadow: 0 1px 10px rgba(0,0,0,0.1); display: flex; align-items: center; }
-        .back-icon { font-size: 24px; cursor: pointer; margin-right: 15px; color: var(--primary); }
-        .nav-title { font-weight: bold; font-size: 1.1rem; flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        nav { background: white; padding: 12px 15px; position: sticky; top: 0; z-index: 1000; box-shadow: 0 1px 10px rgba(0,0,0,0.1); display: flex; align-items: center; height: 50px; box-sizing: border-box; }
+        .back-icon { font-size: 24px; cursor: pointer; margin-right: 15px; color: var(--primary); font-weight: bold; }
+        .nav-title { font-weight: bold; font-size: 1rem; flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
         /* Katalog View */
         .catalog-container { max-width: 1000px; margin: auto; padding: 10px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .card { background: white; border-radius: 4px; overflow: hidden; text-decoration: none; color: inherit; display: flex; flex-direction: column; }
+        .card { background: white; border-radius: 4px; overflow: hidden; text-decoration: none; color: inherit; display: flex; flex-direction: column; border: 1px solid #eee; }
         .card img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; }
         .card-info { padding: 10px; flex-grow: 1; }
         .card-info h3 { font-size: 0.85rem; margin: 0; height: 2.4em; overflow: hidden; font-weight: normal; line-height: 1.3; }
         .card-price { color: var(--primary); font-weight: bold; font-size: 1rem; margin-top: 8px; }
 
-        /* Detail View */
+        /* Detail View - Perbaikan Ukuran Foto */
         #detail-view { display: none; background: var(--bg); min-height: 100vh; }
-        .product-main { background: white; margin-bottom: 10px; }
-        .detail-img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; }
-        .detail-header { padding: 15px; background: white; }
-        .detail-price { font-size: 1.6rem; color: var(--primary); font-weight: bold; margin-bottom: 10px; }
-        .detail-title { font-size: 1.1rem; line-height: 1.4; margin: 0; font-weight: 500; }
+        .product-main { background: white; display: flex; flex-direction: column; }
         
-        .product-desc { background: white; padding: 15px; margin-top: 10px; }
-        .desc-title { font-weight: bold; margin-bottom: 10px; border-left: 4px solid var(--primary); padding-left: 10px; }
+        .detail-img-container { 
+            width: 100%; 
+            max-height: 400px; /* Batasi tinggi agar tidak menutupi layar */
+            background: white; 
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .detail-img { 
+            width: auto; 
+            max-width: 100%;
+            height: 400px; /* Tinggi tetap agar konsisten */
+            object-fit: contain; /* Foto utuh, tidak terpotong */
+        }
+        
+        .detail-header { padding: 15px; background: white; border-top: 1px solid #f0f0f0; }
+        .detail-price { font-size: 1.5rem; color: var(--primary); font-weight: bold; margin-bottom: 8px; }
+        .detail-title { font-size: 1.1rem; line-height: 1.4; margin: 0; font-weight: 500; color: #333; }
+        
+        .product-desc { background: white; padding: 15px; margin-top: 10px; margin-bottom: 20px; }
+        .desc-title { font-weight: bold; margin-bottom: 10px; border-left: 4px solid var(--primary); padding-left: 10px; font-size: 1rem; }
         .desc-text { font-size: 0.95rem; color: #555; line-height: 1.6; white-space: pre-line; }
 
-        /* Bottom Bar (Beli) */
-        .bottom-action { position: fixed; bottom: 0; width: 100%; background: white; border-top: 1px solid #ddd; padding: 10px 15px; display: flex; gap: 10px; box-sizing: border-box; }
-        .btn-cart { flex: 1; border: 1px solid var(--primary); color: var(--primary); background: #fff5f1; padding: 12px; border-radius: 4px; font-weight: bold; cursor: pointer; }
-        .btn-buy { flex: 1; background: var(--primary); color: white; border: none; padding: 12px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        /* Bottom Action Bar */
+        .bottom-action { position: fixed; bottom: 0; width: 100%; background: white; border-top: 1px solid #ddd; padding: 10px 15px; display: flex; gap: 10px; box-sizing: border-box; z-index: 1001; }
+        .btn-cart { flex: 1; border: 1px solid var(--primary); color: var(--primary); background: #fff5f1; padding: 12px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 0.9rem; }
+        .btn-buy { flex: 1; background: var(--primary); color: white; border: none; padding: 12px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 0.9rem; }
 
         /* Badge Keranjang */
-        #cart-count { background: var(--primary); color: white; font-size: 10px; padding: 2px 6px; border-radius: 10px; position: absolute; top: 10px; right: 10px; }
+        #cart-count { background: var(--primary); color: white; font-size: 10px; padding: 2px 6px; border-radius: 10px; position: absolute; top: -5px; right: -10px; border: 1px solid white; }
 
-        @media (min-width: 600px) { .catalog-container { grid-template-columns: repeat(4, 1fr); } }
+        @media (min-width: 600px) { 
+            .catalog-container { grid-template-columns: repeat(4, 1fr); } 
+            .detail-img { height: 500px; }
+            .detail-img-container { max-height: 500px; }
+        }
     </style>
 </head>
 <body>
@@ -49,20 +68,22 @@
 <nav id="navbar">
     <span class="back-icon" id="btn-back" style="display:none;" onclick="tampilkanKatalog()">←</span>
     <span class="nav-title" id="nav-text">Andry Backbone Store</span>
-    <div onclick="window.scrollTo(0, document.body.scrollHeight)" style="position: relative; cursor:pointer;">
+    <div onclick="window.scrollTo(0, document.body.scrollHeight)" style="position: relative; cursor:pointer; font-size: 1.2rem;">
         🛒<span id="cart-count">0</span>
     </div>
 </nav>
 
 <div id="catalog-view">
     <div class="catalog-container" id="produk-list">
-        <p style="text-align:center; grid-column: 1/-1;">Sedang memuat...</p>
+        <p style="text-align:center; grid-column: 1/-1;">Sedang memuat produk...</p>
     </div>
 </div>
 
 <div id="detail-view">
     <div class="product-main">
-        <img id="main-img" class="detail-img" src="">
+        <div class="detail-img-container">
+            <img id="main-img" class="detail-img" src="">
+        </div>
         <div class="detail-header">
             <div id="main-price" class="detail-price"></div>
             <h1 id="main-title" class="detail-title"></h1>
@@ -82,25 +103,31 @@
 
 <script>
     const linkGSheet = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRtNoerhDtHch7TNHVbItg23RG4nneoZ8hv5MBR1Cr40iU5alO8a2O4EUR90YgleMH4-E-6zGJsEgcN/pub?output=csv";
-    const nomorWA = "628123456789"; 
+    const nomorWA = "628123456789"; // GANTI DENGAN NOMOR WA ANDA
+    
     let semuaProduk = [];
     let produkAktif = null;
     let keranjang = [];
 
     async function init() {
-        const response = await fetch(linkGSheet);
-        const data = await response.text();
-        const rows = data.split("\n").slice(1);
-        
-        semuaProduk = rows.map((row, index) => {
-            const col = row.split(",");
-            return { id: index, nama: col[0], harga: parseInt(col[1]), kategori: col[2], foto: col[3], desc: col[4] };
-        });
+        try {
+            const response = await fetch(linkGSheet);
+            const data = await response.text();
+            const rows = data.split("\n").slice(1);
+            
+            semuaProduk = rows.map((row, index) => {
+                const col = row.split(",");
+                if(col.length < 2) return null;
+                return { id: index, nama: col[0], harga: parseInt(col[1]), kategori: col[2], foto: col[3], desc: col[4] };
+            }).filter(p => p !== null);
 
-        renderKatalog();
-        
-        const urlParams = new URLSearchParams(window.location.search);
-        if(urlParams.has('id')) tampilkanDetail(urlParams.get('id'));
+            renderKatalog();
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            if(urlParams.has('id')) tampilkanDetail(urlParams.get('id'));
+        } catch (err) {
+            console.error("Gagal memuat data:", err);
+        }
     }
 
     function renderKatalog() {
@@ -125,7 +152,7 @@
     }
 
     function tampilkanDetail(id) {
-        produkAktif = semuaProduk[id];
+        produkAktif = semuaProduk.find(x => x.id == id);
         if(!produkAktif) return;
         
         document.getElementById('catalog-view').style.display = 'none';
@@ -148,13 +175,14 @@
         document.getElementById('btn-back').style.display = 'none';
         document.getElementById('nav-text').innerText = "Andry Backbone Store";
         produkAktif = null;
+        window.scrollTo(0,0);
     }
 
     function tambahKeKeranjang() {
-        if(!produkAktif) return alert("Pilih produk dulu!");
+        if(!produkAktif) return;
         keranjang.push(produkAktif);
         document.getElementById('cart-count').innerText = keranjang.length;
-        alert("Dimasukkan ke keranjang!");
+        alert("Berhasil masuk keranjang!");
     }
 
     function checkoutWA() {
@@ -162,17 +190,16 @@
         let total = 0;
 
         if(produkAktif && keranjang.length === 0) {
-            // Jika langsung klik beli dari halaman detail tanpa isi keranjang
-            listPesan = `- ${produkAktif.nama}`;
+            listPesan = `- ${produkAktif.nama} (Rp ${produkAktif.harga.toLocaleString()})`;
             total = produkAktif.harga;
         } else if (keranjang.length > 0) {
-            listPesan = keranjang.map(i => `- ${i.nama}`).join("\n");
+            listPesan = keranjang.map(i => `- ${i.nama} (Rp ${i.harga.toLocaleString()})`).join("\n");
             total = keranjang.reduce((sum, item) => sum + item.harga, 0);
         } else {
-            return alert("Keranjang kosong!");
+            return alert("Pilih produk terlebih dahulu!");
         }
 
-        const pesan = `Halo Andry Backbone, saya mau order:\n\n${listPesan}\n\nTotal: Rp ${total.toLocaleString('id-ID')}`;
+        const pesan = `Halo Andry Backbone Store,\nSaya ingin memesan:\n\n${listPesan}\n\n*Total Tagihan: Rp ${total.toLocaleString('id-ID')}*\n\nMohon informasi pembayarannya. Terima kasih.`;
         window.open(`https://wa.me/${nomorWA}?text=${encodeURIComponent(pesan)}`);
     }
 
