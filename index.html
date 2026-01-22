@@ -46,8 +46,15 @@
 .close-modal:hover {
     color: #333;
 }
-        .modal-img { width: 100%; border-radius: 10px; margin-bottom: 15px; }
 
+        .modal-img {
+    width: 100%;
+    aspect-ratio: 1 / 1; /* Tetap kotak atau hapus baris ini jika ingin foto asli muncul utuh di detail */
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+        
         .cart-bar { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 15px; box-shadow: 0 -5px 15px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; z-index: 1000; }
         .btn-checkout { background: var(--success); color: white; text-decoration: none; padding: 12px 20px; border-radius: 25px; font-weight: bold; }
         .btn-add { width: 100%; background: var(--primary); color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; }
@@ -167,6 +174,7 @@
 </script>
 </body>
 </html>
+
 
 
 
