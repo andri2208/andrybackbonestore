@@ -58,13 +58,21 @@
     object-fit: contain;
 }
         
-        .detail-img-main { 
-            width: 100%; 
-            aspect-ratio: 1/1; 
-            object-fit: contain; 
-            border: 1px solid #f0f0f0;
-            border-radius: 4px;
-        }
+       /* Tambahan agar gambar pas di kotak kiri */
+.detail-img-main {
+    width: 100%;
+    max-width: 450px; /* Ukuran maksimal gambar agar tidak memenuhi layar */
+    height: auto;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+        /* Memastikan teks deskripsi tidak meluber */
+#main-desc {
+    max-width: 100%;
+    word-wrap: break-word;
+}
 
         .price-big { 
             background: #fafafa; 
@@ -136,28 +144,41 @@
 </div>
 
 <div id="detail-view" class="view">
-    <div style="margin-bottom: 20px; cursor: pointer;" onclick="tampilkanKatalog()">← Kembali</div>
+    <div style="margin-bottom: 20px; cursor: pointer; color: #666;" onclick="tampilkanKatalog()">← Kembali ke Katalog</div>
     
     <div class="detail-wrapper">
+        
         <div class="detail-left">
-            <img id="main-img" class="detail-img-large">
+            <img id="main-img" class="detail-img-main">
         </div>
         
         <div class="detail-right">
-            <h1 id="main-title" style="margin-top:0;"></h1>
-            <div id="main-price" style="color:#ee4d2d; font-size:2rem; font-weight:bold; margin:10px 0;"></div>
-            <div id="main-weight" style="color:#777; font-size:0.9rem; margin-bottom:20px;"></div>
+            <h1 id="main-title" style="margin:0; font-size: 1.8rem;"></h1>
             
-            <div style="border-top: 1px solid #eee; padding-top: 15px;">
-                <h3 style="font-size:1rem; margin-bottom:10px;">Deskripsi Produk:</h3>
-                <p id="main-desc" style="line-height:1.6; color:#555; white-space: pre-line;"></p>
+            <div id="main-price" class="price-big"></div>
+            
+            <div class="shipping-section">
+                <div style="display:flex; margin-bottom: 8px;">
+                    <span style="width: 100px; color: #757575;">Pengiriman</span>
+                    <span>🚚 Tersedia ke seluruh Indonesia</span>
+                </div>
+                <div style="display:flex;">
+                    <span style="width: 100px; color: #757575;">Berat</span>
+                    <span id="main-weight"></span>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <h3 style="font-size: 1rem; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px;">Deskripsi Produk</h3>
+                <p id="main-desc" style="line-height: 1.6; color: #555; white-space: pre-line;"></p>
             </div>
 
             <div class="action-buttons">
-                <button class="btn-outline" onclick="tambahKeKeranjang()" style="flex:1; padding:15px; cursor:pointer;">+ Keranjang</button>
-                <button class="btn-primary" onclick="beliLangsung()" style="flex:1; padding:15px; cursor:pointer; background:#ee4d2d; color:white; border:none;">Beli Sekarang</button>
+                <button onclick="tambahKeKeranjang()" style="flex:1; padding:15px; background:#ff57221a; color:#ee4d2d; border:1px solid #ee4d2d; font-weight:bold; cursor:pointer;">+ Keranjang</button>
+                <button class="btn-buy" onclick="beliLangsung()">Beli Sekarang</button>
             </div>
         </div>
+        
     </div>
 </div>
 
@@ -313,5 +334,6 @@
 </script>
 </body>
 </html>
+
 
 
