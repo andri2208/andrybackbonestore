@@ -3,65 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ANDRY BACKBONE STORE</title>
+    <title>Katalog Toko Perkakas Pro</title>
     <style>
-        :root { --primary: #d35400; --dark: #2c3e50; --light: #ecf0f1; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: var(--light); margin: 0; padding: 20px; }
-        header { text-align: center; padding: 20px; background: var(--dark); color: white; border-radius: 10px; margin-bottom: 20px; }
+        :root { --primary: #e67e22; --dark: #2c3e50; --light: #f4f7f6; }
+        body { font-family: 'Arial', sans-serif; background: var(--light); margin: 0; padding-bottom: 100px; }
+        header { background: var(--dark); color: white; text-align: center; padding: 20px; position: sticky; top: 0; z-index: 100; }
         
-        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .container { max-width: 1000px; margin: auto; padding: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
         
-        .card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: 0.3s; }
-        .card:hover { transform: translateY(-5px); }
-        .card img { width: 100%; height: 180px; object-fit: cover; background: #ddd; }
-        .card-content { padding: 15px; }
-        .price { color: var(--primary); font-size: 1.2rem; font-weight: bold; }
+        .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 1px solid #ddd; }
+        .card img { width: 100%; height: 200px; object-fit: cover; }
+        .card-body { padding: 15px; }
+        .price { color: var(--primary); font-weight: bold; font-size: 1.2em; }
         
-        .btn-wa { 
-            display: block; text-align: center; background: #25d366; color: white; 
-            text-decoration: none; padding: 10px; border-radius: 5px; margin-top: 10px; font-weight: bold;
-        }
+        .btn-add { width: 100%; background: var(--primary); color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        .btn-add:hover { background: #d35400; }
+
+        /* Floating Cart Bar */
+        .cart-bar { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 15px 25px; box-shadow: 0 -5px 15px rgba(0,0,0,0.2); display: flex; justify-content: space-between; align-items: center; z-index: 1000; }
+        .btn-checkout { background: #25d366; color: white; text-decoration: none; padding: 12px 20px; border-radius: 30px; font-weight: bold; font-size: 0.9em; }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>ANDRY BACKBONE STORE</h1>
-        <p>Koleksi Bilah Berkualitas - Harga Bersahabat</p>
-    </header>
+<header>
+    <h1>🛠️ Perkakas Cuan Center</h1>
+    <p>Pilih barang, masukkan keranjang, kirim via WA</p>
+</header>
 
-    <div class="grid-container">
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1581147036324-c17ac41dfa6c?w=400" alt="Bor Listrik">
-            <div class="card-content">
-                <h3>Bor Listrik Impact</h3>
-                <p class="price">Rp 250.000</p>
-                <p>Mesin bor kuat untuk tembok dan besi. Awet dan bertenaga.</p>
-                <a href="https://wa.me/6281574938272?text=Halo, saya ingin pesan Bor Listrik" class="btn-wa">Pesan via WA</a>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1586864387917-f74e18d2600c?w=400" alt="Kunci Inggris">
-            <div class="card-content">
-                <h3>Kunci Inggris 10"</h3>
-                <p class="price">Rp 45.000</p>
-                <p>Bahan Chrome Vanadium, tahan karat dan presisi tinggi.</p>
-                <a href="https://wa.me/6281574938272?text=Halo, saya ingin pesan Kunci Inggris" class="btn-wa">Pesan via WA</a>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1530124566582-ab61277d16e3?w=400" alt="Obeng Set">
-            <div class="card-content">
-                <h3>Set Obeng 7 in 1</h3>
-                <p class="price">Rp 15.000</p>
-                <p>Satu set lengkap untuk berbagai jenis baut. Gagang anti slip.</p>
-                <a href="https://wa.me/6281574938272?text=Halo, saya ingin pesan Obeng Set" class="btn-wa">Pesan via WA</a>
-            </div>
+<div class="container">
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1581147036324-c17ac41dfa6c?w=400" alt="Bor">
+        <div class="card-body">
+            <h3>Bor Listrik</h3>
+            <p class="price">Rp 250,000</p>
+            <button class="btn-add" onclick="tambahKeKeranjang('Bor Listrik', 250000)">+ Keranjang</button>
         </div>
     </div>
 
-</body>
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1586864387917-f74e18d2600c?w=400" alt="Kunci">
+        <div class="card-body">
+            <h3>Kunci Inggris</h3>
+            <p class="price">Rp 45,000</p>
+            <button class="btn-add" onclick="tambahKeKeranjang('Kunci Inggris', 45000)">+ Keranjang</button>
+        </div>
+    </div>
 
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1530124566582-ab61277d16e3?w=400" alt="Obeng">
+        <div class="card-body">
+            <h3>Obeng Set</h3>
+            <p class="price">Rp 15,000</p>
+            <button class="btn-add" onclick="tambahKeKeranjang('Obeng Set', 15000)">+ Keranjang</button>
+        </div>
+    </div>
+</div>
+
+<div class="cart-bar">
+    <div>
+        <strong>Item: <span id="cart-count">0</span></strong> | 
+        <span class="price" id="cart-total">Rp 0</span>
+    </div>
+    <a href="#" class="btn-checkout" onclick="kirimWA()">Kirim ke WhatsApp (Pesan Sekarang)</a>
+</div>
+
+<script>
+    let keranjang = [];
+    let totalHarga = 0;
+
+    function tambahKeKeranjang(nama, harga) {
+        keranjang.push({nama, harga});
+        totalHarga += harga;
+        updateTampilan();
+    }
+
+    function updateTampilan() {
+        document.getElementById('cart-count').innerText = keranjang.length;
+        document.getElementById('cart-total').innerText = "Rp " + totalHarga.toLocaleString('id-ID');
+    }
+
+    function kirimWA() {
+        if (keranjang.length === 0) {
+            alert("Keranjang masih kosong!");
+            return;
+        }
+
+        let nomorWA = "628123456789"; // GANTI DENGAN NOMOR WA KAMU
+        let pesan = "Halo Toko Perkakas Jaya, saya mau pesan:\n\n";
+        
+        keranjang.forEach((item, index) => {
+            pesan += `${index + 1}. ${item.nama} - Rp ${item.harga.toLocaleString('id-ID')}\n`;
+        });
+
+        pesan += `\n*Total Tagihan: Rp ${totalHarga.toLocaleString('id-ID')}*`;
+        
+        let url = `https://wa.me/${nomorWA}?text=${encodeURIComponent(pesan)}`;
+        window.open(url, '_blank');
+    }
+</script>
+
+</body>
 </html>
