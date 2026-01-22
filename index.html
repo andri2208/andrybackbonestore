@@ -3,58 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Andry Backbone Store - Desktop Pro</title>
+    <title>Andry Backbone Store - Compact Pro</title>
     <style>
         :root { --primary: #ee4d2d; --dark: #212121; --gray: #757575; --bg: #f5f5f5; --success: #25d366; }
-        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: var(--bg); margin: 0; padding-bottom: 80px; color: #333; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); margin: 0; padding-bottom: 20px; color: #333; }
         
         /* Navbar */
         nav { background: white; padding: 12px 15px; position: sticky; top: 0; z-index: 1000; box-shadow: 0 1px 10px rgba(0,0,0,0.1); display: flex; align-items: center; height: 55px; box-sizing: border-box; }
         .back-icon { font-size: 24px; cursor: pointer; margin-right: 15px; color: var(--primary); font-weight: bold; }
-        .nav-title { font-weight: bold; font-size: 1.1rem; flex-grow: 1; }
+        .nav-title { font-weight: bold; font-size: 1rem; flex-grow: 1; }
 
-        /* Katalog View (Grid 2 Kolom HP, 4-5 Kolom Laptop) */
+        /* Katalog View */
         .catalog-container { max-width: 1100px; margin: auto; padding: 15px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        .card { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05); display: flex; flex-direction: column; border: 1px solid #eee; transition: 0.3s; cursor: pointer; }
-        .card:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .card { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05); display: flex; flex-direction: column; border: 1px solid #eee; cursor: pointer; }
         .card img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; }
-        .card-info { padding: 12px; flex-grow: 1; }
-        .card-info h3 { font-size: 0.9rem; margin: 0; height: 2.6em; overflow: hidden; font-weight: normal; }
-        .card-price { color: var(--primary); font-weight: bold; font-size: 1.1rem; margin-top: 10px; }
+        .card-info { padding: 10px; }
+        .card-info h3 { font-size: 0.85rem; margin: 0; height: 2.6em; overflow: hidden; font-weight: normal; }
+        .card-price { color: var(--primary); font-weight: bold; font-size: 1rem; margin-top: 8px; }
 
-        /* Detail View - Responsive Layout */
-        #detail-view { display: none; max-width: 1000px; margin: 20px auto; padding: 0 15px; }
-        .product-wrapper { display: flex; flex-direction: column; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        /* Detail View Layout */
+        #detail-view { display: none; max-width: 900px; margin: 15px auto; padding: 0 10px; }
+        .product-wrapper { display: flex; flex-direction: column; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 15px rgba(0,0,0,0.05); }
         
-        /* Area Gambar */
-        .detail-img-container { background: #fff; flex: 1; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #f0f0f0; }
-        .detail-img { width: 100%; max-height: 500px; object-fit: contain; }
+        .detail-img-container { flex: 1; background: #fff; display: flex; justify-content: center; align-items: center; }
+        .detail-img { width: 100%; max-height: 450px; object-fit: contain; }
         
-        /* Area Info (Kanan di Desktop) */
-        .detail-info-container { flex: 1; padding: 25px; display: flex; flex-direction: column; }
-        .detail-price { font-size: 2rem; color: var(--primary); font-weight: bold; margin-bottom: 15px; }
-        .detail-title { font-size: 1.4rem; line-height: 1.3; margin: 0 0 20px 0; font-weight: 600; }
+        .detail-info-container { flex: 1; padding: 20px; }
+        .detail-price { font-size: 1.8rem; color: var(--primary); font-weight: bold; margin-bottom: 10px; }
+        .detail-title { font-size: 1.2rem; margin: 0 0 15px 0; font-weight: 600; line-height: 1.4; }
         
-        .desc-section { border-top: 1px solid #eee; padding-top: 20px; }
-        .desc-title { font-weight: bold; margin-bottom: 12px; color: var(--dark); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; }
-        .desc-text { font-size: 0.95rem; color: #666; line-height: 1.7; white-space: pre-line; }
+        /* Area Tombol Kompak */
+        .action-buttons { display: flex; gap: 10px; margin-bottom: 25px; }
+        .btn-small-cart { flex: 1; padding: 10px; border: 1px solid var(--primary); color: var(--primary); background: white; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 0.85rem; }
+        .btn-small-buy { flex: 1; padding: 10px; background: var(--primary); color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 0.85rem; }
 
-        /* Media Query: Layar Lebar (Tablet/Laptop) */
+        .desc-section { border-top: 1px solid #eee; padding-top: 15px; }
+        .desc-title { font-weight: bold; font-size: 0.9rem; margin-bottom: 8px; color: var(--dark); }
+        .desc-text { font-size: 0.9rem; color: #666; line-height: 1.6; white-space: pre-line; }
+
+        /* Media Query Desktop */
         @media (min-width: 768px) {
             .catalog-container { grid-template-columns: repeat(4, 1fr); }
-            .product-wrapper { flex-direction: row; align-items: flex-start; } /* Gambar Kiri, Info Kanan */
-            .detail-img-container { border-bottom: none; border-right: 1px solid #f0f0f0; max-width: 50%; }
-            .detail-info-container { max-width: 50%; }
-            nav { padding: 12px 10%; }
+            .product-wrapper { flex-direction: row; }
+            .detail-img-container { max-width: 45%; border-right: 1px solid #eee; }
+            .detail-info-container { padding: 40px; }
         }
 
-        /* Bottom Action Bar */
-        .bottom-action { position: fixed; bottom: 0; width: 100%; background: white; border-top: 1px solid #ddd; padding: 12px 20px; display: flex; gap: 15px; box-sizing: border-box; z-index: 1001; }
-        .btn-cart { flex: 1; border: 1px solid var(--primary); color: var(--primary); background: #fff5f1; padding: 14px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; }
-        .btn-cart:hover { background: #ffe8df; }
-        .btn-buy { flex: 2; background: var(--primary); color: white; border: none; padding: 14px; border-radius: 6px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(238, 77, 45, 0.3); }
-
-        #cart-count { background: var(--primary); color: white; font-size: 11px; padding: 2px 7px; border-radius: 10px; position: absolute; top: -8px; right: -12px; border: 2px solid white; }
+        #cart-count { background: var(--primary); color: white; font-size: 10px; padding: 2px 6px; border-radius: 10px; position: absolute; top: -5px; right: -10px; border: 1px solid white; }
     </style>
 </head>
 <body>
@@ -62,14 +57,14 @@
 <nav>
     <span class="back-icon" id="btn-back" style="display:none;" onclick="tampilkanKatalog()">←</span>
     <span class="nav-title" id="nav-text">Andry Backbone Store</span>
-    <div onclick="alert('Isi Keranjang: ' + keranjang.length + ' item')" style="position: relative; cursor:pointer; font-size: 1.4rem;">
+    <div onclick="checkoutWA()" style="position: relative; cursor:pointer; font-size: 1.3rem;">
         🛒<span id="cart-count">0</span>
     </div>
 </nav>
 
 <div id="catalog-view">
     <div class="catalog-container" id="produk-list">
-        <p style="text-align:center; grid-column: 1/-1;">Loading produk terbaik...</p>
+        <p style="text-align:center; grid-column: 1/-1;">Memuat produk...</p>
     </div>
 </div>
 
@@ -80,20 +75,20 @@
         </div>
         
         <div class="detail-info-container">
-            <div id="main-price" class="detail-price"></div>
             <h1 id="main-title" class="detail-title"></h1>
+            <div id="main-price" class="detail-price"></div>
             
+            <div class="action-buttons">
+                <button class="btn-small-cart" onclick="tambahKeKeranjang()">+ Keranjang</button>
+                <button class="btn-small-buy" onclick="beliSekarang()">Beli Sekarang</button>
+            </div>
+
             <div class="desc-section">
-                <div class="desc-title">Deskripsi Produk</div>
+                <div class="desc-title">DESKRIPSI PRODUK</div>
                 <div id="main-desc" class="desc-text"></div>
             </div>
         </div>
     </div>
-</div>
-
-<div class="bottom-action">
-    <button class="btn-cart" onclick="tambahKeKeranjang()">Tambah Keranjang</button>
-    <button class="btn-buy" onclick="checkoutWA()">Beli Sekarang</button>
 </div>
 
 <script>
@@ -109,15 +104,12 @@
             const response = await fetch(linkGSheet);
             const data = await response.text();
             const rows = data.split("\n").slice(1);
-            
             semuaProduk = rows.map((row, index) => {
                 const col = row.split(",");
                 if(col.length < 2) return null;
                 return { id: index, nama: col[0], harga: parseInt(col[1]), kategori: col[2], foto: col[3], desc: col[4] };
             }).filter(p => p !== null);
-
             renderKatalog();
-            
             const urlParams = new URLSearchParams(window.location.search);
             if(urlParams.has('id')) tampilkanDetail(urlParams.get('id'));
         } catch (err) { console.error(err); }
@@ -147,13 +139,11 @@
     function tampilkanDetail(id) {
         produkAktif = semuaProduk.find(x => x.id == id);
         if(!produkAktif) return;
-        
         document.getElementById('catalog-view').style.display = 'none';
         document.getElementById('detail-view').style.display = 'block';
         document.getElementById('btn-back').style.display = 'block';
         document.getElementById('nav-text').innerText = "Detail Produk";
         window.scrollTo(0,0);
-
         document.getElementById('main-img').src = produkAktif.foto;
         document.getElementById('main-title').innerText = produkAktif.nama;
         document.getElementById('main-price').innerText = "Rp " + produkAktif.harga.toLocaleString('id-ID');
@@ -168,29 +158,26 @@
         document.getElementById('btn-back').style.display = 'none';
         document.getElementById('nav-text').innerText = "Andry Backbone Store";
         produkAktif = null;
-        window.scrollTo(0,0);
     }
 
     function tambahKeKeranjang() {
         if(!produkAktif) return;
         keranjang.push(produkAktif);
         document.getElementById('cart-count').innerText = keranjang.length;
-        alert("Dimasukkan ke keranjang!");
+        alert("Berhasil ditambah!");
+    }
+
+    function beliSekarang() {
+        if(!produkAktif) return;
+        const pesan = `Halo,\nSaya mau beli *${produkAktif.nama}*\nHarga: Rp ${produkAktif.harga.toLocaleString('id-ID')}`;
+        window.open(`https://wa.me/${nomorWA}?text=${encodeURIComponent(pesan)}`);
     }
 
     function checkoutWA() {
-        let listPesan = "";
-        let total = 0;
-
-        if(produkAktif && keranjang.length === 0) {
-            listPesan = `- ${produkAktif.nama} (Rp ${produkAktif.harga.toLocaleString()})`;
-            total = produkAktif.harga;
-        } else if (keranjang.length > 0) {
-            listPesan = keranjang.map(i => `- ${i.nama} (Rp ${i.harga.toLocaleString()})`).join("\n");
-            total = keranjang.reduce((sum, item) => sum + item.harga, 0);
-        } else { return alert("Pilih produk!"); }
-
-        const pesan = `Halo Andry Backbone Store,\nSaya mau pesan:\n\n${listPesan}\n\n*Total: Rp ${total.toLocaleString('id-ID')}*`;
+        if(keranjang.length === 0) return alert("Keranjang kosong!");
+        const daftar = keranjang.map(i => `- ${i.nama}`).join("\n");
+        const total = keranjang.reduce((s, i) => s + i.harga, 0);
+        const pesan = `Halo,\nSaya pesan produk berikut:\n\n${daftar}\n\nTotal: Rp ${total.toLocaleString('id-ID')}`;
         window.open(`https://wa.me/${nomorWA}?text=${encodeURIComponent(pesan)}`);
     }
 
@@ -198,4 +185,3 @@
 </script>
 </body>
 </html>
-
