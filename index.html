@@ -3,260 +3,361 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Andry Backbone Store - Professional Edition</title>
+    <title>BACKBONE STORE - Professional Commerce</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        :root { 
-            --primary: #ee4d2d; 
-            --primary-dark: #d73211;
-            --bg: #f5f5f5; 
-            --white: #ffffff; 
-            --text-main: #212121;
-            --text-sub: #757575;
-            --border: #e0e0e0; 
-            --shadow: 0 2px 10px rgba(0,0,0,0.05);
+        :root {
+            --primary: #ee4d2d;
+            --primary-light: #fff5f2;
+            --dark: #1a1a1a;
+            --gray: #707070;
+            --light-gray: #f0f0f2;
+            --white: #ffffff;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
         }
-        
-        /* Anti-Download & Smooth Scrolling */
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { 
-            font-family: 'Inter', -apple-system, sans-serif; 
-            background: var(--bg); 
-            margin: 0; 
-            color: var(--text-main); 
-            -webkit-user-select: none; user-select: none;
-            scroll-behavior: smooth;
-        }
+
+        /* Base Reset */
+        * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { margin: 0; background-color: #f8f9fa; color: var(--dark); -webkit-user-select: none; user-select: none; }
         img { pointer-events: none; -webkit-user-drag: none; }
 
-        /* HEADER PRO */
-        header { position: sticky; top: 0; z-index: 2000; background: var(--white); box-shadow: 0 1px 12px rgba(0,0,0,0.1); }
-        .nav-container { max-width: 1200px; margin: auto; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; }
-        .nav-title { font-weight: 800; font-size: 1.4rem; color: var(--primary); letter-spacing: -0.5px; cursor: pointer; }
-        
-        .search-box { flex: 1; max-width: 600px; margin: 0 20px; position: relative; }
-        .search-bar { width: 100%; padding: 10px 18px; border: 1px solid var(--border); border-radius: 8px; background: #f0f0f2; outline: none; transition: 0.3s; font-size: 14px; }
-        .search-bar:focus { background: white; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(238, 77, 45, 0.1); }
+        /* Header & Search */
+        header { background: var(--white); position: sticky; top: 0; z-index: 1000; box-shadow: var(--shadow-sm); }
+        .nav-inner { max-width: 1200px; margin: auto; padding: 15px 20px; display: flex; align-items: center; gap: 20px; }
+        .logo { font-weight: 800; font-size: 1.5rem; color: var(--primary); cursor: pointer; text-decoration: none; }
+        .search-wrapper { flex: 1; position: relative; }
+        .search-bar { width: 100%; padding: 12px 20px; border-radius: 12px; border: 1px solid var(--light-gray); background: var(--light-gray); outline: none; transition: 0.3s; }
+        .search-bar:focus { background: var(--white); border-color: var(--primary); box-shadow: 0 0 0 4px rgba(238, 77, 45, 0.1); }
 
-        /* LAYOUT PC */
-        .main-wrapper { display: flex; max-width: 1200px; margin: auto; padding: 25px 20px; gap: 30px; }
+        /* Layout */
+        .container { max-width: 1200px; margin: auto; padding: 20px; display: flex; gap: 30px; }
         .sidebar { width: 260px; flex-shrink: 0; }
-        .side-box { background: var(--white); border-radius: 12px; padding: 10px; position: sticky; top: 100px; box-shadow: var(--shadow); }
+        .main-content { flex: 1; }
+
+        /* Sidebar PC */
+        .sticky-side { position: sticky; top: 100px; background: var(--white); padding: 20px; border-radius: 16px; box-shadow: var(--shadow-sm); }
+        .side-title { font-weight: 800; margin-bottom: 20px; font-size: 0.9rem; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; }
         
-        @media (min-width: 769px) {
-            .cat-group { margin-bottom: 2px; }
-            .cat-main { padding: 12px 15px; display: flex; justify-content: space-between; cursor: pointer; border-radius: 8px; font-size: 14px; font-weight: 500; transition: 0.2s; }
-            .cat-main:hover { background: #fff5f2; color: var(--primary); }
-            .cat-main::after { content: '→'; font-size: 12px; opacity: 0.3; transition: 0.3s; }
-            .cat-main:hover::after { opacity: 1; transform: translateX(3px); }
-            
-            .sub-list { display: none; flex-direction: column; padding: 5px 0 10px 25px; }
-            .cat-group:hover .sub-list { display: flex; }
-            .sub-item { font-size: 13px; color: var(--text-sub); cursor: pointer; padding: 8px 0; transition: 0.2s; }
-            .sub-item:hover { color: var(--primary); }
-        }
+        .cat-item { padding: 12px 15px; border-radius: 10px; cursor: pointer; transition: 0.2s; font-weight: 600; font-size: 14px; margin-bottom: 5px; }
+        .cat-item:hover { background: var(--primary-light); color: var(--primary); }
+        .sub-menu { padding-left: 20px; display: none; }
+        .cat-group:hover .sub-menu { display: block; }
+        .sub-link { padding: 8px 0; font-size: 13px; color: var(--gray); cursor: pointer; }
+        .sub-link:hover { color: var(--primary); }
 
-        /* GRID PRODUK PRO */
-        .catalog-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-        .card { background: var(--white); border-radius: 10px; overflow: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; border: 1px solid transparent; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-        .card:hover { transform: translateY(-6px); box-shadow: 0 12px 25px rgba(0,0,0,0.12); border-color: var(--primary); }
-        .card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; background: #eee; }
-        .card-info { padding: 12px; }
-        .card-nama { font-size: 14px; height: 40px; overflow: hidden; line-height: 1.4; color: var(--text-main); margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
-        .card-price { color: var(--primary); font-weight: 700; font-size: 16px; display: flex; align-items: center; }
+        /* Grid Produk */
+        .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        .product-card { background: var(--white); border-radius: 16px; overflow: hidden; transition: 0.3s; border: 1px solid transparent; box-shadow: var(--shadow-sm); cursor: pointer; }
+        .product-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
+        .thumb { width: 100%; aspect-ratio: 1/1; object-fit: cover; }
+        .info { padding: 15px; }
+        .name { font-size: 14px; height: 40px; overflow: hidden; font-weight: 600; margin-bottom: 10px; line-height: 1.4; }
+        .price { color: var(--primary); font-weight: 800; font-size: 1.1rem; }
 
-        /* TAMPILAN HP (KUNCI 2 KOLOM & ACCORDION) */
-        .mobile-nav-trigger { display: none; background: white; padding: 15px; margin: 10px 15px; border-radius: 10px; font-weight: 700; box-shadow: var(--shadow); cursor: pointer; justify-content: space-between; align-items: center; border: 1px solid var(--border); }
+        /* View Control */
+        .view-section { display: none; animation: fadeIn 0.3s ease; }
+        .view-active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Detail Produk */
+        .detail-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; background: var(--white); padding: 30px; border-radius: 20px; box-shadow: var(--shadow-sm); }
+        .detail-img { width: 100%; border-radius: 15px; }
+        .detail-title { font-size: 2rem; font-weight: 800; margin: 0 0 10px 0; }
+        .detail-price { font-size: 1.8rem; color: var(--primary); font-weight: 800; margin-bottom: 20px; }
+        .detail-desc { line-height: 1.7; color: var(--gray); margin-bottom: 30px; }
+        .action-btns { display: flex; gap: 15px; }
+        .btn { padding: 16px 30px; border-radius: 12px; font-weight: 700; border: none; cursor: pointer; transition: 0.3s; font-size: 14px; flex: 1; text-align: center; text-decoration: none; }
+        .btn-cart { background: var(--primary-light); color: var(--primary); border: 1px solid var(--primary); }
+        .btn-buy { background: var(--primary); color: var(--white); }
+        .btn-buy:hover { background: #d73211; }
+
+        /* Checkout Form */
+        .checkout-card { max-width: 600px; margin: auto; background: var(--white); padding: 30px; border-radius: 20px; box-shadow: var(--shadow-sm); }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px; }
+        .form-input { width: 100%; padding: 12px; border: 1px solid var(--light-gray); border-radius: 10px; outline: none; }
+        .form-input:focus { border-color: var(--primary); }
+
+        /* Mobile View (KUNCI HP) */
+        .mobile-cat-btn { display: none; background: var(--white); margin: 15px; padding: 15px; border-radius: 12px; font-weight: 700; text-align: center; box-shadow: var(--shadow-sm); cursor: pointer; border: 1px solid var(--light-gray); }
 
         @media (max-width: 768px) {
-            .nav-container { padding: 10px; }
-            .search-box { margin: 0 10px; }
-            .mobile-nav-trigger { display: flex; }
-            .main-wrapper { flex-direction: column; padding: 0 15px 80px 15px; }
+            .container { flex-direction: column; padding: 15px; }
             .sidebar { display: none; width: 100%; }
             .sidebar.active { display: block; }
-            .catalog-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .mobile-cat-btn { display: block; }
+            .product-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .detail-wrapper { grid-template-columns: 1fr; padding: 15px; }
+            .detail-title { font-size: 1.4rem; }
+            .action-btns { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 15px; border-top: 1px solid var(--light-gray); z-index: 100; }
             
-            .cat-group { background: white; border-radius: 10px; margin-bottom: 8px; border: 1px solid var(--border); }
-            .cat-main { padding: 15px; font-weight: 700; display: flex; justify-content: space-between; font-size: 14px; }
-            .sub-list { display: none; flex-direction: column; background: #fafafa; border-top: 1px solid #f0f0f0; }
-            .sub-list.show { display: flex; }
-            .sub-item { padding: 12px 20px; font-size: 14px; color: var(--text-sub); border-bottom: 1px solid #f0f0f0; }
+            /* Accordion HP */
+            .sub-menu { position: static; box-shadow: none; border-radius: 0; background: #fafafa; border-top: 1px solid #eee; margin-top: 10px; }
+            .sub-menu.open { display: block; }
         }
 
-        /* DETAIL PRODUK PRO */
-        .detail-card { background: white; border-radius: 15px; display: flex; flex-wrap: wrap; gap: 30px; padding: 30px; box-shadow: var(--shadow); }
-        .detail-img { width: 100%; max-width: 450px; border-radius: 12px; object-fit: cover; }
-        .detail-info { flex: 1; min-width: 300px; }
-        .detail-price { font-size: 28px; color: var(--primary); font-weight: 800; margin: 15px 0; }
-        .detail-desc { line-height: 1.6; color: var(--text-sub); margin-bottom: 25px; font-size: 15px; }
-
-        /* BUTTONS */
-        .btn-group { display: flex; gap: 10px; }
-        .btn { padding: 15px 25px; border-radius: 8px; font-weight: 700; cursor: pointer; border: none; transition: 0.3s; font-size: 14px; flex: 1; text-align: center; text-decoration: none; }
-        .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(238, 77, 45, 0.3); }
-        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); }
-        .btn-secondary { background: #25d366; color: white; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3); }
-        .btn-secondary:hover { background: #1eb956; transform: translateY(-2px); }
-
-        /* FLOATING CART & TOAST */
-        .cart-float { position: fixed; bottom: 25px; right: 25px; background: var(--primary); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 20px rgba(238,77,45,0.4); z-index: 1500; cursor: pointer; transition: 0.3s; }
-        .cart-float:hover { transform: scale(1.1); }
-        #cart-count { position: absolute; top: -5px; right: -5px; background: #212121; color: white; font-size: 11px; padding: 4px 8px; border-radius: 10px; font-weight: 800; border: 2px solid white; }
-
-        .view { display: none; animation: fadeIn 0.4s ease; }
-        .active-view { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .cart-count { background: var(--dark); color: white; padding: 2px 8px; border-radius: 20px; font-size: 10px; position: absolute; top: -5px; right: -5px; }
     </style>
 </head>
 <body oncontextmenu="return false;">
 
 <header>
-    <div class="nav-container">
-        <div class="nav-title" onclick="window.location.reload()">BACKBONE.</div>
-        <div class="search-box">
-            <input type="text" id="input-search" class="search-bar" placeholder="Cari barang impianmu..." onkeyup="jalankanFilter()">
+    <div class="nav-inner">
+        <a class="logo" onclick="location.reload()">BACKBONE</a>
+        <div class="search-wrapper">
+            <input type="text" id="main-search" class="search-bar" placeholder="Cari barang Anda..." onkeyup="filterProduk()">
+        </div>
+        <div style="position:relative; cursor:pointer;" onclick="renderKeranjang()">
+            🛒<span id="badge-count" class="cart-count">0</span>
         </div>
     </div>
 </header>
 
-<div class="mobile-nav-trigger" onclick="toggleMobileMenu()">
-    <span>BELANJA BERDASARKAN KATEGORI</span>
-    <span>▼</span>
-</div>
+<div class="mobile-cat-btn" onclick="toggleSidebar()">PILIH KATEGORI ▼</div>
 
-<div id="catalog-view" class="view active-view">
-    <div class="main-wrapper">
-        <aside class="sidebar" id="sidebar-menu">
-            <div class="side-box">
-                <div id="menu-kategori">
-                    <div class="cat-group">
-                        <div class="cat-main" onclick="resetFilter()" style="color:var(--primary); font-weight:800;">Semua Produk</div>
-                    </div>
+<div id="catalog-view" class="view-section view-active">
+    <div class="container">
+        <aside class="sidebar" id="sidebar">
+            <div class="sticky-side">
+                <div class="side-title">KATEGORI</div>
+                <div id="menu-container">
+                    <div class="cat-item" onclick="filterKategori('Semua')">Semua Produk</div>
                 </div>
             </div>
         </aside>
-        <main class="content">
-            <div id="produk-list" class="catalog-grid">Memuat katalog...</div>
+        <main class="main-content">
+            <div id="product-list" class="product-grid">Memuat produk...</div>
         </main>
     </div>
 </div>
 
-<div id="detail-view" class="view" style="padding: 30px 5%;">
-    <div onclick="switchView('catalog-view')" style="cursor:pointer; margin-bottom:25px; color: var(--text-sub); font-weight:600; display:flex; align-items:center; gap:8px;">
-        ← KEMBALI KE KATALOG
+<div id="detail-view" class="view-section">
+    <div class="container">
+        <div style="width:100%">
+            <button onclick="showView('catalog-view')" style="margin-bottom:20px; border:none; background:none; cursor:pointer; font-weight:bold;">← Kembali</button>
+            <div id="detail-content" class="detail-wrapper"></div>
+        </div>
     </div>
-    <div id="detail-content"></div>
 </div>
 
-<div class="cart-float" onclick="alert('Keranjang akan segera aktif!')">
-    🛒 <span id="cart-count">0</span>
+<div id="checkout-view" class="view-section">
+    <div class="container">
+        <div class="checkout-card">
+            <h2 style="margin-top:0">Data Pengiriman</h2>
+            <div id="order-summary" style="margin-bottom:20px; padding:15px; background:#f9f9f9; border-radius:10px;"></div>
+            
+            <div class="form-group">
+                <label>Nama Lengkap</label>
+                <input type="text" id="cust-name" class="form-input" placeholder="Masukkan nama...">
+            </div>
+            <div class="form-group">
+                <label>Nomor WhatsApp (Aktif)</label>
+                <input type="number" id="cust-phone" class="form-input" placeholder="0812...">
+            </div>
+            <div class="form-group">
+                <label>Kota / Wilayah (Ongkir)</label>
+                <select id="cust-city" class="form-input" onchange="hitungTotal()"></select>
+            </div>
+            <div class="form-group">
+                <label>Alamat Lengkap</label>
+                <textarea id="cust-address" class="form-input" style="height:80px" placeholder="Nama jalan, RT/RW, Kec..."></textarea>
+            </div>
+            
+            <div style="border-top:2px dashed #eee; margin:20px 0; padding-top:15px;">
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                    <span>Total Produk</span><span id="sum-subtotal">Rp 0</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                    <span>Ongkos Kirim</span><span id="sum-ongkir">Rp 0</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-weight:800; font-size:1.2rem;">
+                    <span>Total Bayar</span><span id="sum-total" style="color:var(--primary)">Rp 0</span>
+                </div>
+            </div>
+            <button onclick="kirimPesanan()" class="btn btn-buy" style="width:100%">PESAN SEKARANG VIA WA</button>
+        </div>
+    </div>
 </div>
 
 <script>
-    const baseGSheet = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRtNoerhDtHch7TNHVbItg23RG4nneoZ8hv5MBR1Cr40iU5alO8a2O4EUR90YgleMH4-E-6zGJsEgcN/pub?output=csv";
-    const nomorWA = "6281574938272";
-    let semuaProduk = [];
-    let keranjang = [];
+    const GS_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRtNoerhDtHch7TNHVbItg23RG4nneoZ8hv5MBR1Cr40iU5alO8a2O4EUR90YgleMH4-E-6zGJsEgcN/pub?output=csv";
+    const ONG_URL = GS_URL + "&gid=780570550";
+    const NO_WA = "6281574938272";
 
-    async function init() { await loadProduk(); }
-    function toggleMobileMenu() { document.getElementById('sidebar-menu').classList.toggle('active'); }
-    
-    function toggleSubMenuHP(el) {
-        if(window.innerWidth <= 768) {
-            const subList = el.nextElementSibling;
-            const isOpen = subList.classList.contains('show');
-            document.querySelectorAll('.sub-list').forEach(s => s.classList.remove('show'));
-            if(!isOpen) subList.classList.add('show');
-        }
+    let dataProduk = [];
+    let keranjang = [];
+    let filterSekarang = "Semua";
+
+    async function init() {
+        await loadProduk();
+        await loadOngkir();
     }
 
-    function parseCSV(text) { return text.split("\n").map(row => row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/"/g, "").trim())); }
+    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
+
+    function parseCSV(text) {
+        return text.split("\n").map(row => {
+            return row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/"/g, "").trim());
+        });
+    }
 
     async function loadProduk() {
-        try {
-            const res = await fetch(baseGSheet + "&gid=0");
-            const data = parseCSV(await res.text()).slice(1);
-            let struktur = {};
-            semuaProduk = data.map((col, idx) => {
-                if(!col[0]) return null;
-                const katFull = col[2] || "Lainnya";
-                let utama = katFull, sub = "";
-                if(katFull.includes(">")) { [utama, sub] = katFull.split(">").map(s => s.trim()); }
-                if(!struktur[utama]) struktur[utama] = new Set();
-                if(sub) struktur[utama].add(sub);
-                return { id: idx, nama: col[0], harga: parseInt(col[1].replace(/[^\d]/g, "")) || 0, utama, sub, foto: col[3], desc: col[4] };
-            }).filter(p => p !== null);
-            renderMenu(struktur);
-            renderKatalog(semuaProduk);
-        } catch(e) { console.error("Data error"); }
+        const res = await fetch(GS_URL + "&gid=0");
+        const raw = parseCSV(await res.text()).slice(1);
+        let struktur = {};
+
+        dataProduk = raw.map((col, idx) => {
+            if(!col[0]) return null;
+            const k = col[2] || "Lainnya";
+            let ut = k, sub = "";
+            if(k.includes(">")) [ut, sub] = k.split(">").map(s => s.trim());
+            
+            if(!struktur[ut]) struktur[ut] = new Set();
+            if(sub) struktur[ut].add(sub);
+
+            return { id: idx, nama: col[0], harga: parseInt(col[1].replace(/[^\d]/g, "")) || 0, utama: ut, sub: sub, foto: col[3], desc: col[4], berat: parseInt(col[5]) || 0 };
+        }).filter(p => p);
+
+        renderMenu(struktur);
+        renderProduk(dataProduk);
     }
 
     function renderMenu(struktur) {
-        const menu = document.getElementById('menu-kategori');
-        for (const [utama, subs] of Object.entries(struktur)) {
-            let html = `
-                <div class="cat-group">
-                    <div class="cat-main" onclick="toggleSubMenuHP(this)">
-                        <span>${utama}</span>
-                    </div>
-                    <div class="sub-list">
-                        <div class="sub-item" onclick="filterProduk('${utama}')">Lihat Semua ${utama}</div>`;
-            subs.forEach(s => { 
-                html += `<div class="sub-item" onclick="filterProduk('${s}')">${s}</div>`; 
+        const container = document.getElementById('menu-container');
+        for(let ut in struktur) {
+            let html = `<div class="cat-group">
+                <div class="cat-item" onclick="window.innerWidth < 769 ? toggleSubHP(this) : filterKategori('${ut}')">${ut}</div>
+                <div class="sub-menu">
+                    <div class="sub-link" onclick="filterKategori('${ut}')">Semua ${ut}</div>`;
+            struktur[ut].forEach(s => {
+                html += `<div class="sub-link" onclick="filterKategori('${s}')">${s}</div>`;
             });
             html += `</div></div>`;
-            menu.innerHTML += html;
+            container.innerHTML += html;
         }
     }
 
-    function filterProduk(target) {
-        if(window.innerWidth <= 768) toggleMobileMenu();
-        const hasil = semuaProduk.filter(p => p.utama === target || p.sub === target);
-        renderKatalog(hasil);
-        switchView('catalog-view');
+    function toggleSubHP(el) {
+        const sm = el.nextElementSibling;
+        sm.classList.toggle('open');
     }
 
-    function resetFilter() { renderKatalog(semuaProduk); if(window.innerWidth <= 768) toggleMobileMenu(); }
-
-    function jalankanFilter() {
-        const kw = document.getElementById('input-search').value.toLowerCase();
-        const hasil = semuaProduk.filter(p => p.nama.toLowerCase().includes(kw));
-        renderKatalog(hasil);
+    function filterKategori(kat) {
+        filterSekarang = kat;
+        if(window.innerWidth < 769) toggleSidebar();
+        filterProduk();
     }
 
-    function renderKatalog(data) {
-        document.getElementById('produk-list').innerHTML = data.map(p => `
-            <div class="card" onclick="tampilkanDetail(${p.id})">
-                <img src="${p.foto}" loading="lazy">
-                <div class="card-info">
-                    <div class="card-nama">${p.nama}</div>
-                    <div class="card-price">Rp ${p.harga.toLocaleString('id-ID')}</div>
+    function filterProduk() {
+        const keyword = document.getElementById('main-search').value.toLowerCase();
+        const hasil = dataProduk.filter(p => {
+            const matchKat = (filterSekarang === "Semua" || p.utama === filterSekarang || p.sub === filterSekarang);
+            const matchKey = p.nama.toLowerCase().includes(keyword);
+            return matchKat && matchKey;
+        });
+        renderProduk(hasil);
+        showView('catalog-view');
+    }
+
+    function renderProduk(list) {
+        const container = document.getElementById('product-list');
+        container.innerHTML = list.map(p => `
+            <div class="product-card" onclick="openDetail(${p.id})">
+                <img src="${p.foto}" class="thumb">
+                <div class="info">
+                    <div class="name">${p.nama}</div>
+                    <div class="price">Rp ${p.harga.toLocaleString('id-ID')}</div>
                 </div>
-            </div>`).join('');
+            </div>
+        `).join('');
     }
 
-    function tampilkanDetail(id) {
-        const p = semuaProduk.find(x => x.id == id);
+    function openDetail(id) {
+        const p = dataProduk.find(x => x.id == id);
         document.getElementById('detail-content').innerHTML = `
-            <div class="detail-card">
-                <img src="${p.foto}" class="detail-img">
-                <div class="detail-info">
-                    <span style="color:var(--primary); font-weight:bold; font-size:12px; letter-spacing:1px; text-transform:uppercase;">${p.utama} / ${p.sub}</span>
-                    <h1 style="margin:10px 0; font-size:28px; line-height:1.2;">${p.nama}</h1>
-                    <div class="detail-price">Rp ${p.harga.toLocaleString('id-ID')}</div>
-                    <div class="detail-desc">${p.desc || 'Tidak ada deskripsi produk.'}</div>
-                    <div class="btn-group">
-                        <button class="btn btn-primary" onclick="alert('Ditambahkan!')">🛒 KERANJANG</button>
-                        <a class="btn btn-secondary" href="https://wa.me/${nomorWA}?text=Halo, saya tertarik dengan: ${p.nama}" target="_blank">💬 CHAT ADMIN</a>
-                    </div>
+            <img src="${p.foto}" class="detail-img">
+            <div class="detail-info">
+                <div style="font-size:12px; color:var(--primary); font-weight:800; margin-bottom:10px;">${p.utama} > ${p.sub}</div>
+                <h1 class="detail-title">${p.nama}</h1>
+                <div class="detail-price">Rp ${p.harga.toLocaleString('id-ID')}</div>
+                <p class="detail-desc">${p.desc || 'Deskripsi tidak tersedia.'}</p>
+                <div class="action-btns">
+                    <button class="btn btn-cart" onclick="tambahCart(${p.id}, false)">+ KERANJANG</button>
+                    <button class="btn btn-buy" onclick="tambahCart(${p.id}, true)">BELI SEKARANG</button>
                 </div>
-            </div>`;
-        switchView('detail-view');
+            </div>
+        `;
+        showView('detail-view');
     }
 
-    function switchView(id) {
-        document.querySelectorAll('.view').forEach(v => v.classList.remove('active-view'));
-        document.getElementById(id).classList.add('active-view');
+    function tambahCart(id, langsungBeli) {
+        const p = dataProduk.find(x => x.id == id);
+        const ada = keranjang.find(x => x.id == id);
+        if(ada) ada.qty++; else keranjang.push({...p, qty: 1});
+        
+        updateBadge();
+        if(langsungBeli) renderKeranjang();
+        else alert('Berhasil ditambah ke keranjang!');
+    }
+
+    function updateBadge() {
+        document.getElementById('badge-count').innerText = keranjang.reduce((s, i) => s + i.qty, 0);
+    }
+
+    function renderKeranjang() {
+        if(keranjang.length == 0) return alert('Keranjang masih kosong!');
+        showView('checkout-view');
+        const summary = document.getElementById('order-summary');
+        summary.innerHTML = keranjang.map(i => `
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:13px;">
+                <span>${i.nama} (x${i.qty})</span>
+                <span>Rp ${(i.harga * i.qty).toLocaleString()}</span>
+            </div>
+        `).join('');
+        hitungTotal();
+    }
+
+    async function loadOngkir() {
+        const res = await fetch(ONG_URL);
+        const raw = parseCSV(await res.text()).slice(1);
+        const sel = document.getElementById('cust-city');
+        sel.innerHTML = '<option value="0" data-tarif="0">-- Pilih Wilayah --</option>';
+        raw.forEach(col => {
+            if(col[0]) sel.innerHTML += `<option value="${col[0]}" data-tarif="${col[1]}">${col[0]}</option>`;
+        });
+    }
+
+    function hitungTotal() {
+        const subtotal = keranjang.reduce((s, i) => s + (i.harga * i.qty), 0);
+        const beratTotal = keranjang.reduce((s, i) => s + (i.berat * i.qty), 0);
+        const tarif = parseInt(document.getElementById('cust-city').selectedOptions[0].getAttribute('data-tarif')) || 0;
+        
+        const ongkirTotal = Math.ceil(beratTotal / 1000) * tarif;
+        
+        document.getElementById('sum-subtotal').innerText = "Rp " + subtotal.toLocaleString();
+        document.getElementById('sum-ongkir').innerText = "Rp " + ongkirTotal.toLocaleString();
+        document.getElementById('sum-total').innerText = "Rp " + (subtotal + ongkirTotal).toLocaleString();
+    }
+
+    function kirimPesanan() {
+        const nama = document.getElementById('cust-name').value;
+        const phone = document.getElementById('cust-phone').value;
+        const kota = document.getElementById('cust-city').value;
+        const alamat = document.getElementById('cust-address').value;
+
+        if(!nama || !phone || kota == "0" || !alamat) return alert('Mohon lengkapi data pengiriman!');
+
+        const listProduk = keranjang.map(i => `- ${i.nama} (x${i.qty})`).join('%0A');
+        const total = document.getElementById('sum-total').innerText;
+
+        const text = `Halo Admin, Saya ingin pesan:%0A${listProduk}%0A%0A*Data Pengiriman*%0ANama: ${nama}%0AHP: ${phone}%0AKota: ${kota}%0AAlamat: ${alamat}%0A%0A*Total Bayar: ${total}*`;
+        window.open(`https://wa.me/${NO_WA}?text=${text}`);
+    }
+
+    function showView(id) {
+        document.querySelectorAll('.view-section').forEach(v => v.classList.remove('view-active'));
+        document.getElementById(id).classList.add('view-active');
         window.scrollTo(0,0);
     }
 
