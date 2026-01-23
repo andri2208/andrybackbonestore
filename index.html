@@ -3,73 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Andry Backbone Store - HP Fokus</title>
+    <title>Andry Backbone Store - Final PC & HP</title>
     <style>
         :root { --primary: #ee4d2d; --bg: #f5f5f5; --white: #ffffff; --text: #333; --border: #eee; }
         
-        /* Reset & Protection Anti-Download */
+        /* Proteksi Anti-Download & Dasar */
         body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); margin: 0; color: var(--text); -webkit-user-select: none; user-select: none; }
         img { pointer-events: none; -webkit-user-drag: none; }
         input, textarea { -webkit-user-select: text; user-select: text; }
 
-        /* Header */
+        /* Header & Search */
         header { position: sticky; top: 0; z-index: 2000; background: var(--white); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         nav { padding: 10px 15px; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid var(--border); }
         .nav-title { font-weight: bold; font-size: 1.2rem; color: var(--primary); cursor: pointer; }
         .search-container { padding: 8px 15px; background: var(--white); border-bottom: 1px solid var(--border); }
         .search-bar { width: 100%; max-width: 800px; margin: auto; display: block; padding: 10px 15px; border: 1px solid #ddd; border-radius: 20px; outline: none; background: #f9f9f9; font-size: 14px; box-sizing: border-box; }
 
-        /* Layout */
-        .main-wrapper { display: flex; max-width: 1200px; margin: auto; padding: 20px 15px; gap: 20px; }
-
-        /* --- SIDEBAR PC (TETAP) --- */
-        .sidebar { width: 240px; flex-shrink: 0; }
-        .side-box { background: white; border-radius: 8px; padding: 15px; position: sticky; top: 120px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        /* --- FOKUS TAMPILAN PRODUK PC (KEMBALI RAPI) --- */
+        .main-wrapper { display: flex; max-width: 1200px; margin: auto; padding: 20px 15px; gap: 25px; align-items: flex-start; }
+        .content { flex: 1; }
         
+        .catalog-grid { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); /* Tetap 4 kolom di PC */
+            gap: 15px; 
+        }
+
+        .sidebar { width: 250px; flex-shrink: 0; }
+        .side-box { background: white; border-radius: 8px; padding: 15px; position: sticky; top: 130px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+
         @media (min-width: 769px) {
-            .cat-group { margin-bottom: 2px; }
-            .cat-main { padding: 10px; display: flex; justify-content: space-between; cursor: pointer; border-radius: 5px; font-size: 14px; font-weight: 600; }
+            .cat-group { margin-bottom: 5px; }
+            .cat-main { padding: 12px; display: flex; justify-content: space-between; cursor: pointer; border-radius: 6px; font-size: 14px; font-weight: 600; transition: 0.2s; }
             .cat-main:hover { background: #fff5f2; color: var(--primary); }
-            .sub-list { display: none; flex-direction: column; padding-left: 20px; margin: 5px 0; border-left: 2px solid #eee; }
+            
+            /* Sub menu PC tampil di bawah kategori utama saat hover */
+            .sub-list { display: none; flex-direction: column; padding-left: 15px; border-left: 2px solid #eee; margin-top: 5px; }
             .cat-group:hover .sub-list { display: flex; }
             .sub-item { font-size: 13px; color: #666; cursor: pointer; padding: 6px 0; }
             .sub-item:hover { color: var(--primary); }
         }
 
-        /* --- FOKUS TAMPILAN HP --- */
+        /* --- TAMPILAN HP (KUNCI: 2 KOLOM & ACCORDION) --- */
         .cat-trigger { display: none; background: #fff; padding: 12px 15px; margin: 10px; border-radius: 8px; font-weight: bold; border: 1px solid #ddd; cursor: pointer; justify-content: space-between; align-items: center; }
 
         @media (max-width: 768px) {
             .main-wrapper { flex-direction: column; padding: 10px; }
-            .sidebar { display: none; width: 100%; background: #f9f9f9; border-radius: 10px; padding: 10px; box-sizing: border-box; } 
+            .sidebar { display: none; width: 100%; } 
             .sidebar.active { display: block; }
             .cat-trigger { display: flex; }
 
-            /* Grid Produk 2 Kolom HP */
-            .catalog-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            /* Grid 2 Kolom Produk di HP */
+            .catalog-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
 
-            /* Kategori HP: Klik Utama muncul Sub */
-            .cat-group { margin-bottom: 10px; background: white; border-radius: 8px; overflow: hidden; border: 1px solid #eee; }
-            .cat-main { padding: 15px; display: flex; justify-content: space-between; font-weight: bold; font-size: 14px; cursor: pointer; background: white; }
+            .cat-group { background: white; border-radius: 8px; margin-bottom: 10px; border: 1px solid #eee; }
+            .cat-main { padding: 15px; display: flex; justify-content: space-between; font-weight: bold; font-size: 14px; }
+            .sub-list { display: none; flex-direction: column; background: #fafafa; }
+            .sub-list.show { display: flex; } /* Accordion HP */
+            .sub-item { padding: 12px 20px; font-size: 13px; border-top: 1px solid #eee; color: #555; }
             
-            /* Sub List HP (Awalnya Sembunyi) */
-            .sub-list { display: none; flex-direction: column; background: #fffafa; border-top: 1px solid #eee; }
-            .sub-list.show { display: flex; } /* Muncul saat JS di-toggle */
-
-            .sub-item { padding: 12px 20px; font-size: 13px; color: #555; border-bottom: 1px solid #f0f0f0; }
-            .sub-item:last-child { border-bottom: none; }
-
-            .side-box { position: static; box-shadow: none; padding: 0; }
+            .side-box { position: static; box-shadow: none; background: transparent; padding: 0; }
         }
 
-        /* PRODUK CARD */
-        .card { background: white; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); cursor: pointer; }
+        /* Styling Produk Card (PC & HP) */
+        .card { background: white; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); cursor: pointer; transition: 0.3s; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
         .card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; }
-        .card-info { padding: 10px; }
-        .card-nama { font-size: 12px; height: 2.8em; overflow: hidden; line-height: 1.4; color: #444; }
-        .card-price { color: var(--primary); font-weight: bold; font-size: 14px; margin-top: 5px; }
+        .card-info { padding: 12px; }
+        .card-nama { font-size: 13px; height: 2.8em; overflow: hidden; line-height: 1.4; color: #444; font-weight: 500; }
+        .card-price { color: var(--primary); font-weight: bold; font-size: 15px; margin-top: 8px; }
 
-        .cart-float { position: fixed; bottom: 25px; right: 25px; background: var(--primary); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 1500; }
+        /* Floating Cart */
+        .cart-float { position: fixed; bottom: 25px; right: 25px; background: var(--primary); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 1500; cursor: pointer; }
         
         .view { display: none; }
         .active-view { display: block; }
@@ -91,11 +96,13 @@
 <div id="catalog-view" class="view active-view">
     <div class="main-wrapper">
         <aside class="sidebar" id="sidebar-menu">
-            <div class="side-box" id="menu-kategori">
-                <div class="cat-group" style="border:none;">
-                    <span class="cat-main" onclick="resetFilter()" style="color:var(--primary);">Semua Produk</span>
+            <div class="side-box">
+                <div id="menu-kategori">
+                    <div class="cat-group">
+                        <span class="cat-main" onclick="resetFilter()" style="color:var(--primary);">Semua Produk</span>
+                    </div>
                 </div>
-                </div>
+            </div>
         </aside>
         <main class="content">
             <div id="produk-list" class="catalog-grid">Memuat produk...</div>
@@ -104,51 +111,49 @@
 </div>
 
 <div id="detail-view" class="view" style="padding: 20px 5%;">
-    <div onclick="switchView('catalog-view')" style="cursor:pointer; margin-bottom:20px;">← Kembali</div>
+    <div onclick="switchView('catalog-view')" style="cursor:pointer; margin-bottom:20px; font-weight:bold;">← Kembali</div>
     <div id="detail-content"></div>
 </div>
 
-<div class="cart-float" onclick="tampilkanKeranjang()">🛒<span id="cart-count">0</span></div>
+<div class="cart-float" onclick="alert('Fungsi Keranjang Segera Hadir')">🛒</div>
 
 <script>
     const baseGSheet = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRtNoerhDtHch7TNHVbItg23RG4nneoZ8hv5MBR1Cr40iU5alO8a2O4EUR90YgleMH4-E-6zGJsEgcN/pub?output=csv";
-    const nomorWA = "6281574938272";
     let semuaProduk = [];
-    let keranjang = [];
     let filterSekarang = "Semua";
 
     async function init() { await loadProduk(); }
     function toggleMobileMenu() { document.getElementById('sidebar-menu').classList.toggle('active'); }
 
-    // FUNGSI UNTUK HP: KLIK UTAMA BUKA SUB
-    function toggleSubMenu(el) {
+    // Fungsi Accordion HP
+    function toggleSubMenuHP(el) {
         if(window.innerWidth <= 768) {
             const subList = el.nextElementSibling;
-            const isVisible = subList.classList.contains('show');
-            // Tutup semua sub-menu lain
+            const isOpen = subList.classList.contains('show');
             document.querySelectorAll('.sub-list').forEach(s => s.classList.remove('show'));
-            // Toggle yang diklik
-            if(!isVisible) subList.classList.add('show');
+            if(!isOpen) subList.classList.add('show');
         }
     }
 
     function parseCSV(text) { return text.split("\n").map(row => row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/"/g, "").trim())); }
 
     async function loadProduk() {
-        const res = await fetch(baseGSheet + "&gid=0");
-        const data = parseCSV(await res.text()).slice(1);
-        let struktur = {};
-        semuaProduk = data.map((col, idx) => {
-            if(!col[0]) return null;
-            const katFull = col[2] || "Lainnya";
-            let utama = katFull, sub = "";
-            if(katFull.includes(">")) { [utama, sub] = katFull.split(">").map(s => s.trim()); }
-            if(!struktur[utama]) struktur[utama] = new Set();
-            if(sub) struktur[utama].add(sub);
-            return { id: idx, nama: col[0], harga: parseInt(col[1].replace(/[^\d]/g, "")) || 0, utama, sub, foto: col[3], desc: col[4] };
-        }).filter(p => p !== null);
-        renderMenu(struktur);
-        renderKatalog(semuaProduk);
+        try {
+            const res = await fetch(baseGSheet + "&gid=0");
+            const data = parseCSV(await res.text()).slice(1);
+            let struktur = {};
+            semuaProduk = data.map((col, idx) => {
+                if(!col[0]) return null;
+                const katFull = col[2] || "Lainnya";
+                let utama = katFull, sub = "";
+                if(katFull.includes(">")) { [utama, sub] = katFull.split(">").map(s => s.trim()); }
+                if(!struktur[utama]) struktur[utama] = new Set();
+                if(sub) struktur[utama].add(sub);
+                return { id: idx, nama: col[0], harga: parseInt(col[1].replace(/[^\d]/g, "")) || 0, utama, sub, foto: col[3], desc: col[4] };
+            }).filter(p => p !== null);
+            renderMenu(struktur);
+            renderKatalog(semuaProduk);
+        } catch(e) { console.error("Gagal muat data"); }
     }
 
     function renderMenu(struktur) {
@@ -156,12 +161,12 @@
         for (const [utama, subs] of Object.entries(struktur)) {
             let html = `
                 <div class="cat-group">
-                    <div class="cat-main" onclick="toggleSubMenu(this)">
+                    <div class="cat-main" onclick="toggleSubMenuHP(this)">
                         <span>${utama}</span>
-                        <span>▼</span>
+                        <span class="pc-only"></span>
                     </div>
                     <div class="sub-list">
-                        <div class="sub-item" onclick="filterProduk('${utama}')">Lihat Semua ${utama}</div>`;
+                        <div class="sub-item" onclick="filterProduk('${utama}')">Semua ${utama}</div>`;
             subs.forEach(s => { 
                 html += `<div class="sub-item" onclick="filterProduk('${s}')">${s}</div>`; 
             });
@@ -179,9 +184,8 @@
 
     function resetFilter() {
         filterSekarang = "Semua";
-        jalankanFilter();
         if(window.innerWidth <= 768) toggleMobileMenu();
-        switchView('catalog-view');
+        jalankanFilter();
     }
 
     function jalankanFilter() {
@@ -204,12 +208,13 @@
     function tampilkanDetail(id) {
         const p = semuaProduk.find(x => x.id == id);
         document.getElementById('detail-content').innerHTML = `
-            <div style="background:white; padding:20px; border-radius:8px;">
-                <img src="${p.foto}" style="width:100%; border-radius:8px;">
-                <h2>${p.nama}</h2>
-                <h3 style="color:var(--primary);">Rp ${p.harga.toLocaleString()}</h3>
-                <p style="white-space:pre-line;">${p.desc}</p>
-                <button onclick="window.open('https://wa.me/${nomorWA}?text=Halo, saya mau tanya produk: ${p.nama}')" style="width:100%; padding:15px; background:var(--primary); color:white; border:none; border-radius:5px; font-weight:bold;">TANYA VIA WA</button>
+            <div style="background:white; padding:20px; border-radius:8px; display:flex; flex-wrap:wrap; gap:20px;">
+                <img src="${p.foto}" style="width:100%; max-width:400px; border-radius:8px;">
+                <div style="flex:1; min-width:300px;">
+                    <h2>${p.nama}</h2>
+                    <h3 style="color:var(--primary);">Rp ${p.harga.toLocaleString()}</h3>
+                    <p style="white-space:pre-line; color:#666;">${p.desc}</p>
+                </div>
             </div>`;
         switchView('detail-view');
     }
