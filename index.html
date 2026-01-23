@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ANDRY BACKBONE STOR - Checkout Pro</title>
+    <title>ANDRY BACKBONE STOR - Bilah Berkualitas</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -175,7 +175,7 @@
 
 <header>
     <div class="nav-inner">
-        <a class="logo" onclick="location.reload()">ANDRY BACKBONE STOR</a>
+        <a class="logo" onclick="location.reload()">ANDRY BACKBONE STORE</a>
         <div style="position:relative; cursor:pointer; font-size: 1.5rem;" onclick="renderCheckout()">
             🛒<span id="badge-count" class="cart-badge">0</span>
         </div>
@@ -191,7 +191,7 @@
 
 <div class="mobile-nav-bar" id="mobile-sticky-nav">
     <button class="m-drop-btn" onclick="toggleMMenu()">
-        <span>Kategori Produk</span><span>▾</span>
+        <span>KATEGORI PRODUK</span><span>▾</span>
     </button>
 </div>
 
@@ -271,7 +271,7 @@
             </div>`;
             m.innerHTML += `<div class="m-cat-item">
                 <div class="m-cat-header" onclick="toggleMSub(this)"><span>${ut}</span><span>▾</span></div>
-                <div class="m-sub-container">${subs.map(s => `<div class="m-sub-link" style="padding:10px 0; color:var(--gray); cursor:pointer;" onclick="filterData('${ut}','${s}');toggleMMenu()">Semua ${s}</div>`).join('')}</div>
+                <div class="m-sub-container">${subs.map(s => `<div class="m-sub-link" style="padding:10px 0; color:var(--gray); cursor:pointer;" onclick="filterData('${ut}','${s}');toggleMMenu()"> ${s}</div>`).join('')}</div>
             </div>`;
         }
     }
@@ -454,3 +454,4 @@
 </script>
 </body>
 </html>
+
