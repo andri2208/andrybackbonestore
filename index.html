@@ -7,65 +7,93 @@
     let selectedBaseOngkir = 0, selectedWilayah = "";
 
     async function init() {
-        const resP = await fetch(GS_URL + "&gid=0");
-        const rawP = parseCSV(await resP.text()).slice(1);
-        allProduk = rawP.map((col, idx) => {
-            const [ut, sub] = (col[2] || "Lainnya").includes(">") ? col[2].split(">").map(s => s.trim()) : [col[2].trim(), ""];
-            if(!treeKategori[ut]) treeKategori[ut] = new Set();
-            if(sub) treeKategori[ut].add(sub);
-            return { 
-                id: idx, 
-                nama: col[0], 
-                harga: parseInt(col[1].replace(/[^\d]/g, "")) || 0, 
-                utama: ut, 
-                sub: sub, 
-                foto: col[3], 
-                desc: col[4],
-                berat: parseInt(col[5]) || 1000 
-            };
-        });
-
         try {
+            const resP = await fetch(GS_URL + "&gid=0");
+            const txtP = await resP.text();
+            const rawP = parseCSV(txtP).slice(1);
+            
+            // Reset data agar tidak duplikat saat init ulang
+            allProduk = [];
+            treeKategori = {};
+
+            allProduk = rawP.filter(col => col[0]).map((col, idx) => {
+                const [ut, sub] = (col[2] || "Lainnya").includes(">") ? col[2].split(">").map(s => s.trim()) : [col[2].trim(), ""];
+                if(!treeKategori[ut]) treeKategori[ut] = new Set();
+                if(sub) treeKategori[ut].add(sub);
+                return { 
+                    id: idx, 
+                    nama: col[0], 
+                    harga: parseInt(col[1].replace(/[^\d]/g, "")) || 0, 
+                    utama: ut, 
+                    sub: sub, 
+                    foto: col[3], 
+                    desc: col[4],
+                    berat: parseInt(col[5]) || 1000 
+                };
+            });
+
             const resO = await fetch(GS_URL + `&gid=${GID_ONGKIR}`);
             const rawO = parseCSV(await resO.text()).slice(1);
             dataOngkir = rawO.map(col => ({ wilayah: col[0], harga: parseInt(col[1].replace(/[^\d]/g, "")) || 0 }));
-        } catch(e) { console.log("Gagal load ongkir", e); }
 
-        renderNavs(); 
-        renderProduk(allProduk);
-    }
-
-    // --- PERBAIKAN FUNGSI PENCARIAN ---
-    function search() {
-        const q = document.getElementById('main-search').value.toLowerCase();
-        const filtered = allProduk.filter(p => p.nama.toLowerCase().includes(q));
-        
-        // Kembalikan ke catalog view jika user sedang di detail/checkout
-        showView('catalog-view'); 
-        
-        if (filtered.length === 0) {
-            document.getElementById('product-list').innerHTML = `
-                <div style="grid-column: 1/-1; text-align: center; padding: 50px; color: var(--gray);">
-                    <p>Produk "${q}" tidak ditemukan.</p>
-                </div>`;
-        } else {
-            renderProduk(filtered);
+            renderNavs(); 
+            renderProduk(allProduk);
+        } catch(e) { 
+            console.error("Gagal memuat data:", e); 
         }
     }
 
-    // Tambahan: Tekan Enter untuk cari (Opsional tapi penting untuk UX PC)
+    // --- FUNGSI SEARCH PERBAIKAN TOTAL ---
+    function search() {
+        const searchInput = document.getElementById('main-search');
+        const query = searchInput.value.toLowerCase().trim();
+        const grid = document.getElementById('product-list');
+
+        // Pindah ke tampilan katalog jika sedang di detail/checkout
+        showView('catalog-view');
+
+        if (query === "") {
+            renderProduk(allProduk);
+            return;
+        }
+
+        const filtered = allProduk.filter(p => 
+            p.nama.toLowerCase().includes(query) || 
+            p.utama.toLowerCase().includes(query) ||
+            (p.sub && p.sub.toLowerCase().includes(query))
+        );
+
+        if (filtered.length > 0) {
+            renderProduk(filtered);
+        } else {
+            grid.innerHTML = `
+                <div style="grid-column: 1/-1; text-align: center; padding: 50px; background: white; border-radius: 12px;">
+                    <p style="color: var(--gray); font-weight: 600;">Produk "${query}" tidak ditemukan.</p>
+                    <button class="pro-back-btn" onclick="document.getElementById('main-search').value=''; renderProduk(allProduk);">Lihat Semua Produk</button>
+                </div>`;
+        }
+    }
+
+    // Listener untuk mendeteksi tombol Enter pada keyboard HP/PC
     document.getElementById('main-search').addEventListener('keypress', function (e) {
         if (e.key === 'Enter') {
             search();
-            this.blur(); // Tutup keyboard di HP
+            this.blur(); // Menyembunyikan keyboard di HP
         }
     });
 
-    function parseCSV(text) { return text.split("\n").map(row => row.split(/,(?=(?:(?:[^\"*]*\"){2})*[^\"*]*$)/).map(c => c.replace(/\"/g, "").trim())); }
+    function parseCSV(text) { 
+        return text.split("\n").map(row => 
+            row.split(/,(?=(?:(?:[^\"*]*\"){2})*[^\"*]*$)/).map(c => 
+                c.replace(/\"/g, "").trim()
+            )
+        ); 
+    }
 
     function renderNavs() {
         const pc = document.getElementById('pc-list-inject'), m = document.getElementById('m-list-inject');
         pc.innerHTML = '<div style="font-weight:800; font-size:11px; color:#ccc; margin-bottom:15px;">MENU</div>';
+        m.innerHTML = "";
         for(let ut in treeKategori) {
             let subs = Array.from(treeKategori[ut]);
             pc.innerHTML += `<div class="pc-cat-group">
@@ -80,10 +108,15 @@
     }
 
     function renderProduk(list) {
-        document.getElementById('product-list').innerHTML = list.map(p => `
+        const grid = document.getElementById('product-list');
+        if (!grid) return;
+        grid.innerHTML = list.map(p => `
             <div class="product-card" onclick="openDetail(${p.id})">
                 <img src="${p.foto}" class="thumb">
-                <div class="p-info"><div class="p-name">${p.nama}</div><div class="p-price">Rp ${p.harga.toLocaleString()}</div></div>
+                <div class="p-info">
+                    <div class="p-name">${p.nama}</div>
+                    <div class="p-price">Rp ${p.harga.toLocaleString()}</div>
+                </div>
             </div>`).join('');
     }
 
@@ -114,8 +147,9 @@
 
     function renderCheckout() {
         showView('checkout-view');
+        const content = document.getElementById('checkout-content');
         if(cart.length === 0) {
-            document.getElementById('checkout-content').innerHTML = `<div style="text-align:center; padding:50px; background:white; border-radius:15px;"><p>Keranjang Kosong</p><button class="pro-back-btn" onclick="showView('catalog-view')">Belanja Sekarang</button></div>`;
+            content.innerHTML = `<div style="text-align:center; padding:50px; background:white; border-radius:15px;"><p>Keranjang Kosong</p><button class="pro-back-btn" onclick="showView('catalog-view')">Belanja Sekarang</button></div>`;
             return;
         }
 
@@ -125,7 +159,7 @@
         const totalOngkir = selectedBaseOngkir * totalBeratKg;
         const totalBayar = subtotal + totalOngkir;
 
-        document.getElementById('checkout-content').innerHTML = `
+        content.innerHTML = `
             <div class="checkout-layout">
                 <div class="checkout-main">
                     <h3 style="margin-top:0">Item Belanja</h3>
@@ -144,47 +178,30 @@
                                 </div>
                             </div>
                         </div>`).join('')}
-                    
                     <div class="payment-info">
-                        <p><strong>Informasi Pembayaran (Transfer):</strong></p>
+                        <p><strong>Informasi Pembayaran:</strong></p>
                         <p class="bank-name">BANK MANDIRI</p>
                         <p class="acc-number">1650000559519</p>
                         <p>A/N: <strong>ANDRI NURDIANSYAH</strong></p>
-                        <p style="font-size: 11px; color: #d35400; margin-top: 10px;">*Silahkan transfer sesuai total bayar, lalu klik tombol pesan untuk kirim bukti transfer.</p>
                     </div>
                 </div>
-                
                 <div class="checkout-side">
                     <h3 style="margin-top:0">Data Pengiriman</h3>
+                    <div class="form-group"><label>Nama</label><input type="text" id="cust-name" class="form-input"></div>
+                    <div class="form-group"><label>WA</label><input type="tel" id="cust-wa" class="form-input"></div>
                     <div class="form-group">
-                        <label>Nama Penerima</label>
-                        <input type="text" id="cust-name" class="form-input" placeholder="Nama Lengkap">
-                    </div>
-                    <div class="form-group">
-                        <label>WhatsApp Anda</label>
-                        <input type="tel" id="cust-wa" class="form-input" placeholder="0812xxxx">
-                    </div>
-                    <div class="form-group">
-                        <label>Pilih Wilayah (Ongkir per Kg)</label>
+                        <label>Wilayah</label>
                         <select class="form-input" onchange="updateWilayah(this)">
-                            <option value="">-- Pilih Wilayah --</option>
-                            ${dataOngkir.map(o => `<option value="${o.wilayah}" ${selectedWilayah === o.wilayah ? 'selected' : ''}>${o.wilayah} (Rp ${o.harga.toLocaleString()}/kg)</option>`).join('')}
+                            <option value="">-- Pilih --</option>
+                            ${dataOngkir.map(o => `<option value="${o.wilayah}" ${selectedWilayah === o.wilayah ? 'selected' : ''}>${o.wilayah}</option>`).join('')}
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label>Alamat Lengkap</label>
-                        <textarea id="cust-addr" class="form-input" rows="3" placeholder="Jl. Nama Jalan, No, Kec/Kota"></textarea>
-                    </div>
-                    
+                    <div class="form-group"><label>Alamat</label><textarea id="cust-addr" class="form-input"></textarea></div>
                     <div class="summary-box">
                         <div class="summary-row"><span>Subtotal</span><span>Rp ${subtotal.toLocaleString()}</span></div>
-                        <div class="summary-row"><span>Total Berat</span><span>${totalBeratKg} kg</span></div>
-                        <div class="summary-row"><span>Ongkos Kirim</span><span>Rp ${totalOngkir.toLocaleString()}</span></div>
-                        <div class="summary-row total-price"><span>Total Bayar</span><span>Rp ${totalBayar.toLocaleString()}</span></div>
+                        <div class="summary-row total-price"><span>Total</span><span>Rp ${totalBayar.toLocaleString()}</span></div>
                     </div>
-                    
-                    <button class="btn-wa" onclick="sendWhatsApp()"><span>Konfirmasi & Kirim WA</span></button>
-                    <button onclick="showView('catalog-view')" style="width:100%; border:none; background:none; font-weight:700; color:var(--gray); margin-top:15px; cursor:pointer;">Lanjut Belanja</button>
+                    <button class="btn-wa" onclick="sendWhatsApp()">Konfirmasi WA</button>
                 </div>
             </div>`;
     }
@@ -193,22 +210,15 @@
         const name = document.getElementById('cust-name').value;
         const wa = document.getElementById('cust-wa').value;
         const addr = document.getElementById('cust-addr').value;
-        if(!name || !wa || !selectedWilayah || !addr) return alert('Mohon lengkapi semua data pengiriman!');
+        if(!name || !wa || !selectedWilayah || !addr) return alert('Lengkapi data!');
 
         const subtotal = cart.reduce((s, i) => s + (i.harga * i.qty), 0);
-        const totalBeratGram = cart.reduce((s, i) => s + (i.berat * i.qty), 0);
-        const totalBeratKg = Math.ceil(totalBeratGram / 1000);
-        const totalOngkir = selectedBaseOngkir * totalBeratKg;
-        const total = subtotal + totalOngkir;
+        const totalBeratKg = Math.ceil(cart.reduce((s, i) => s + (i.berat * i.qty), 0) / 1000);
+        const total = subtotal + (selectedBaseOngkir * totalBeratKg);
 
-        let msg = `*ORDER BARU - ANDRY BACKBONE STOR*\n`;
-        msg += `------------------------------------------\n`;
-        msg += `*Data Penerima:*\n- Nama: ${name}\n- WA: ${wa}\n- Wilayah: ${selectedWilayah}\n- Alamat: ${addr}\n\n`;
-        msg += `*Daftar Pesanan:*\n`;
-        cart.forEach(item => { msg += `- ${item.nama} (${item.qty}x) = Rp ${(item.harga * item.qty).toLocaleString()}\n`; });
-        msg += `\n*Rincian Pembayaran:*\n- Subtotal: Rp ${subtotal.toLocaleString()}\n- Berat: ${totalBeratKg}kg\n- Ongkir: Rp ${totalOngkir.toLocaleString()}\n- *TOTAL TRANSFER: Rp ${total.toLocaleString()}*\n\n`;
-        msg += `*Metode Pembayaran:*\n- BANK MANDIRI\n- NO.REK: 1650000559519\n- A/N: ANDRI NURDIANSYAH\n\n`;
-        msg += `_Saya sudah melakukan transfer, berikut bukti pembayarannya:_`;
+        let msg = `*ORDER BARU*\nNama: ${name}\nWA: ${wa}\nAlamat: ${addr}\n\n*Pesanan:*\n`;
+        cart.forEach(item => { msg += `- ${item.nama} (${item.qty}x)\n`; });
+        msg += `\n*Total Transfer: Rp ${total.toLocaleString()}*`;
         
         window.open(`https://wa.me/${WA_ADMIN}?text=${encodeURIComponent(msg)}`);
     }
@@ -222,12 +232,11 @@
                     <button class="pro-back-btn" onclick="showView('catalog-view')">← Kembali</button>
                     <h2 class="pro-title">${p.nama}</h2>
                     <div class="pro-price">Rp ${p.harga.toLocaleString()}</div>
-                    <div style="margin-bottom:10px; font-size:13px; color:var(--gray)">Berat: ${p.berat} gram</div>
                     <span class="pro-desc-label">Deskripsi</span>
                     <p class="pro-desc-content">${p.desc || '-'}</p>
                     <div class="pro-actions">
                         <button onclick="addToCart(${p.id}, false)" class="pro-btn pro-btn-cart">+ Keranjang</button>
-                        <button onclick="addToCart(${p.id}, true)" class="pro-btn pro-btn-buy">Beli Sekarang</button>
+                        <button onclick="addToCart(${p.id}, true)" class="pro-btn pro-btn-buy">Beli</button>
                     </div>
                 </div>
             </div>`;
