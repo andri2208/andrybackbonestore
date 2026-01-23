@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BACKBONE STORE - Pro Hybrid Nav</title>
+    <title>BACKBONE STORE - Pro UX</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -13,10 +13,10 @@
             --gray: #757575;
             --white: #ffffff;
             --bg: #f7f7f9;
-            --shadow: 0 2px 12px rgba(0,0,0,0.06);
+            --shadow: 0 4px 15px rgba(0,0,0,0.08);
         }
 
-        /* Base & Anti-Download */
+        /* Dasar & Anti-Download */
         * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
         body { margin: 0; background-color: var(--bg); color: var(--dark); -webkit-user-select: none; user-select: none; }
         img { pointer-events: none; -webkit-user-drag: none; }
@@ -28,32 +28,44 @@
         .search-wrapper { flex: 1; }
         .search-bar { width: 100%; padding: 10px 15px; border-radius: 8px; border: 1px solid #eee; background: #f5f5f5; outline: none; }
 
-        /* LAYOUT CONTAINER */
         .container { max-width: 1200px; margin: auto; padding: 20px; display: flex; gap: 30px; }
 
-        /* SIDEBAR PC */
+        /* --- SIDEBAR PC (HOVER SYSTEM) --- */
         .sidebar-pc { width: 240px; flex-shrink: 0; }
         .sticky-side { position: sticky; top: 90px; }
-        .pc-cat-item { padding: 12px 15px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 14px; margin-bottom: 5px; display: flex; justify-content: space-between; }
-        .pc-cat-item:hover { background: var(--primary-light); color: var(--primary); }
-        .pc-cat-item.active { background: var(--primary); color: white; }
-        .pc-sub-box { padding-left: 20px; display: none; margin-bottom: 10px; }
-        .pc-sub-box.open { display: block; }
-        .pc-sub-item { padding: 8px 15px; font-size: 13px; color: var(--gray); cursor: pointer; border-radius: 6px; }
-        .pc-sub-item:hover { color: var(--primary); background: white; }
-
-        /* MOBILE DROPDOWN KATEGORI */
-        .mobile-nav-bar { display: none; background: white; padding: 10px 20px; border-bottom: 1px solid #eee; position: sticky; top: 62px; z-index: 999; }
-        .drop-btn { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; background: white; font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
+        .pc-cat-group { position: relative; margin-bottom: 5px; }
         
-        .mobile-menu-overlay { display: none; position: fixed; top: 110px; left: 0; width: 100%; height: calc(100vh - 110px); background: rgba(0,0,0,0.5); z-index: 2000; }
-        .mobile-menu-content { background: white; width: 100%; max-height: 80%; overflow-y: auto; padding: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .m-cat-group { border-bottom: 1px solid #f5f5f5; padding: 15px 5px; }
-        .m-cat-main { font-weight: 800; font-size: 15px; margin-bottom: 10px; color: var(--dark); }
-        .m-sub-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .m-sub-item { background: #f8f8f8; padding: 8px; border-radius: 6px; font-size: 12px; text-align: center; color: var(--gray); font-weight: 600; }
+        .pc-cat-main { 
+            padding: 12px 15px; border-radius: 8px; font-weight: 700; font-size: 14px; 
+            cursor: pointer; display: flex; justify-content: space-between; transition: 0.2s;
+        }
+        
+        /* Logika Hover PC */
+        .pc-sub-flyout { 
+            display: none; position: absolute; left: 100%; top: 0; width: 200px; 
+            background: white; border-radius: 8px; box-shadow: var(--shadow); 
+            padding: 10px; z-index: 100; margin-left: 10px;
+        }
+        .pc-cat-group:hover .pc-sub-flyout { display: block; }
+        .pc-cat-group:hover .pc-cat-main { background: var(--primary-light); color: var(--primary); }
 
-        /* GRID PRODUK */
+        .sub-item-pc { padding: 8px 12px; font-size: 13px; color: var(--gray); cursor: pointer; border-radius: 5px; }
+        .sub-item-pc:hover { background: #f9f9f9; color: var(--primary); }
+
+        /* --- MENU HP (CLICK SYSTEM) --- */
+        .mobile-nav-bar { display: none; background: white; padding: 10px 15px; border-bottom: 1px solid #eee; position: sticky; top: 62px; z-index: 999; }
+        .m-drop-btn { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; background: white; font-weight: 700; display: flex; justify-content: space-between; }
+        
+        .m-menu-overlay { display: none; position: fixed; top: 115px; left: 0; width: 100%; height: 100%; background: white; z-index: 2000; overflow-y: auto; padding: 20px; }
+        .m-cat-item { border-bottom: 1px solid #f5f5f5; }
+        .m-cat-header { padding: 15px 0; font-weight: 800; display: flex; justify-content: space-between; cursor: pointer; }
+        
+        /* Logika Click HP */
+        .m-sub-container { display: none; padding: 0 0 15px 15px; }
+        .m-sub-container.active { display: block; }
+        .m-sub-link { padding: 10px 0; color: var(--gray); font-size: 14px; font-weight: 600; display: block; }
+
+        /* GRID & PRODUK */
         .main-content { flex: 1; }
         .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
         
@@ -64,18 +76,14 @@
             .container { padding: 15px; }
         }
 
-        /* PRODUCT CARD & OTHERS */
-        .product-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); cursor: pointer; transition: 0.3s; }
+        .product-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); cursor: pointer; }
         .thumb { width: 100%; aspect-ratio: 1/1; object-fit: cover; }
-        .info { padding: 12px; }
+        .p-info { padding: 12px; }
         .p-name { font-size: 13px; font-weight: 600; height: 36px; overflow: hidden; margin-bottom: 5px; }
         .p-price { color: var(--primary); font-weight: 800; }
 
         .view-section { display: none; }
         .active-v { display: block; }
-        #toast { visibility: hidden; background: #333; color: white; padding: 12px 25px; border-radius: 50px; position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 3000; font-size: 13px; }
-        #toast.show { visibility: visible; animation: fadeinout 2s forwards; }
-        @keyframes fadeinout { 0%, 100% { opacity: 0; } 20%, 80% { opacity: 1; } }
         .cart-badge { background: var(--primary); color: white; font-size: 10px; padding: 2px 6px; border-radius: 10px; position: absolute; top: -5px; right: -5px; border: 2px solid white; }
     </style>
 </head>
@@ -85,7 +93,7 @@
     <div class="nav-inner">
         <a class="logo" onclick="location.reload()">BACKBONE.</a>
         <div class="search-wrapper">
-            <input type="text" id="main-search" class="search-bar" placeholder="Cari barang..." onkeyup="searchProduk()">
+            <input type="text" id="main-search" class="search-bar" placeholder="Cari koleksi..." onkeyup="search()">
         </div>
         <div style="position:relative; cursor:pointer;" onclick="renderCheckout()">
             🛒<span id="badge-count" class="cart-badge">0</span>
@@ -94,46 +102,37 @@
 </header>
 
 <div class="mobile-nav-bar">
-    <button class="drop-btn" onclick="toggleMobileMenu()">
-        <span id="m-selected-cat">Semua Kategori</span>
+    <button class="m-drop-btn" onclick="toggleMMenu()">
+        <span id="m-label">Jelajahi Kategori</span>
         <span>▾</span>
     </button>
 </div>
 
-<div class="mobile-menu-overlay" id="m-overlay" onclick="toggleMobileMenu()">
-    <div class="mobile-menu-content" onclick="event.stopPropagation()">
-        <div class="m-cat-group" onclick="filterData('all', 'all'); toggleMobileMenu();">
-            <div class="m-cat-main" style="color:var(--primary)">Semua Produk</div>
-        </div>
-        <div id="m-cat-list"></div>
-    </div>
+<div class="m-menu-overlay" id="m-overlay">
+    <div onclick="filterData('all','all'); toggleMMenu();" style="padding:15px 0; font-weight:800; color:var(--primary); border-bottom:1px solid #f5f5f5;">Beranda / Semua Produk</div>
+    <div id="m-list-inject"></div>
 </div>
 
 <div id="catalog-view" class="view-section active-v">
     <div class="container">
         <aside class="sidebar-pc">
             <div class="sticky-side">
-                <div style="font-weight:800; font-size:11px; color:#aaa; letter-spacing:1px; margin-bottom:15px;">KATEGORI</div>
-                <div class="pc-cat-item active" onclick="filterData('all', 'all', this)">Beranda</div>
-                <div id="pc-cat-list"></div>
+                <div style="font-weight:800; font-size:11px; color:#ccc; margin-bottom:15px; letter-spacing:1px;">CATEGORY MENU</div>
+                <div class="pc-cat-group" onclick="filterData('all','all')">
+                    <div class="pc-cat-main">Beranda</div>
+                </div>
+                <div id="pc-list-inject"></div>
             </div>
         </aside>
 
         <main class="main-content">
-            <div id="product-list" class="product-grid">Memuat...</div>
+            <div id="product-list" class="product-grid">Memuat katalog...</div>
         </main>
     </div>
 </div>
 
-<div id="detail-view" class="view-section">
-    <div id="detail-content" style="max-width:1000px; margin:auto; background:white; min-height:100vh;"></div>
-</div>
-
-<div id="checkout-view" class="view-section">
-    <div class="container"><div id="checkout-content" style="width:100%"></div></div>
-</div>
-
-<div id="toast"></div>
+<div id="detail-view" class="view-section"><div id="detail-content"></div></div>
+<div id="checkout-view" class="view-section"><div class="container"><div id="checkout-content" style="width:100%"></div></div></div>
 
 <script>
     const GS_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRtNoerhDtHch7TNHVbItg23RG4nneoZ8hv5MBR1Cr40iU5alO8a2O4EUR90YgleMH4-E-6zGJsEgcN/pub?output=csv";
@@ -162,63 +161,63 @@
             return { id: idx, nama: col[0], harga: parseInt(col[1].replace(/[^\d]/g, "")) || 0, utama: ut, sub: sub, foto: col[3], desc: col[4], berat: parseInt(col[5]) || 0 };
         }).filter(p => p);
 
-        renderNavigations();
+        renderNavs();
         renderProduk(allProduk);
     }
 
-    function renderNavigations() {
-        const pcList = document.getElementById('pc-cat-list');
-        const mList = document.getElementById('m-cat-list');
+    function renderNavs() {
+        const pc = document.getElementById('pc-list-inject');
+        const m = document.getElementById('m-list-inject');
         
         for(let ut in treeKategori) {
             let subs = Array.from(treeKategori[ut]);
-            
-            // Render PC Sidebar
-            let pcHtml = `<div class="pc-cat-parent">
-                <div class="pc-cat-item" onclick="togglePcSub(this, '${ut}')">${ut} ${subs.length ? '<span>▾</span>' : ''}</div>
-                <div class="pc-sub-box">
-                    <div class="pc-sub-item" onclick="filterData('${ut}', 'all', this)">Lihat Semua</div>`;
-            subs.forEach(s => { pcHtml += `<div class="pc-sub-item" onclick="filterData('${ut}', '${s}', this)">${s}</div>`; });
-            pcHtml += `</div></div>`;
-            pcList.innerHTML += pcHtml;
 
-            // Render Mobile Dropdown
-            let mHtml = `<div class="m-cat-group">
-                <div class="m-cat-main" onclick="filterData('${ut}', 'all'); toggleMobileMenu();">${ut}</div>
-                <div class="m-sub-grid">`;
-            subs.forEach(s => { mHtml += `<div class="m-sub-item" onclick="filterData('${ut}', '${s}'); toggleMobileMenu();">${s}</div>`; });
-            mHtml += `</div></div>`;
-            mList.innerHTML += mHtml;
+            // PC HOVER TEMPLATE
+            let pcHtml = `
+                <div class="pc-cat-group">
+                    <div class="pc-cat-main" onclick="filterData('${ut}','all')">${ut} ${subs.length ? '<span>›</span>' : ''}</div>
+                    ${subs.length ? `<div class="pc-sub-flyout">
+                        <div class="sub-item-pc" style="font-weight:bold; color:var(--dark)" onclick="filterData('${ut}','all')">Semua ${ut}</div>
+                        ${subs.map(s => `<div class="sub-item-pc" onclick="filterData('${ut}','${s}')">${s}</div>`).join('')}
+                    </div>` : ''}
+                </div>`;
+            pc.innerHTML += pcHtml;
+
+            // HP CLICK TEMPLATE
+            let mHtml = `
+                <div class="m-cat-item">
+                    <div class="m-cat-header" onclick="toggleMSub(this, '${ut}')">
+                        <span>${ut}</span>
+                        <span>${subs.length ? '▾' : ''}</span>
+                    </div>
+                    <div class="m-sub-container">
+                        <div class="m-sub-link" style="color:var(--primary)" onclick="filterData('${ut}','all'); toggleMMenu();">Semua ${ut}</div>
+                        ${subs.map(s => `<div class="m-sub-link" onclick="filterData('${ut}','${s}'); toggleMMenu();">${s}</div>`).join('')}
+                    </div>
+                </div>`;
+            m.innerHTML += mHtml;
         }
     }
 
-    function togglePcSub(el, ut) {
-        const box = el.nextElementSibling;
-        const isOpen = box.classList.contains('open');
-        document.querySelectorAll('.pc-sub-box').forEach(b => b.classList.remove('open'));
-        document.querySelectorAll('.pc-cat-item').forEach(i => i.classList.remove('active'));
-        
-        if(!isOpen && box.children.length > 1) {
-            box.classList.add('open');
-            el.classList.add('active');
-        } else {
-            filterData(ut, 'all', el);
+    // Logic HP Click
+    function toggleMSub(el, ut) {
+        const sub = el.nextElementSibling;
+        if(!sub.innerHTML.trim()) { // Jika tidak ada sub
+            filterData(ut, 'all');
+            toggleMMenu();
+            return;
         }
+        document.querySelectorAll('.m-sub-container').forEach(c => { if(c !== sub) c.classList.remove('active') });
+        sub.classList.toggle('active');
     }
 
-    function toggleMobileMenu() {
-        const overlay = document.getElementById('m-overlay');
-        overlay.style.display = overlay.style.display === 'block' ? 'none' : 'block';
+    function toggleMMenu() {
+        const o = document.getElementById('m-overlay');
+        o.style.display = o.style.display === 'block' ? 'none' : 'block';
     }
 
-    function filterData(ut, sub, el) {
-        if(el) {
-            document.querySelectorAll('.pc-cat-item, .pc-sub-item').forEach(i => i.classList.remove('active'));
-            el.classList.add('active');
-        }
-        
-        document.getElementById('m-selected-cat').innerText = sub === 'all' ? ut : sub;
-
+    function filterData(ut, sub) {
+        document.getElementById('m-label').innerText = sub === 'all' ? ut : sub;
         let hasil = ut === 'all' ? allProduk : allProduk.filter(p => p.utama === ut && (sub === 'all' || p.sub === sub));
         renderProduk(hasil);
         showView('catalog-view');
@@ -227,30 +226,29 @@
     function renderProduk(list) {
         document.getElementById('product-list').innerHTML = list.map(p => `
             <div class="product-card" onclick="openDetail(${p.id})">
-                <img src="${p.foto}" class="thumb">
-                <div class="info">
+                <img src="${p.foto}" class="thumb" loading="lazy">
+                <div class="p-info">
                     <div class="p-name">${p.nama}</div>
-                    <div style="font-size:10px; color:#aaa; margin-bottom:5px;">${p.sub || p.utama}</div>
-                    <div class="p-price">Rp ${p.harga.toLocaleString()}</div>
+                    <div class="p-price">Rp ${p.harga.toLocaleString('id-ID')}</div>
                 </div>
             </div>
         `).join('');
     }
 
+    // Detail, Cart, & Checkout (Standar Marketplace)
     function openDetail(id) {
         const p = allProduk.find(x => x.id == id);
         document.getElementById('detail-content').innerHTML = `
-            <div style="display:flex; flex-wrap:wrap;">
+            <div style="display:flex; flex-wrap:wrap; background:white;">
                 <img src="${p.foto}" style="width:100%; max-width:500px; aspect-ratio:1/1; object-fit:cover;">
                 <div style="flex:1; padding:30px; min-width:300px;">
-                    <button onclick="showView('catalog-view')" style="border:none; background:none; color:var(--primary); font-weight:bold; cursor:pointer; margin-bottom:20px;">← KEMBALI</button>
-                    <div style="font-size:12px; color:#999; font-weight:700;">${p.utama.toUpperCase()} ${p.sub ? '> '+p.sub.toUpperCase() : ''}</div>
-                    <h1 style="font-size:1.8rem; margin:10px 0;">${p.nama}</h1>
-                    <div style="font-size:1.6rem; color:var(--primary); font-weight:800; margin-bottom:20px;">Rp ${p.harga.toLocaleString()}</div>
-                    <p style="color:#666; line-height:1.7; font-size:14px; margin-bottom:40px;">${p.desc}</p>
-                    <div style="display:flex; gap:10px;">
-                        <button onclick="addToCart(${p.id}, false)" style="flex:1; padding:18px; border-radius:12px; border:2px solid var(--primary); background:white; color:var(--primary); font-weight:800; cursor:pointer;">+ KERANJANG</button>
-                        <button onclick="addToCart(${p.id}, true)" style="flex:1; padding:18px; border-radius:12px; border:none; background:var(--primary); color:white; font-weight:800; cursor:pointer;">BELI SEKARANG</button>
+                    <button onclick="showView('catalog-view')" style="border:none; background:none; color:var(--primary); font-weight:bold; cursor:pointer;">← Kembali</button>
+                    <h1 style="font-size:1.8rem; margin:15px 0 10px 0;">${p.nama}</h1>
+                    <div style="font-size:1.6rem; color:var(--primary); font-weight:800; margin-bottom:20px;">Rp ${p.harga.toLocaleString('id-ID')}</div>
+                    <p style="color:#666; font-size:14px; line-height:1.6;">${p.desc}</p>
+                    <div style="display:flex; gap:10px; margin-top:30px;">
+                        <button onclick="addToCart(${p.id}, false)" style="flex:1; padding:15px; border-radius:8px; border:1px solid var(--primary); background:white; color:var(--primary); font-weight:800; cursor:pointer;">+ Keranjang</button>
+                        <button onclick="addToCart(${p.id}, true)" style="flex:1; padding:15px; border-radius:8px; border:none; background:var(--primary); color:white; font-weight:800; cursor:pointer;">Beli Langsung</button>
                     </div>
                 </div>
             </div>
@@ -258,95 +256,81 @@
         showView('detail-view');
     }
 
-    function addToCart(id, checkout) {
+    function addToCart(id, check) {
         const item = allProduk.find(x => x.id == id);
         const ada = cart.find(x => x.id == id);
         if(ada) ada.qty++; else cart.push({...item, qty: 1});
         document.getElementById('badge-count').innerText = cart.reduce((s, i) => s + i.qty, 0);
-        if(checkout) renderCheckout(); else showToast("✅ Berhasil ditambah");
-    }
-
-    function showToast(msg) {
-        const t = document.getElementById("toast"); t.innerText = msg; t.className = "show";
-        setTimeout(() => t.className = "", 2000);
+        if(check) renderCheckout(); else alert("Produk masuk keranjang!");
     }
 
     function renderCheckout() {
-        if(cart.length === 0) return alert("Keranjang kosong");
+        if(cart.length === 0) return alert("Kosong!");
         showView('checkout-view');
         const content = document.getElementById('checkout-content');
         content.innerHTML = `
-            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:25px;">
-                <div style="background:white; padding:25px; border-radius:15px; box-shadow:var(--shadow);">
-                    <h3 style="margin:0 0 20px 0;">Isi Keranjang</h3>
-                    ${cart.map((item, idx) => `
-                        <div style="display:flex; gap:15px; padding:15px 0; border-bottom:1px solid #eee;">
-                            <img src="${item.foto}" style="width:60px; height:60px; border-radius:8px; object-fit:cover;">
-                            <div style="flex:1">
-                                <div style="font-weight:700; font-size:14px;">${item.nama}</div>
-                                <div style="color:var(--primary); font-weight:800; font-size:13px; margin-top:5px;">Rp ${item.harga.toLocaleString()}</div>
-                                <div style="display:flex; align-items:center; gap:10px; margin-top:10px;">
-                                    <button onclick="ubahQty(${idx}, -1)" style="width:26px; height:26px; border-radius:50%; border:1px solid #ddd; background:white;">-</button>
-                                    <span style="font-weight:bold;">${item.qty}</span>
-                                    <button onclick="ubahQty(${idx}, 1)" style="width:26px; height:26px; border-radius:50%; border:1px solid #ddd; background:white;">+</button>
-                                    <button onclick="hapusItem(${idx})" style="margin-left:auto; border:none; background:none; color:red; font-size:12px; font-weight:bold;">HAPUS</button>
-                                </div>
-                            </div>
+            <div style="background:white; padding:20px; border-radius:12px; box-shadow:var(--shadow);">
+                <h3 style="margin:0 0 20px 0">Checkout</h3>
+                ${cart.map((item, idx) => `
+                    <div style="display:flex; gap:15px; padding:10px 0; border-bottom:1px solid #f5f5f5;">
+                        <img src="${item.foto}" style="width:50px; height:50px; object-fit:cover; border-radius:5px;">
+                        <div style="flex:1">
+                            <div style="font-size:13px; font-weight:700;">${item.nama}</div>
+                            <div style="font-size:12px; color:var(--primary); font-weight:bold;">${item.qty} x Rp ${item.harga.toLocaleString()}</div>
                         </div>
-                    `).join('')}
-                </div>
-                <div style="background:white; padding:25px; border-radius:15px; box-shadow:var(--shadow); height:fit-content;">
-                    <h3 style="margin:0 0 20px 0;">Pengiriman</h3>
-                    <input type="text" id="c-name" class="search-bar" style="background:white; margin-bottom:10px; border:1px solid #ddd;" placeholder="Nama Penerima">
-                    <input type="number" id="c-phone" class="search-bar" style="background:white; margin-bottom:10px; border:1px solid #ddd;" placeholder="No. WhatsApp">
-                    <select id="c-city" onchange="updateTotalDisplay()" class="search-bar" style="background:white; margin-bottom:10px; border:1px solid #ddd;">
+                    </div>
+                `).join('')}
+                <div style="margin-top:20px;">
+                    <input type="text" id="c-name" class="search-bar" style="margin-bottom:10px; background:white; border:1px solid #ddd;" placeholder="Nama Penerima">
+                    <select id="c-city" onchange="updateTotal()" class="search-bar" style="margin-bottom:10px; background:white; border:1px solid #ddd;">
                         <option value="0" data-tarif="0">Pilih Kota</option>
                         ${dataOngkir.map(o => `<option value="${o.kota}" data-tarif="${o.tarif}">${o.kota}</option>`).join('')}
                     </select>
-                    <textarea id="c-address" class="search-bar" style="background:white; height:80px; border:1px solid #ddd;" placeholder="Alamat Lengkap"></textarea>
-                    <div style="margin-top:20px; border-top:1px solid #eee; padding-top:20px;">
-                        <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span>Ongkir</span><span id="txt-ong">Rp 0</span></div>
-                        <div style="display:flex; justify-content:space-between; font-weight:800; font-size:20px; color:var(--primary);"><span>TOTAL</span><span id="txt-tot">Rp 0</span></div>
+                    <textarea id="c-address" class="search-bar" style="height:80px; margin-bottom:20px; background:white; border:1px solid #ddd;" placeholder="Alamat Lengkap"></textarea>
+                    <div style="display:flex; justify-content:space-between; font-weight:800; font-size:18px; color:var(--primary);">
+                        <span>Total:</span><span id="txt-tot">Rp 0</span>
                     </div>
-                    <button onclick="gasKeWA()" style="width:100%; padding:18px; border-radius:12px; border:none; background:var(--primary); color:white; font-weight:800; margin-top:20px; cursor:pointer;">ORDER KE WHATSAPP</button>
+                    <button onclick="gasKeWA()" style="width:100%; padding:15px; border-radius:8px; border:none; background:var(--primary); color:white; font-weight:800; margin-top:20px; cursor:pointer;">PESAN VIA WA</button>
                 </div>
             </div>
         `;
-        updateTotalDisplay();
+        updateTotal();
     }
 
-    function ubahQty(idx, n) { cart[idx].qty += n; if(cart[idx].qty < 1) cart[idx].qty = 1; renderCheckout(); }
-    function hapusItem(idx) { cart.splice(idx, 1); if(cart.length === 0) showView('catalog-view'); else renderCheckout(); }
     async function loadOngkir() {
         const res = await fetch(ONG_URL);
         const data = parseCSV(await res.text()).slice(1);
         dataOngkir = data.map(c => ({ kota: c[0], tarif: parseInt(c[1]) || 0 }));
     }
-    function updateTotalDisplay() {
+
+    function updateTotal() {
         if(!document.getElementById('txt-tot')) return;
         const sub = cart.reduce((s, i) => s + (i.harga * i.qty), 0);
         const berat = cart.reduce((s, i) => s + (i.berat * i.qty), 0);
         const tarif = parseInt(document.getElementById('c-city').selectedOptions[0].getAttribute('data-tarif')) || 0;
         const ong = Math.ceil(berat/1000) * tarif;
-        document.getElementById('txt-ong').innerText = "Rp " + ong.toLocaleString();
         document.getElementById('txt-tot').innerText = "Rp " + (sub + ong).toLocaleString();
     }
+
     function gasKeWA() {
-        const n = document.getElementById('c-name').value, p = document.getElementById('c-phone').value, k = document.getElementById('c-city').value, a = document.getElementById('c-address').value;
-        if(!n || !p || k == "0" || !a) return alert("Lengkapi data!");
+        const n = document.getElementById('c-name').value, k = document.getElementById('c-city').value, a = document.getElementById('c-address').value;
+        if(!n || k == "0" || !a) return alert("Lengkapi data!");
         const items = cart.map(i => `- ${i.nama} (x${i.qty})`).join('%0A');
-        const text = `Halo Admin, Saya mau order:%0A${items}%0A%0A*Penerima:* ${n}%0A*WA:* ${p}%0A*Alamat:* ${a} (${k})%0A%0A*Total:* ${document.getElementById('txt-tot').innerText}`;
+        const text = `Halo Admin, Order Baru:%0A${items}%0A%0A*Nama:* ${n}%0A*Alamat:* ${a} (${k})%0A*Total:* ${document.getElementById('txt-tot').innerText}`;
         window.open(`https://wa.me/${WA_ADMIN}?text=${text}`);
     }
-    function searchProduk() {
+
+    function search() {
         const q = document.getElementById('main-search').value.toLowerCase();
         renderProduk(allProduk.filter(p => p.nama.toLowerCase().includes(q)));
     }
+
     function showView(id) {
         document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active-v'));
         document.getElementById(id).classList.add('active-v');
         window.scrollTo(0,0);
     }
+
     init();
 </script>
 </body>
