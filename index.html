@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Andry Backbone Store - PC Vertical Menu</title>
+    <title>Andry Backbone Store - HP & PC Optimized</title>
     <style>
         :root { --primary: #ee4d2d; --bg: #f5f5f5; --white: #ffffff; --text: #333; --border: #eee; }
         
@@ -22,75 +22,71 @@
         /* Main Layout */
         .main-wrapper { display: flex; max-width: 1200px; margin: auto; padding: 20px 15px; gap: 20px; }
 
-        /* SIDEBAR PC (Vertical Dropdown) */
+        /* --- SIDEBAR PC (TETAP SEPERTI SEBELUMNYA) --- */
         .sidebar { width: 240px; flex-shrink: 0; }
         .side-box { background: white; border-radius: 8px; padding: 15px; position: sticky; top: 120px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .side-title { font-weight: bold; margin-bottom: 15px; border-bottom: 2px solid var(--primary); display: inline-block; padding-bottom: 5px; }
 
         @media (min-width: 769px) {
             .cat-group { margin-bottom: 2px; }
-            .cat-main { 
-                padding: 10px; 
-                display: flex; 
-                justify-content: space-between; 
-                cursor: pointer; 
-                border-radius: 5px; 
-                transition: 0.2s; 
-                font-size: 14px; 
-                font-weight: 600;
-            }
+            .cat-main { padding: 10px; display: flex; justify-content: space-between; cursor: pointer; border-radius: 5px; transition: 0.2s; font-size: 14px; font-weight: 600; }
             .cat-main:hover { background: #fff5f2; color: var(--primary); }
-            
-            /* Sub-list Muncul DI BAWAH */
-            .sub-list { 
-                display: none; 
-                flex-direction: column; 
-                padding-left: 20px; 
-                margin: 5px 0;
-                border-left: 2px solid #eee;
-            }
-            
-            /* Munculkan saat kursor di atas grup kategori */
-            .cat-group:hover .sub-list { 
-                display: flex; 
-            }
-
-            .sub-item { 
-                font-size: 13px; 
-                color: #666; 
-                cursor: pointer; 
-                padding: 6px 0; 
-                transition: 0.2s;
-            }
+            .sub-list { display: none; flex-direction: column; padding-left: 20px; margin: 5px 0; border-left: 2px solid #eee; }
+            .cat-group:hover .sub-list { display: flex; }
+            .sub-item { font-size: 13px; color: #666; cursor: pointer; padding: 6px 0; transition: 0.2s; }
             .sub-item:hover { color: var(--primary); padding-left: 5px; }
         }
 
-        /* TAMPILAN HP (TETAP SATU SUB SATU BOX) */
+        /* --- FOKUS TAMPILAN HP --- */
         .cat-trigger { display: none; background: #fff; padding: 12px 15px; margin: 10px; border-radius: 8px; font-weight: bold; border: 1px solid #ddd; cursor: pointer; justify-content: space-between; align-items: center; }
 
         @media (max-width: 768px) {
             .main-wrapper { flex-direction: column; padding: 10px; }
+            
+            /* Sembunyikan Sidebar Default, Muncul saat klik trigger */
             .sidebar { display: none; width: 100%; } 
             .sidebar.active { display: block; }
             .cat-trigger { display: flex; }
-            .sub-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 10px 0 20px 0; }
-            .sub-item { background: white; padding: 12px 5px; text-align: center; border-radius: 8px; font-size: 12px; border: 1px solid #ddd; color: #444; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-            .cat-main { color: var(--primary); font-weight: bold; display: block; margin-top: 15px; font-size: 14px; }
+
+            /* Grid Produk 2 Kolom di HP */
+            .catalog-grid { 
+                display: grid; 
+                grid-template-columns: repeat(2, 1fr); /* FIX: 2 GRID PRODUK */
+                gap: 10px; 
+            }
+
+            /* HANYA TAMPILKAN KATEGORI UTAMA DI HP */
+            .sub-list { display: none !important; } /* Sembunyikan Sub-Kategori di HP */
+            
+            .cat-main { 
+                background: white; 
+                color: #444; 
+                font-weight: bold; 
+                display: block; 
+                margin-bottom: 8px; 
+                padding: 15px; 
+                border-radius: 8px; 
+                border: 1px solid #eee; 
+                text-align: center;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            }
+            
             .side-box { position: static; box-shadow: none; background: transparent; padding: 0; }
+            .side-title { display: none; } /* Judul sidebar hilangkan di HP agar clean */
         }
 
-        /* PRODUK GRID */
+        /* PRODUK CARD */
         .content { flex-grow: 1; }
         .catalog-grid { display: grid; gap: 12px; }
         @media (min-width: 769px) { .catalog-grid { grid-template-columns: repeat(4, 1fr); } }
 
-        .card { background: white; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); cursor: pointer; transition: 0.2s; }
-        .card:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .card { background: white; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); cursor: pointer; }
         .card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; }
         .card-info { padding: 10px; }
-        .card-nama { font-size: 13px; height: 2.8em; overflow: hidden; line-height: 1.4; color: #444; }
-        .card-price { color: var(--primary); font-weight: bold; }
+        .card-nama { font-size: 13px; height: 2.8em; overflow: hidden; line-height: 1.4; color: #444; margin-bottom: 5px; }
+        .card-price { color: var(--primary); font-weight: bold; font-size: 14px; }
 
+        /* Floating Cart */
         .cart-float { position: fixed; bottom: 25px; right: 25px; background: var(--primary); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); font-size: 24px; z-index: 1500; }
         #cart-count { position: absolute; top: 0; right: 0; background: #000; font-size: 11px; padding: 2px 6px; border-radius: 10px; }
 
@@ -121,13 +117,15 @@
                 </div>
             </div>
         </aside>
-        <main class="content"><div id="produk-list" class="catalog-grid">Memuat produk...</div></main>
+        <main class="content">
+            <div id="produk-list" class="catalog-grid">Memuat produk...</div>
+        </main>
     </div>
 </div>
 
 <div id="detail-view" class="view" style="padding: 20px 5%;">
-    <div onclick="tampilkanKatalog()" style="cursor:pointer; margin-bottom:20px;">← Kembali</div>
-    <div id="detail-content" style="background:white; padding:20px; border-radius:8px; display:flex; flex-wrap:wrap; gap:20px;"></div>
+    <div onclick="switchView('catalog-view')" style="cursor:pointer; margin-bottom:20px;">← Kembali</div>
+    <div id="detail-content"></div>
 </div>
 
 <div id="cart-view" class="view" style="padding: 20px 5%;">
@@ -221,7 +219,7 @@
     function tampilkanDetail(id) {
         const p = semuaProduk.find(x => x.id == id);
         produkAktif = p;
-        document.getElementById('detail-content').innerHTML = `<img src="${p.foto}" style="width:100%; max-width:400px; border-radius:8px;"><div style="flex:1; min-width:300px;"><h2>${p.nama}</h2><h3 style="color:var(--primary);">Rp ${p.harga.toLocaleString()}</h3><p style="white-space:pre-line; color:#666;">${p.desc}</p><button onclick="tambahKeKeranjang()" style="padding:15px; background:var(--primary); color:white; border:none; width:100%; font-weight:bold; border-radius:5px; cursor:pointer;">+ TAMBAH KERANJANG</button></div>`;
+        document.getElementById('detail-content').innerHTML = `<div style="background:white; padding:20px; border-radius:8px; display:flex; flex-wrap:wrap; gap:20px;"><img src="${p.foto}" style="width:100%; max-width:400px; border-radius:8px;"><div style="flex:1; min-width:300px;"><h2>${p.nama}</h2><h3 style="color:var(--primary);">Rp ${p.harga.toLocaleString()}</h3><p style="white-space:pre-line; color:#666;">${p.desc}</p><button onclick="tambahKeKeranjang()" style="padding:15px; background:var(--primary); color:white; border:none; width:100%; font-weight:bold; border-radius:5px; cursor:pointer;">+ TAMBAH KERANJANG</button></div></div>`;
         switchView('detail-view');
     }
 
@@ -229,12 +227,13 @@
         const ada = keranjang.find(x => x.id === produkAktif.id);
         if(ada) ada.qty++; else keranjang.push({...produkAktif, qty: 1});
         document.getElementById('cart-count').innerText = keranjang.reduce((s, i) => s + i.qty, 0);
+        alert("Produk ditambahkan ke keranjang!");
     }
 
     function tampilkanKeranjang() {
         switchView('cart-view');
         const list = document.getElementById('cart-items-list');
-        if(keranjang.length === 0) { list.innerHTML = "Kosong"; return; }
+        if(keranjang.length === 0) { list.innerHTML = "Keranjang kosong"; return; }
         document.getElementById('checkout-section').style.display = 'block';
         list.innerHTML = keranjang.map((item, idx) => `<div style="display:flex; gap:10px; border-bottom:1px solid #eee; padding:10px 0;"><img src="${item.foto}" style="width:50px; height:50px; object-fit:cover;"><div style="flex:1;">${item.nama}<br><b>Rp ${item.harga.toLocaleString()}</b></div><button onclick="hapusItem(${idx})" style="color:red; border:none; background:none;">✕</button></div>`).join('');
         hitungTotal();
