@@ -14,6 +14,7 @@
             --white: #ffffff;
             --bg: #f7f7f9;
             --border: #eeeeee;
+            --success: #25D366;
         }
 
         * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -98,11 +99,17 @@
         .form-input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; outline: none; font-size: 14px; background: #fff; }
         .form-input:focus { border-color: var(--primary); }
 
+        /* Payment Info Box */
+        .payment-info { background: #fff9f0; border: 1px dashed #f39c12; padding: 15px; border-radius: 10px; margin: 15px 0; }
+        .payment-info p { margin: 5px 0; font-size: 13px; }
+        .bank-name { font-weight: 800; color: #003d79; }
+        .acc-number { font-size: 18px; font-weight: 800; color: var(--dark); letter-spacing: 1px; }
+
         .summary-box { background: #fafafa; padding: 15px; border-radius: 10px; margin-top: 20px; }
         .summary-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; font-weight: 600; }
         .total-price { font-size: 20px; font-weight: 800; color: var(--primary); border-top: 2px solid #eee; padding-top: 15px; margin-top: 10px; }
         
-        .btn-wa { width: 100%; padding: 16px; border-radius: 12px; background: #25D366; color: white; border: none; font-weight: 800; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 20px; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3); }
+        .btn-wa { width: 100%; padding: 16px; border-radius: 12px; background: var(--success); color: white; border: none; font-weight: 800; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 20px; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3); }
 
         @media (max-width: 768px) {
             .sidebar-pc { display: none; }
@@ -175,7 +182,7 @@
                 sub: sub, 
                 foto: col[3], 
                 desc: col[4],
-                berat: parseInt(col[5]) || 1000 // Asumsi kolom ke-6 adalah berat (gram), default 1kg
+                berat: parseInt(col[5]) || 1000 
             };
         });
 
@@ -248,7 +255,7 @@
 
         const subtotal = cart.reduce((s, i) => s + (i.harga * i.qty), 0);
         const totalBeratGram = cart.reduce((s, i) => s + (i.berat * i.qty), 0);
-        const totalBeratKg = Math.ceil(totalBeratGram / 1000); // Pembulatan ke atas standar ekspedisi
+        const totalBeratKg = Math.ceil(totalBeratGram / 1000);
         const totalOngkir = selectedBaseOngkir * totalBeratKg;
         const totalBayar = subtotal + totalOngkir;
 
@@ -271,6 +278,14 @@
                                 </div>
                             </div>
                         </div>`).join('')}
+                    
+                    <div class="payment-info">
+                        <p><strong>Informasi Pembayaran (Transfer):</strong></p>
+                        <p class="bank-name">BANK MANDIRI</p>
+                        <p class="acc-number">1650000559519</p>
+                        <p>A/N: <strong>ANDRI NURDIANSYAH</strong></p>
+                        <p style="font-size: 11px; color: #d35400; margin-top: 10px;">*Silahkan transfer sesuai total bayar, lalu klik tombol pesan untuk kirim bukti transfer.</p>
+                    </div>
                 </div>
                 
                 <div class="checkout-side">
@@ -302,7 +317,7 @@
                         <div class="summary-row total-price"><span>Total Bayar</span><span>Rp ${totalBayar.toLocaleString()}</span></div>
                     </div>
                     
-                    <button class="btn-wa" onclick="sendWhatsApp()"><span>Pesan Sekarang</span></button>
+                    <button class="btn-wa" onclick="sendWhatsApp()"><span>Konfirmasi & Kirim WA</span></button>
                     <button onclick="showView('catalog-view')" style="width:100%; border:none; background:none; font-weight:700; color:var(--gray); margin-top:15px; cursor:pointer;">Lanjut Belanja</button>
                 </div>
             </div>`;
@@ -312,18 +327,22 @@
         const name = document.getElementById('cust-name').value;
         const wa = document.getElementById('cust-wa').value;
         const addr = document.getElementById('cust-addr').value;
-        if(!name || !wa || !selectedWilayah || !addr) return alert('Mohon lengkapi semua data!');
+        if(!name || !wa || !selectedWilayah || !addr) return alert('Mohon lengkapi semua data pengiriman!');
 
         const subtotal = cart.reduce((s, i) => s + (i.harga * i.qty), 0);
         const totalBeratGram = cart.reduce((s, i) => s + (i.berat * i.qty), 0);
         const totalBeratKg = Math.ceil(totalBeratGram / 1000);
         const totalOngkir = selectedBaseOngkir * totalBeratKg;
+        const total = subtotal + totalOngkir;
 
-        let msg = `*ORDER BARU - BACKBONE STORE*\n\n`;
+        let msg = `*ORDER BARU - BACKBONE STORE*\n`;
+        msg += `------------------------------------------\n`;
         msg += `*Data Penerima:*\n- Nama: ${name}\n- WA: ${wa}\n- Wilayah: ${selectedWilayah}\n- Alamat: ${addr}\n\n`;
         msg += `*Daftar Pesanan:*\n`;
         cart.forEach(item => { msg += `- ${item.nama} (${item.qty}x) = Rp ${(item.harga * item.qty).toLocaleString()}\n`; });
-        msg += `\n*Rincian:*\n- Subtotal: Rp ${subtotal.toLocaleString()}\n- Berat: ${totalBeratKg}kg\n- Ongkir: Rp ${totalOngkir.toLocaleString()}\n- *TOTAL: Rp ${(subtotal + totalOngkir).toLocaleString()}*`;
+        msg += `\n*Rincian Pembayaran:*\n- Subtotal: Rp ${subtotal.toLocaleString()}\n- Berat: ${totalBeratKg}kg\n- Ongkir: Rp ${totalOngkir.toLocaleString()}\n- *TOTAL TRANSFER: Rp ${total.toLocaleString()}*\n\n`;
+        msg += `*Metode Pembayaran:*\n- BANK MANDIRI\n- NO.REK: 1650000559519\n- A/N: ANDRI NURDIANSYAH\n\n`;
+        msg += `_Saya sudah melakukan transfer, berikut bukti pembayarannya:_`;
         
         window.open(`https://wa.me/${WA_ADMIN}?text=${encodeURIComponent(msg)}`);
     }
