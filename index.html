@@ -126,23 +126,26 @@
 <div id="toast">Produk berhasil masuk keranjang!</div>
 
 <script>
-    // URL CSV Google Sheets
+   // URL CSV Google Sheets Utama
 const baseGSheet = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRtNoerhDtHch7TNHVbItg23RG4nneoZ8hv5MBR1Cr40iU5alO8a2O4EUR90YgleMH4-E-6zGJsEgcN/pub?output=csv";
 
-// PERBAIKAN DI SINI: Tambahkan &gid= sebelum angka
+// PERBAIKAN: Gunakan format &gid= yang benar
 const ongkirGSheet = baseGSheet + "&gid=780570550"; 
 
 const nomorWA = "6281574938272";
-
+    
     let semuaProduk = [];
     let keranjang = [];
     let produkAktif = null;
     let kategoriTerpilih = "Semua";
 
-    async function init() {
-        await loadProduk();
-        await loadOngkir();
-    }
+  async function init() {
+    // Jalankan loadProduk dulu agar tampilan tidak kosong
+    await loadProduk(); 
+    
+    // Jalankan loadOngkir tanpa harus menunggu (agar tidak memblokir tampilan produk)
+    loadOngkir().catch(err => console.error("Gagal memuat ongkir:", err));
+}
 
     async function loadProduk() {
         const res = await fetch(baseGSheet + "&gid=0");
@@ -307,5 +310,6 @@ const nomorWA = "6281574938272";
 </script>
 </body>
 </html>
+
 
 
