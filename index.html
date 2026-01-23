@@ -47,29 +47,18 @@
         .m-sub-container { display: none; padding: 10px 0 10px 20px; }
         .m-sub-container.active { display: block; }
 
-        /* --- NOTIFIKASI TOAST (SISTEM BARU) --- */
+        /* --- NOTIFIKASI TOAST --- */
         #toast {
-            visibility: hidden;
-            min-width: 200px;
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            border-radius: 8px;
-            padding: 16px;
-            position: fixed;
-            z-index: 3000;
-            left: 50%;
-            bottom: 30px;
-            transform: translateX(-50%);
-            font-size: 14px;
-            font-weight: 600;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            visibility: hidden; min-width: 200px; background-color: #333; color: #fff;
+            text-align: center; border-radius: 8px; padding: 16px; position: fixed;
+            z-index: 3000; left: 50%; bottom: 30px; transform: translateX(-50%);
+            font-size: 14px; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 1.5s; }
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
         @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
 
-        /* GRID & CARDS */
+        /* GRID & CARDS UTAMA */
         .main-content { flex: 1; }
         .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
         .product-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); cursor: pointer; }
@@ -78,11 +67,43 @@
         .p-name { font-size: 13px; font-weight: 600; height: 36px; overflow: hidden; margin-bottom: 5px; }
         .p-price { color: var(--primary); font-weight: 800; }
 
+        /* --- CSS DETAIL PRODUK PRO (HP & PC) --- */
+        .pro-detail-wrapper { display: flex; gap: 40px; background: white; padding: 30px; border-radius: 15px; }
+        .pro-detail-media { flex: 1; position: sticky; top: 100px; height: fit-content; }
+        .pro-detail-media img { width: 100%; border-radius: 12px; aspect-ratio: 1/1; object-fit: cover; }
+        .pro-detail-info { flex: 1; }
+        .pro-back-btn { border: none; background: #f0f0f0; padding: 8px 15px; border-radius: 20px; font-weight: 600; cursor: pointer; margin-bottom: 20px; transition: 0.2s; }
+        .pro-back-btn:hover { background: #e0e0e0; }
+        .pro-title { font-size: 24px; font-weight: 800; margin: 0 0 10px 0; color: var(--dark); }
+        .pro-price { font-size: 28px; font-weight: 800; color: var(--primary); margin-bottom: 20px; }
+        .pro-desc-label { font-weight: 800; border-top: 1px solid #eee; padding-top: 20px; margin-top: 20px; display: block; }
+        .pro-desc-content { color: var(--gray); line-height: 1.6; margin-top: 10px; font-size: 15px; white-space: pre-line; }
+        
+        .pro-actions { display: flex; gap: 15px; margin-top: 30px; }
+        .pro-btn { flex: 1; padding: 15px; border-radius: 10px; font-weight: 800; cursor: pointer; border: none; transition: 0.2s; }
+        .pro-btn-cart { background: var(--primary-light); color: var(--primary); border: 1px solid var(--primary); }
+        .pro-btn-buy { background: var(--primary); color: var(--white); }
+
         @media (max-width: 768px) {
             .sidebar-pc { display: none; }
             .mobile-nav-bar { display: block; }
             .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
             .container { padding: 10px; }
+
+            /* Detail HP Mode */
+            .pro-detail-wrapper { flex-direction: column; padding: 0 0 100px 0; gap: 0; background: var(--bg); }
+            .pro-detail-media { position: relative; top: 0; }
+            .pro-detail-media img { border-radius: 0; }
+            .pro-detail-info { padding: 20px; background: white; border-radius: 20px 20px 0 0; margin-top: -20px; position: relative; }
+            .pro-title { font-size: 18px; }
+            .pro-price { font-size: 22px; }
+            
+            /* Sticky Bottom Action HP */
+            .pro-actions { 
+                position: fixed; bottom: 0; left: 0; right: 0; background: white; 
+                padding: 15px; box-shadow: 0 -5px 15px rgba(0,0,0,0.05); z-index: 2000; margin-top: 0;
+            }
+            .pro-back-btn { position: absolute; top: -50px; left: 15px; background: rgba(255,255,255,0.9); }
         }
 
         .view-section { display: none; }
@@ -119,7 +140,12 @@
     </div>
 </div>
 
-<div id="detail-view" class="view-section"><div id="detail-content"></div></div>
+<div id="detail-view" class="view-section">
+    <div class="container" style="display:block;">
+        <div id="detail-content"></div>
+    </div>
+</div>
+
 <div id="checkout-view" class="view-section"><div class="container"><div id="checkout-content" style="width:100%"></div></div></div>
 
 <div id="toast">✅ Berhasil ditambah</div>
@@ -172,24 +198,31 @@
         `).join('');
     }
 
+    // --- PERBAIKAN FUNGSI DETAIL PRODUK PRO ---
     function openDetail(id) {
         const p = allProduk.find(x => x.id == id);
         document.getElementById('detail-content').innerHTML = `
-            <div style="background:white; max-width:800px; margin:auto; padding:20px;">
-                <button onclick="showView('catalog-view')" style="border:none; background:none; color:var(--primary); font-weight:bold; cursor:pointer;">← Kembali</button>
-                <img src="${p.foto}" style="width:100%; margin:20px 0;">
-                <h2>${p.nama}</h2>
-                <div style="font-size:1.5rem; color:var(--primary); font-weight:800; margin-bottom:15px;">Rp ${p.harga.toLocaleString()}</div>
-                <p>${p.desc}</p>
-                <div style="display:flex; gap:10px; margin-top:20px;">
-                    <button onclick="addToCart(${p.id}, false)" style="flex:1; padding:15px; border-radius:8px; border:1px solid var(--primary); background:white; color:var(--primary); font-weight:bold; cursor:pointer;">+ Keranjang</button>
-                    <button onclick="addToCart(${p.id}, true)" style="flex:1; padding:15px; border-radius:8px; border:none; background:var(--primary); color:white; font-weight:bold; cursor:pointer;">Beli Sekarang</button>
+            <div class="pro-detail-wrapper">
+                <div class="pro-detail-media">
+                    <img src="${p.foto}" alt="${p.nama}">
+                </div>
+                <div class="pro-detail-info">
+                    <button class="pro-back-btn" onclick="showView('catalog-view')">← Kembali</button>
+                    <h2 class="pro-title">${p.nama}</h2>
+                    <div class="pro-price">Rp ${p.harga.toLocaleString()}</div>
+                    
+                    <span class="pro-desc-label">Deskripsi Produk</span>
+                    <p class="pro-desc-content">${p.desc || 'Tidak ada deskripsi.'}</p>
+                    
+                    <div class="pro-actions">
+                        <button onclick="addToCart(${p.id}, false)" class="pro-btn pro-btn-cart">+ Keranjang</button>
+                        <button onclick="addToCart(${p.id}, true)" class="pro-btn pro-btn-buy">Beli Sekarang</button>
+                    </div>
                 </div>
             </div>`;
         showView('detail-view');
     }
 
-    // --- FUNGSI KERANJANG DENGAN NOTIFIKASI TOAST ---
     function addToCart(id, direct) {
         const item = allProduk.find(x => x.id == id);
         const ada = cart.find(x => x.id == id);
@@ -199,10 +232,9 @@
         if(direct) {
             renderCheckout();
         } else {
-            // Tampilkan Notifikasi Saja
             const toast = document.getElementById("toast");
             toast.className = "show";
-            setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 2000); // Hilang dalam 2 detik
+            setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 2000);
         }
     }
 
@@ -210,7 +242,12 @@
     function toggleMMenu() { const o = document.getElementById('m-overlay'); o.style.display = o.style.display === 'block' ? 'none' : 'block'; }
     function search() { const q = document.getElementById('main-search').value.toLowerCase(); renderProduk(allProduk.filter(p => p.nama.toLowerCase().includes(q))); }
     function showView(id) { document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active-v')); document.getElementById(id).classList.add('active-v'); window.scrollTo(0,0); }
-    function renderCheckout() { showView('checkout-view'); /* ... (Logika checkout sama seperti sebelumnya) */ }
+    
+    // Placeholder checkout logic
+    function renderCheckout() { 
+        showView('checkout-view'); 
+        document.getElementById('checkout-content').innerHTML = `<h2>Halaman Checkout</h2><button class="pro-back-btn" onclick="showView('catalog-view')">← Kembali Belanja</button>`;
+    }
 
     init();
 </script>
