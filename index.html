@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BACKBONE STORE - Checkout Pro</title>
+    <title>ANDRY BACKBONE STOR - Checkout Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -21,10 +21,10 @@
         body { margin: 0; background-color: var(--bg); color: var(--dark); -webkit-user-select: none; user-select: none; }
         img { pointer-events: none; -webkit-user-drag: none; }
 
-        /* HEADER */
+        /* HEADER - Diperbarui ke ANDRY BACKBONE STOR */
         header { background: var(--white); position: sticky; top: 0; z-index: 1000; box-shadow: 0 1px 0 rgba(0,0,0,0.05); }
         .nav-inner { max-width: 1200px; margin: auto; padding: 12px 20px; display: flex; align-items: center; gap: 15px; }
-        .logo { font-weight: 800; font-size: 1.5rem; color: var(--primary); cursor: pointer; text-decoration: none; }
+        .logo { font-weight: 800; font-size: 1.2rem; color: var(--primary); cursor: pointer; text-decoration: none; text-transform: uppercase; white-space: nowrap; }
         .search-wrapper { flex: 1; }
         .search-bar { width: 100%; padding: 10px 15px; border-radius: 8px; border: 1px solid #eee; background: #f5f5f5; outline: none; }
 
@@ -99,7 +99,6 @@
         .form-input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; outline: none; font-size: 14px; background: #fff; }
         .form-input:focus { border-color: var(--primary); }
 
-        /* Payment Info Box */
         .payment-info { background: #fff9f0; border: 1px dashed #f39c12; padding: 15px; border-radius: 10px; margin: 15px 0; }
         .payment-info p { margin: 5px 0; font-size: 13px; }
         .bank-name { font-weight: 800; color: #003d79; }
@@ -112,6 +111,7 @@
         .btn-wa { width: 100%; padding: 16px; border-radius: 12px; background: var(--success); color: white; border: none; font-weight: 800; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 20px; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3); }
 
         @media (max-width: 768px) {
+            .logo { font-size: 1rem; } /* Ukuran font logo di HP agar tidak patah */
             .sidebar-pc { display: none; }
             .mobile-nav-bar { display: block; }
             .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
@@ -135,7 +135,7 @@
 
 <header>
     <div class="nav-inner">
-        <a class="logo" onclick="location.reload()">BACKBONE.</a>
+        <a class="logo" onclick="location.reload()">ANDRY BACKBONE STOR</a>
         <div class="search-wrapper">
             <input type="text" id="main-search" class="search-bar" placeholder="Cari..." onkeyup="search()">
         </div>
@@ -335,7 +335,7 @@
         const totalOngkir = selectedBaseOngkir * totalBeratKg;
         const total = subtotal + totalOngkir;
 
-        let msg = `*ORDER BARU - BACKBONE STORE*\n`;
+        let msg = `*ORDER BARU - ANDRY BACKBONE STOR*\n`;
         msg += `------------------------------------------\n`;
         msg += `*Data Penerima:*\n- Nama: ${name}\n- WA: ${wa}\n- Wilayah: ${selectedWilayah}\n- Alamat: ${addr}\n\n`;
         msg += `*Daftar Pesanan:*\n`;
