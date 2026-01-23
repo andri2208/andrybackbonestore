@@ -48,18 +48,13 @@
         .m-sub-container { display: none; padding: 10px 0 10px 20px; }
         .m-sub-container.active { display: block; }
 
-        /* --- NOTIFIKASI TOAST --- */
-        #toast {
-            visibility: hidden; min-width: 200px; background-color: #333; color: #fff;
-            text-align: center; border-radius: 8px; padding: 16px; position: fixed;
-            z-index: 3000; left: 50%; bottom: 30px; transform: translateX(-50%);
-            font-size: 14px; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
+        /* NOTIFIKASI TOAST */
+        #toast { visibility: hidden; min-width: 200px; background-color: #333; color: #fff; text-align: center; border-radius: 8px; padding: 16px; position: fixed; z-index: 3000; left: 50%; bottom: 30px; transform: translateX(-50%); font-size: 14px; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 1.5s; }
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
         @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
 
-        /* GRID & CARDS UTAMA */
+        /* GRID UTAMA */
         .main-content { flex: 1; }
         .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
         .product-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); cursor: pointer; }
@@ -68,7 +63,7 @@
         .p-name { font-size: 13px; font-weight: 600; height: 36px; overflow: hidden; margin-bottom: 5px; }
         .p-price { color: var(--primary); font-weight: 800; }
 
-        /* --- CSS DETAIL PRODUK PRO --- */
+        /* DETAIL PRODUK */
         .pro-detail-wrapper { display: flex; gap: 40px; background: white; padding: 30px; border-radius: 15px; }
         .pro-detail-media { flex: 1; position: sticky; top: 100px; height: fit-content; }
         .pro-detail-media img { width: 100%; border-radius: 12px; aspect-ratio: 1/1; object-fit: cover; }
@@ -83,7 +78,7 @@
         .pro-btn-cart { background: var(--primary-light); color: var(--primary); border: 1px solid var(--primary); }
         .pro-btn-buy { background: var(--primary); color: var(--white); }
 
-        /* --- CSS CHECKOUT/KERANJANG PRO --- */
+        /* --- CHECKOUT STYLES --- */
         .checkout-layout { display: flex; gap: 20px; align-items: flex-start; }
         .checkout-main { flex: 1; background: white; border-radius: 15px; padding: 25px; }
         .checkout-side { width: 380px; background: white; border-radius: 15px; padding: 25px; position: sticky; top: 90px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
@@ -99,8 +94,8 @@
         .delete-btn { color: #ff4d4d; border: none; background: none; font-size: 11px; font-weight: 700; cursor: pointer; margin-left: auto; }
 
         .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-size: 12px; font-weight: 800; margin-bottom: 6px; color: var(--dark); text-transform: uppercase; letter-spacing: 0.5px; }
-        .form-input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; outline: none; font-size: 14px; }
+        .form-group label { display: block; font-size: 12px; font-weight: 800; margin-bottom: 6px; color: var(--dark); text-transform: uppercase; }
+        .form-input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; outline: none; font-size: 14px; background: #fff; }
         .form-input:focus { border-color: var(--primary); }
 
         .summary-box { background: #fafafa; padding: 15px; border-radius: 10px; margin-top: 20px; }
@@ -114,14 +109,11 @@
             .mobile-nav-bar { display: block; }
             .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
             .container { padding: 10px; }
-
             .pro-detail-wrapper { flex-direction: column; padding: 0 0 100px 0; gap: 0; background: var(--bg); }
             .pro-detail-media { position: relative; top: 0; }
             .pro-detail-media img { border-radius: 0; }
             .pro-detail-info { padding: 20px; background: white; border-radius: 20px 20px 0 0; margin-top: -20px; position: relative; }
             .pro-actions { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 15px; box-shadow: 0 -5px 15px rgba(0,0,0,0.05); z-index: 2000; margin-top: 0; }
-
-            /* Checkout Mobile */
             .checkout-layout { flex-direction: column; padding-bottom: 100px; }
             .checkout-side { width: 100%; position: static; padding: 20px; }
             .btn-wa { position: fixed; bottom: 15px; left: 15px; right: 15px; width: calc(100% - 30px); z-index: 3000; }
@@ -151,54 +143,51 @@
 
 <div id="catalog-view" class="view-section active-v">
     <div class="container">
-        <aside class="sidebar-pc">
-            <div class="sticky-side">
-                <div style="font-weight:800; font-size:11px; color:#ccc; margin-bottom:15px;">MENU</div>
-                <div id="pc-list-inject"></div>
-            </div>
-        </aside>
+        <aside class="sidebar-pc"><div class="sticky-side"><div id="pc-list-inject"></div></div></aside>
         <main class="main-content"><div id="product-list" class="product-grid"></div></main>
     </div>
 </div>
 
-<div id="detail-view" class="view-section">
-    <div class="container" style="display:block;">
-        <div id="detail-content"></div>
-    </div>
-</div>
-
-<div id="checkout-view" class="view-section">
-    <div class="container" style="display:block;">
-        <div id="checkout-content"></div>
-    </div>
-</div>
-
+<div id="detail-view" class="view-section"><div class="container" style="display:block;"><div id="detail-content"></div></div></div>
+<div id="checkout-view" class="view-section"><div class="container" style="display:block;"><div id="checkout-content"></div></div></div>
 <div id="toast">✅ Berhasil ditambah</div>
 
 <script>
+    // GID 0 untuk Produk, GID XXX untuk Ongkir (Ganti XXX sesuai GID sheet ongkir Anda)
     const GS_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRtNoerhDtHch7TNHVbItg23RG4nneoZ8hv5MBR1Cr40iU5alO8a2O4EUR90YgleMH4-E-6zGJsEgcN/pub?output=csv";
+    const GID_ONGKIR = "123456789"; // <--- GANTI INI DENGAN GID SHEET ONGKIR ANDA
     const WA_ADMIN = "6281574938272";
-    const ONGKIR_FLAT = 15000; // Biaya ongkir
-    const MIN_FREE_ONGKIR = 500000; // Belanja di atas ini gratis ongkir
-    
-    let allProduk = [], treeKategori = {}, cart = [];
+
+    let allProduk = [], treeKategori = {}, cart = [], dataOngkir = [];
+    let selectedOngkir = 0, selectedWilayah = "";
 
     async function init() {
-        const res = await fetch(GS_URL + "&gid=0");
-        const data = parseCSV(await res.text()).slice(1);
-        allProduk = data.map((col, idx) => {
+        // Load Produk
+        const resP = await fetch(GS_URL + "&gid=0");
+        const rawP = parseCSV(await resP.text()).slice(1);
+        allProduk = rawP.map((col, idx) => {
             const [ut, sub] = (col[2] || "Lainnya").includes(">") ? col[2].split(">").map(s => s.trim()) : [col[2].trim(), ""];
             if(!treeKategori[ut]) treeKategori[ut] = new Set();
             if(sub) treeKategori[ut].add(sub);
             return { id: idx, nama: col[0], harga: parseInt(col[1].replace(/[^\d]/g, "")) || 0, utama: ut, sub: sub, foto: col[3], desc: col[4] };
-        }).filter(p => p);
+        });
+
+        // Load Ongkir dari Sheet (Kolom 0: Wilayah, Kolom 1: Harga)
+        try {
+            const resO = await fetch(GS_URL + `&gid=${GID_ONGKIR}`);
+            const rawO = parseCSV(await resO.text()).slice(1);
+            dataOngkir = rawO.map(col => ({ wilayah: col[0], harga: parseInt(col[1].replace(/[^\d]/g, "")) || 0 }));
+        } catch(e) { console.log("Gagal load ongkir", e); }
+
         renderNavs(); renderProduk(allProduk);
     }
 
     function parseCSV(text) { return text.split("\n").map(row => row.split(/,(?=(?:(?:[^\"*]*\"){2})*[^\"*]*$)/).map(c => c.replace(/\"/g, "").trim())); }
 
+    // --- RENDER FUNCTIONS ---
     function renderNavs() {
         const pc = document.getElementById('pc-list-inject'), m = document.getElementById('m-list-inject');
+        pc.innerHTML = '<div style="font-weight:800; font-size:11px; color:#ccc; margin-bottom:15px;">MENU</div>';
         for(let ut in treeKategori) {
             let subs = Array.from(treeKategori[ut]);
             pc.innerHTML += `<div class="pc-cat-group">
@@ -212,40 +201,15 @@
         }
     }
 
-    function filterData(ut, sub) {
-        renderProduk(allProduk.filter(p => p.utama === ut && (sub === 'all' || p.sub === sub)));
-        showView('catalog-view');
-    }
-
     function renderProduk(list) {
         document.getElementById('product-list').innerHTML = list.map(p => `
             <div class="product-card" onclick="openDetail(${p.id})">
                 <img src="${p.foto}" class="thumb">
                 <div class="p-info"><div class="p-name">${p.nama}</div><div class="p-price">Rp ${p.harga.toLocaleString()}</div></div>
-            </div>
-        `).join('');
+            </div>`).join('');
     }
 
-    function openDetail(id) {
-        const p = allProduk.find(x => x.id == id);
-        document.getElementById('detail-content').innerHTML = `
-            <div class="pro-detail-wrapper">
-                <div class="pro-detail-media"><img src="${p.foto}" alt="${p.nama}"></div>
-                <div class="pro-detail-info">
-                    <button class="pro-back-btn" onclick="showView('catalog-view')">← Kembali</button>
-                    <h2 class="pro-title">${p.nama}</h2>
-                    <div class="pro-price">Rp ${p.harga.toLocaleString()}</div>
-                    <span class="pro-desc-label">Deskripsi Produk</span>
-                    <p class="pro-desc-content">${p.desc || 'Tidak ada deskripsi.'}</p>
-                    <div class="pro-actions">
-                        <button onclick="addToCart(${p.id}, false)" class="pro-btn pro-btn-cart">+ Keranjang</button>
-                        <button onclick="addToCart(${p.id}, true)" class="pro-btn pro-btn-buy">Beli Sekarang</button>
-                    </div>
-                </div>
-            </div>`;
-        showView('detail-view');
-    }
-
+    // --- CORE LOGIC ---
     function addToCart(id, direct) {
         const item = allProduk.find(x => x.id == id);
         const ada = cart.find(x => x.id == id);
@@ -254,42 +218,38 @@
         if(direct) renderCheckout(); else showToast();
     }
 
-    function updateBadge() {
-        document.getElementById('badge-count').innerText = cart.reduce((s, i) => s + i.qty, 0);
-    }
-
-    function showToast() {
-        const t = document.getElementById("toast");
-        t.className = "show";
-        setTimeout(() => { t.className = ""; }, 2000);
-    }
-
-    // --- LOGIKA CHECKOUT & ONGKIR ---
     function updateQty(id, delta) {
         const item = cart.find(x => x.id == id);
         if(item) {
             item.qty += delta;
             if(item.qty <= 0) cart = cart.filter(x => x.id !== id);
         }
-        updateBadge();
-        renderCheckout();
+        updateBadge(); renderCheckout();
+    }
+
+    // --- CHECKOUT WITH DYNAMIC ONGKIR ---
+    function updateWilayah(el) {
+        const val = el.value;
+        const found = dataOngkir.find(o => o.wilayah === val);
+        selectedOngkir = found ? found.harga : 0;
+        selectedWilayah = val;
+        renderCheckout(); // Refresh total harga
     }
 
     function renderCheckout() {
         showView('checkout-view');
-        const subtotal = cart.reduce((s, i) => s + (i.harga * i.qty), 0);
-        const ongkir = subtotal >= MIN_FREE_ONGKIR ? 0 : ONGKIR_FLAT;
-        const total = subtotal + ongkir;
-        
         if(cart.length === 0) {
             document.getElementById('checkout-content').innerHTML = `<div style="text-align:center; padding:50px; background:white; border-radius:15px;"><p>Keranjang Kosong</p><button class="pro-back-btn" onclick="showView('catalog-view')">Belanja Sekarang</button></div>`;
             return;
         }
 
+        const subtotal = cart.reduce((s, i) => s + (i.harga * i.qty), 0);
+        const total = subtotal + selectedOngkir;
+
         document.getElementById('checkout-content').innerHTML = `
             <div class="checkout-layout">
                 <div class="checkout-main">
-                    <h3 style="margin-top:0">Pesanan Anda</h3>
+                    <h3 style="margin-top:0">Item Belanja</h3>
                     ${cart.map(item => `
                         <div class="cart-item">
                             <img src="${item.foto}">
@@ -303,34 +263,38 @@
                                     <button class="delete-btn" onclick="updateQty(${item.id}, -${item.qty})">Hapus</button>
                                 </div>
                             </div>
-                        </div>
-                    `).join('')}
+                        </div>`).join('')}
                 </div>
                 
                 <div class="checkout-side">
-                    <h3 style="margin-top:0">Detail Pengiriman</h3>
+                    <h3 style="margin-top:0">Data Pengiriman</h3>
                     <div class="form-group">
                         <label>Nama Penerima</label>
-                        <input type="text" id="cust-name" class="form-input" placeholder="Masukkan nama">
+                        <input type="text" id="cust-name" class="form-input" placeholder="Nama Lengkap">
                     </div>
                     <div class="form-group">
-                        <label>Nomor WhatsApp</label>
-                        <input type="tel" id="cust-wa" class="form-input" placeholder="Contoh: 0812xxxx">
+                        <label>WhatsApp Anda</label>
+                        <input type="tel" id="cust-wa" class="form-input" placeholder="0812xxxx">
+                    </div>
+                    <div class="form-group">
+                        <label>Pilih Wilayah (Ongkir)</label>
+                        <select class="form-input" onchange="updateWilayah(this)">
+                            <option value="">-- Pilih Wilayah --</option>
+                            ${dataOngkir.map(o => `<option value="${o.wilayah}" ${selectedWilayah === o.wilayah ? 'selected' : ''}>${o.wilayah} (Rp ${o.harga.toLocaleString()})</option>`).join('')}
+                        </select>
                     </div>
                     <div class="form-group">
                         <label>Alamat Lengkap</label>
-                        <textarea id="cust-addr" class="form-input" rows="3" placeholder="Nama jalan, nomor rumah, kec/kota"></textarea>
+                        <textarea id="cust-addr" class="form-input" rows="3" placeholder="Jl. Nama Jalan, No, Kec/Kota"></textarea>
                     </div>
                     
                     <div class="summary-box">
                         <div class="summary-row"><span>Subtotal</span><span>Rp ${subtotal.toLocaleString()}</span></div>
-                        <div class="summary-row"><span>Ongkos Kirim</span><span>${ongkir === 0 ? '<b style="color:#25D366">GRATIS</b>' : 'Rp ' + ongkir.toLocaleString()}</span></div>
+                        <div class="summary-row"><span>Ongkos Kirim</span><span>Rp ${selectedOngkir.toLocaleString()}</span></div>
                         <div class="summary-row total-price"><span>Total Bayar</span><span>Rp ${total.toLocaleString()}</span></div>
                     </div>
                     
-                    <button class="btn-wa" onclick="sendWhatsApp()">
-                        <span>Pesan via WhatsApp</span>
-                    </button>
+                    <button class="btn-wa" onclick="sendWhatsApp()"><span>Pesan Sekarang</span></button>
                     <button onclick="showView('catalog-view')" style="width:100%; border:none; background:none; font-weight:700; color:var(--gray); margin-top:15px; cursor:pointer;">Lanjut Belanja</button>
                 </div>
             </div>`;
@@ -340,38 +304,45 @@
         const name = document.getElementById('cust-name').value;
         const wa = document.getElementById('cust-wa').value;
         const addr = document.getElementById('cust-addr').value;
-        
-        if(!name || !wa || !addr) return alert('Mohon lengkapi data pengiriman!');
+        if(!name || !wa || !selectedWilayah || !addr) return alert('Mohon lengkapi semua data!');
 
         const subtotal = cart.reduce((s, i) => s + (i.harga * i.qty), 0);
-        const ongkir = subtotal >= MIN_FREE_ONGKIR ? 0 : ONGKIR_FLAT;
-        const total = subtotal + ongkir;
-
-        let msg = `*PESANAN BARU - BACKBONE STORE*\n`;
-        msg += `------------------------------\n`;
-        msg += `*Nama:* ${name}\n`;
-        msg += `*WA:* ${wa}\n`;
-        msg += `*Alamat:* ${addr}\n\n`;
-        msg += `*DAFTAR ITEM:*\n`;
-        
-        cart.forEach(item => {
-            msg += `- ${item.nama} (${item.qty}x) = Rp ${(item.harga * item.qty).toLocaleString()}\n`;
-        });
-        
-        msg += `\n------------------------------\n`;
-        msg += `*Subtotal:* Rp ${subtotal.toLocaleString()}\n`;
-        msg += `*Ongkir:* ${ongkir === 0 ? 'GRATIS' : 'Rp ' + ongkir.toLocaleString()}\n`;
-        msg += `*TOTAL BAYAR: Rp ${total.toLocaleString()}*\n`;
-        msg += `------------------------------\n`;
-        msg += `_Mohon segera diproses, terima kasih!_`;
+        let msg = `*ORDER BARU - BACKBONE STORE*\n\n`;
+        msg += `*Data Penerima:*\n- Nama: ${name}\n- WA: ${wa}\n- Wilayah: ${selectedWilayah}\n- Alamat: ${addr}\n\n`;
+        msg += `*Daftar Pesanan:*\n`;
+        cart.forEach(item => { msg += `- ${item.nama} (${item.qty}x) = Rp ${(item.harga * item.qty).toLocaleString()}\n`; });
+        msg += `\n*Rincian:*\n- Subtotal: Rp ${subtotal.toLocaleString()}\n- Ongkir: Rp ${selectedOngkir.toLocaleString()}\n- *TOTAL: Rp ${(subtotal + selectedOngkir).toLocaleString()}*`;
         
         window.open(`https://wa.me/${WA_ADMIN}?text=${encodeURIComponent(msg)}`);
     }
 
+    // --- UI HELPERS ---
+    function openDetail(id) {
+        const p = allProduk.find(x => x.id == id);
+        document.getElementById('detail-content').innerHTML = `
+            <div class="pro-detail-wrapper">
+                <div class="pro-detail-media"><img src="${p.foto}"></div>
+                <div class="pro-detail-info">
+                    <button class="pro-back-btn" onclick="showView('catalog-view')">← Kembali</button>
+                    <h2 class="pro-title">${p.nama}</h2>
+                    <div class="pro-price">Rp ${p.harga.toLocaleString()}</div>
+                    <span class="pro-desc-label">Deskripsi</span>
+                    <p class="pro-desc-content">${p.desc || '-'}</p>
+                    <div class="pro-actions">
+                        <button onclick="addToCart(${p.id}, false)" class="pro-btn pro-btn-cart">+ Keranjang</button>
+                        <button onclick="addToCart(${p.id}, true)" class="pro-btn pro-btn-buy">Beli Sekarang</button>
+                    </div>
+                </div>
+            </div>`;
+        showView('detail-view');
+    }
     function toggleMSub(el) { el.nextElementSibling.classList.toggle('active'); }
     function toggleMMenu() { const o = document.getElementById('m-overlay'); o.style.display = o.style.display === 'block' ? 'none' : 'block'; }
     function search() { const q = document.getElementById('main-search').value.toLowerCase(); renderProduk(allProduk.filter(p => p.nama.toLowerCase().includes(q))); }
     function showView(id) { document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active-v')); document.getElementById(id).classList.add('active-v'); window.scrollTo(0,0); }
+    function filterData(ut, sub) { renderProduk(allProduk.filter(p => p.utama === ut && (sub === 'all' || p.sub === sub))); showView('catalog-view'); }
+    function updateBadge() { document.getElementById('badge-count').innerText = cart.reduce((s, i) => s + i.qty, 0); }
+    function showToast() { const t = document.getElementById("toast"); t.className = "show"; setTimeout(() => { t.className = ""; }, 2000); }
 
     init();
 </script>
