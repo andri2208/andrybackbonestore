@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ANDRY BACKBONE STORE | Bilah Berkualitas</title>
+    <title>Andry Backbone Store - Desktop Pro</title>
     <style>
         :root { --primary: #ee4d2d; --orange-light: #ff5722; --bg: #f5f5f5; --white: #ffffff; }
         body { font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto; background: var(--bg); margin: 0; color: #333; }
@@ -21,104 +21,22 @@
         .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; }
         .card { background: white; border-radius: 4px; overflow: hidden; cursor: pointer; transition: transform 0.2s; border: 1px solid #eee; }
         .card:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; }
+        .card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; -webkit-user-drag: none; }
         .card-info { padding: 10px; }
         .card-price { color: var(--primary); font-weight: bold; font-size: 1.1rem; }
 
-       /* Container Utama Detail */
-.detail-wrapper { 
-    display: flex; 
-    flex-wrap: wrap; /* Agar otomatis tumpuk di HP */
-    gap: 30px; 
-    background: white; 
-    padding: 20px; 
-    border-radius: 8px;
-    max-width: 1000px;
-    margin: auto;
-}
+        /* Detail */
+        .detail-wrapper { display: flex; flex-wrap: wrap; gap: 30px; background: white; padding: 20px; border-radius: 8px; max-width: 1000px; margin: auto; }
+        .detail-left { flex: 1; min-width: 300px; }
+        .detail-right { flex: 1; min-width: 300px; display: flex; flex-direction: column; }
+        .detail-img-main { width: 100%; max-width: 450px; height: auto; aspect-ratio: 1/1; object-fit: cover; border-radius: 8px; -webkit-user-drag: none; }
+        #main-desc { max-width: 100%; word-wrap: break-word; }
+        .price-big { background: #fafafa; padding: 15px; color: var(--primary); font-size: 2rem; font-weight: bold; margin: 15px 0; border-radius: 4px; }
+        .shipping-section { margin: 20px 0; padding: 15px 0; border-top: 1px solid #eee; border-bottom: 1px solid #eee; font-size: 0.9rem; }
+        .action-buttons { display: flex; gap: 10px; margin-top: 20px; }
+        .btn-buy { flex: 1; padding: 15px; background: var(--primary); color: white; border: none; font-weight: bold; cursor: pointer; border-radius: 3px; }
 
-/* Kotak Gambar (Kiri) */
-.detail-left { 
-    flex: 1; 
-    min-width: 300px; 
-}
-
-        /* Kotak Info (Kanan) */
-.detail-right { 
-    flex: 1; 
-    min-width: 300px; 
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-}
-
-        .detail-img-large { 
-    width: 100%; 
-    border-radius: 8px;
-    object-fit: contain;
-}
-        
-       /* Tambahan agar gambar pas di kotak kiri */
-.detail-img-main {
-    width: 100%;
-    max-width: 450px; /* Ukuran maksimal gambar agar tidak memenuhi layar */
-    height: auto;
-    aspect-ratio: 1/1;
-    object-fit: cover;
-    border-radius: 8px;
-}
-
-        /* Memastikan teks deskripsi tidak meluber */
-#main-desc {
-    max-width: 100%;
-    word-wrap: break-word;
-}
-
-        .price-big { 
-            background: #fafafa; 
-            padding: 15px; 
-            color: var(--primary); 
-            font-size: 2rem; 
-            font-weight: bold; 
-            margin: 15px 0;
-            border-radius: 4px;
-        }
-
-        .shipping-section { 
-            margin: 20px 0; 
-            padding: 15px 0; 
-            border-top: 1px solid #eee; 
-            border-bottom: 1px solid #eee; 
-            font-size: 0.9rem;
-        }
-
-       /* Tombol agar sejajar */
-.action-buttons { 
-    display: flex; 
-    gap: 10px; 
-    margin-top: 20px; 
-}
-        
-        .btn-buy { 
-            flex: 1; 
-            padding: 15px; 
-            background: var(--primary); 
-            color: white; 
-            border: none; 
-            font-weight: bold; 
-            cursor: pointer;
-            border-radius: 3px;
-        }
-
-        /* RESPONSIVE: Di HP berubah jadi tumpuk vertikal */
-        @media (max-width: 768px) {
-            .detail-wrapper { flex-direction: column; padding: 15px; }
-            .detail-left { min-width: 100%; }
-            .price-big { font-size: 1.5rem; }
-            .action-buttons { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 10px; z-index: 1000; margin: 0; border-top: 1px solid #eee; }
-        }
-
-        /* KERANJANG */
+        /* Keranjang */
         .cart-container { background: white; padding: 20px; border-radius: 8px; }
         .cart-item { display: flex; gap: 15px; padding: 15px 0; border-bottom: 1px solid #eee; align-items: center; }
         .cart-item img { width: 70px; height: 70px; object-fit: cover; }
@@ -126,30 +44,22 @@
         #toast { visibility: hidden; background: #333; color: white; padding: 15px 30px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 5px; z-index: 3000; }
         #toast.show { visibility: visible; }
 
-        /* Style Tombol Kategori */
-.cat-btn {
-    padding: 8px 15px;
-    border-radius: 20px;
-    border: 1px solid #ddd;
-    background: #fff;
-    cursor: pointer;
-    white-space: nowrap; /* Agar tombol tidak turun ke bawah */
-    font-size: 0.85rem;
-    transition: 0.3s;
-}
-      .cat-btn.active {
-    background: #ee4d2d !important;
-    color: white !important;
-    border-color: #ee4d2d !important;
-}
-        
-        /* Sembunyikan scrollbar di area kategori agar estetik */
-#category-bar::-webkit-scrollbar {
-    display: none;
-}
+        .cat-btn { padding: 8px 15px; border-radius: 20px; border: 1px solid #ddd; background: #fff; cursor: pointer; white-space: nowrap; font-size: 0.85rem; transition: 0.3s; }
+        .cat-btn.active { background: #ee4d2d !important; color: white !important; border-color: #ee4d2d !important; }
+        #category-bar::-webkit-scrollbar { display: none; }
+
+        /* Anti-Download Policy (User Request) */
+        img { pointer-events: none; -webkit-touch-callout: none; }
+        body { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+        input, textarea { -webkit-user-select: text; user-select: text; }
+
+        @media (max-width: 768px) {
+            .detail-wrapper { flex-direction: column; padding: 15px; }
+            .action-buttons { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 10px; z-index: 1000; margin: 0; border-top: 1px solid #eee; }
+        }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
 
 <nav>
     <div class="nav-title" onclick="tampilkanKatalog()">Andry Backbone Store</div>
@@ -163,50 +73,32 @@
         <input type="text" id="input-search" placeholder="Cari produk..." onkeyup="jalankanFilter()" 
                style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;">
     </div>
-
     <div id="category-bar" style="margin-bottom: 20px; display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px;">
         <button class="cat-btn active" onclick="filterKategori('Semua', this)">Semua</button>
     </div>
-
     <div class="catalog-grid" id="produk-list"></div>
 </div>
 
 <div id="detail-view" class="view">
     <div style="margin-bottom: 20px; cursor: pointer; color: #666;" onclick="tampilkanKatalog()">← Kembali ke Katalog</div>
-    
     <div class="detail-wrapper">
-        
-        <div class="detail-left">
-            <img id="main-img" class="detail-img-main">
-        </div>
-        
+        <div class="detail-left"><img id="main-img" class="detail-img-main"></div>
         <div class="detail-right">
             <h1 id="main-title" style="margin:0; font-size: 1.8rem;"></h1>
-            
             <div id="main-price" class="price-big"></div>
-            
             <div class="shipping-section">
-                <div style="display:flex; margin-bottom: 8px;">
-                    <span style="width: 100px; color: #757575;">Pengiriman</span>
-                    <span>🚚 Pengiriman ke seluruh Indonesia</span>
-                </div>
-                <div style="display:flex;">
-                    <span style="width: 100px; color: #757575;">Berat</span>
-                    <span id="main-weight"></span>
-                </div>
+                <div style="display:flex; margin-bottom: 8px;"><span style="width: 100px; color: #757575;">Pengiriman</span><span>🚚 Seluruh Indonesia</span></div>
+                <div style="display:flex;"><span style="width: 100px; color: #757575;">Berat</span><span id="main-weight"></span></div>
             </div>
-
             <div style="margin-top: 20px;">
-                <h3 style="font-size: 1rem; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px;">Deskripsi Produk</h3>
+                <h3 style="font-size: 1rem; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px;">Deskripsi</h3>
                 <p id="main-desc" style="line-height: 1.6; color: #555; white-space: pre-line;"></p>
             </div>
-
             <div class="action-buttons">
                 <button onclick="tambahKeKeranjang()" style="flex:1; padding:15px; background:#ff57221a; color:#ee4d2d; border:1px solid #ee4d2d; font-weight:bold; cursor:pointer;">+ Keranjang</button>
                 <button class="btn-buy" onclick="beliLangsung()">Beli Sekarang</button>
             </div>
         </div>
-        
     </div>
 </div>
 
@@ -214,19 +106,14 @@
     <div class="cart-container">
         <h2>Keranjang Belanja</h2>
         <div id="cart-items-list"></div>
-        
         <div id="checkout-form" style="margin-top: 30px; display: none;">
             <div style="margin-bottom: 15px;">
                 <label>Pilih Wilayah (Ongkir Otomatis):</label>
                 <select id="cust-region" onchange="hitungSemua()" style="width:100%; padding:10px; margin-top:5px;">
-                    <option value="0" data-ongkir="0">-- Pilih Wilayah --</option>
-                    <option value="BANDA ACEH" data-ongkir="58000">BANDA ACEH (58rb/kg)</option>
-                    <option value="MEDAN" data-ongkir="48000">MEDAN (48rb/kg)</option>
-                    <option value="MEDAN AMPLAS,MEDAN" data-ongkir="48000">MEDAN AMPLAS,MEDAN (48rb/kg)</option>
+                    <option value="0" data-ongkir="0">-- Loading Wilayah... --</option>
                 </select>
             </div>
             <textarea id="cust-addr" placeholder="Nama & Alamat Lengkap..." style="width:100%; padding:10px; height:80px; box-sizing:border-box;"></textarea>
-            
             <div style="margin-top:20px; text-align: right; border-top: 1px solid #eee; padding-top: 20px;">
                 <div style="font-size: 1.2rem; margin-bottom: 10px;">Total Pembayaran: <span id="sum-total" style="color:var(--primary); font-weight:bold;">Rp 0</span></div>
                 <button onclick="checkoutWA()" style="background:var(--primary); color:white; border:none; padding:15px 40px; font-weight:bold; cursor:pointer; border-radius:3px;">BUAT PESANAN</button>
@@ -239,45 +126,73 @@
 <div id="toast">Produk berhasil masuk keranjang!</div>
 
 <script>
-    const linkGSheet = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRtNoerhDtHch7TNHVbItg23RG4nneoZ8hv5MBR1Cr40iU5alO8a2O4EUR90YgleMH4-E-6zGJsEgcN/pub?output=csv";
+    // URL CSV Google Sheets (Pastikan dipublikasi ke web sebagai CSV)
+    // Gunakan Gid=0 untuk Sheet1 dan Gid lain untuk Sheet2
+    const baseGSheet = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRtNoerhDtHch7TNHVbItg23RG4nneoZ8hv5MBR1Cr40iU5alO8a2O4EUR90YgleMH4-E-6zGJsEgcN/pub?output=csv";
+    const ongkirGSheet = baseGSheet + "https://docs.google.com/spreadsheets/d/e/2PACX-1vRtNoerhDtHch7TNHVbItg23RG4nneoZ8hv5MBR1Cr40iU5alO8a2O4EUR90YgleMH4-E-6zGJsEgcN/pub?output=csv"; // GANTI gid ini sesuai gid Sheet2 Anda (lihat di URL browser saat buka tab tersebut)
     const nomorWA = "6281574938272";
 
     let semuaProduk = [];
     let keranjang = [];
     let produkAktif = null;
+    let kategoriTerpilih = "Semua";
 
     async function init() {
-    const res = await fetch(linkGSheet);
-    const csv = await res.text();
-    const rows = csv.split("\n").slice(1);
-    let kategoriSet = new Set(); // Tempat menyimpan nama kategori unik
+        await loadProduk();
+        await loadOngkir();
+    }
 
-    semuaProduk = rows.map((row, idx) => {
-        const col = row.split(/[,;](?=(?:(?:[^"]*"){2})*[^"]*$)/);
-        if(col.length < 3) return null;
-        
-        const kat = col[2]?.replace(/"/g, "").trim() || "Lainnya";
-        kategoriSet.add(kat); // Masukkan kategori ke Set
+    async function loadProduk() {
+        const res = await fetch(baseGSheet + "&gid=0");
+        const csv = await res.text();
+        const rows = csv.split("\n").slice(1);
+        let kategoriSet = new Set();
 
-        return { 
-            id: idx, 
-            nama: col[0].replace(/"/g, "").trim(), 
-            harga: parseInt(col[1].replace(/[^\d]/g, "")) || 0, 
-            kategori: kat, 
-            foto: col[3]?.trim(), 
-            desc: col[4]?.replace(/"/g, "").trim(), 
-            berat: parseInt(col[5]) || 0 
-        };
-    }).filter(p => p !== null);
+        semuaProduk = rows.map((row, idx) => {
+            const col = row.split(/[,;](?=(?:(?:[^"]*"){2})*[^"]*$)/);
+            if(col.length < 3) return null;
+            const kat = col[2]?.replace(/"/g, "").trim() || "Lainnya";
+            kategoriSet.add(kat);
+            return { 
+                id: idx, 
+                nama: col[0].replace(/"/g, "").trim(), 
+                harga: parseInt(col[1].replace(/[^\d]/g, "")) || 0, 
+                kategori: kat, 
+                foto: col[3]?.trim(), 
+                desc: col[4]?.replace(/"/g, "").trim(), 
+                berat: parseInt(col[5]) || 0 
+            };
+        }).filter(p => p !== null);
 
-    // MEMBUAT TOMBOL KATEGORI SECARA OTOMATIS
-    const catBar = document.getElementById('category-bar');
-    Array.from(kategoriSet).sort().forEach(kat => {
-        catBar.innerHTML += `<button class="cat-btn" onclick="filterKategori('${kat}', this)">${kat}</button>`;
-    });
+        const catBar = document.getElementById('category-bar');
+        Array.from(kategoriSet).sort().forEach(kat => {
+            catBar.innerHTML += `<button class="cat-btn" onclick="filterKategori('${kat}', this)">${kat}</button>`;
+        });
+        renderKatalog(semuaProduk);
+    }
 
-    renderKatalog(semuaProduk);
-}
+    async function loadOngkir() {
+        try {
+            // Kita coba ambil dari gid Sheet2
+            const res = await fetch(ongkirGSheet);
+            const csv = await res.text();
+            const rows = csv.split("\n").slice(1);
+            
+            const selectRegion = document.getElementById('cust-region');
+            selectRegion.innerHTML = '<option value="0" data-ongkir="0">-- Pilih Wilayah --</option>';
+            
+            rows.forEach(row => {
+                const col = row.split(/[,;](?=(?:(?:[^"]*"){2})*[^**$)/);
+                if(col.length >= 2) {
+                    const namaWilayah = col[0].replace(/"/g, "").trim();
+                    const hargaOngkir = parseInt(col[1].replace(/[^\d]/g, "")) || 0;
+                    selectRegion.innerHTML += `<option value="${namaWilayah}" data-ongkir="${hargaOngkir}">${namaWilayah} (Rp ${hargaOngkir.toLocaleString()}/kg)</option>`;
+                }
+            });
+        } catch (e) {
+            console.error("Gagal load ongkir", e);
+        }
+    }
 
     function renderKatalog(data) {
         document.getElementById('produk-list').innerHTML = data.map(p => `
@@ -331,61 +246,45 @@
                     <div style="color:var(--primary); font-weight:bold;">Rp ${item.harga.toLocaleString()}</div>
                 </div>
                 <div>
-                    <input type="number" value="${item.qty}" min="1" onchange="ubahQty(${idx}, this.value)" style="width:40px; padding:5px;">
+                    <input type="number" value="${item.qty}" min="1" onchange="ubahQty(${idx}, this.value)" style="width:45px; padding:5px;">
                 </div>
-                <button onclick="hapusItem(${idx})" style="border:none; background:none; color:red; cursor:pointer;">Hapus</button>
+                <button onclick="hapusItem(${idx})" style="border:none; background:none; color:red; cursor:pointer; margin-left:10px;">Hapus</button>
             </div>`).join('');
         hitungSemua();
     }
 
     function hitungSemua() {
         const sub = keranjang.reduce((s, i) => s + (i.harga * i.qty), 0);
-        const beratKg = Math.ceil(keranjang.reduce((s, i) => s + (i.berat * i.qty), 0) / 1000);
+        const beratTotalGram = keranjang.reduce((s, i) => s + (i.berat * i.qty), 0);
+        const beratKg = Math.ceil(beratTotalGram / 1000);
         const tarif = parseInt(document.getElementById('cust-region').selectedOptions[0].getAttribute('data-ongkir')) || 0;
-        document.getElementById('sum-total').innerText = "Rp " + (sub + (beratKg * tarif)).toLocaleString();
+        const totalOngkir = beratKg * tarif;
+        document.getElementById('sum-total').innerText = "Rp " + (sub + totalOngkir).toLocaleString();
     }
 
-    function ubahQty(idx, val) { keranjang[idx].qty = parseInt(val); hitungSemua(); updateCount(); }
+    function ubahQty(idx, val) { keranjang[idx].qty = parseInt(val) || 1; hitungSemua(); updateCount(); }
     function hapusItem(idx) { keranjang.splice(idx, 1); renderIsiKeranjang(); updateCount(); }
     function updateCount() { document.getElementById('cart-count').innerText = keranjang.reduce((s, i) => s + i.qty, 0); }
     function beliLangsung() { tambahKeKeranjang(); tampilkanKeranjang(); }
     function tampilkanKeranjang() { switchView('cart-view'); renderIsiKeranjang(); }
     function tampilkanKatalog() { switchView('catalog-view'); }
-    function jalankanFilter() {
-        const kw = document.getElementById('input-search').value.toLowerCase();
-        renderKatalog(semuaProduk.filter(p => p.nama.toLowerCase().includes(kw)));
+
+    function filterKategori(kat, btn) {
+        kategoriTerpilih = kat;
+        document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        jalankanFilter();
     }
 
-    let kategoriTerpilih = "Semua"; // Variabel global untuk menyimpan status kategori
-
-function filterKategori(kat, btn) {
-    // 1. Simpan kategori yang diklik ke variabel global
-    kategoriTerpilih = kat;
-
-    // 2. Ubah tampilan tombol agar yang aktif berwarna orange
-    const semuaTombol = document.querySelectorAll('.cat-btn');
-    semuaTombol.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-
-    // 3. Panggil fungsi filter untuk memperbarui daftar produk
-    jalankanFilter();
-}
-
-// GANTI fungsi jalankanFilter lama kamu dengan yang ini:
-function jalankanFilter() {
-    const kw = document.getElementById('input-search').value.toLowerCase();
-    
-    const hasilFilter = semuaProduk.filter(p => {
-        // Cek apakah nama produk mengandung kata kunci pencarian
-        const cocokNama = p.nama.toLowerCase().includes(kw);
-        // Cek apakah kategori produk sesuai dengan tombol yang diklik
-        const cocokKategori = (kategoriTerpilih === "Semua" || p.kategori === kategoriTerpilih);
-        
-        return cocokNama && cocokKategori;
-    });
-
-    renderKatalog(hasilFilter);
-}
+    function jalankanFilter() {
+        const kw = document.getElementById('input-search').value.toLowerCase();
+        const hasil = semuaProduk.filter(p => {
+            const cocokNama = p.nama.toLowerCase().includes(kw);
+            const cocokKategori = (kategoriTerpilih === "Semua" || p.kategori === kategoriTerpilih);
+            return cocokNama && cocokKategori;
+        });
+        renderKatalog(hasil);
+    }
 
     function checkoutWA() {
         const addr = document.getElementById('cust-addr').value;
@@ -406,11 +305,3 @@ function jalankanFilter() {
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
