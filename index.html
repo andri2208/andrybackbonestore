@@ -13,6 +13,7 @@
             --gray: #757575;
             --white: #ffffff;
             --bg: #f7f7f9;
+            --border: #eeeeee;
         }
 
         * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -28,7 +29,7 @@
 
         .container { max-width: 1200px; margin: auto; padding: 20px; display: flex; gap: 30px; }
 
-        /* --- SIDEBAR PC (HOVER DOWN) --- */
+        /* --- SIDEBAR PC --- */
         .sidebar-pc { width: 240px; flex-shrink: 0; }
         .sticky-side { position: sticky; top: 90px; }
         .pc-cat-group { margin-bottom: 5px; border-radius: 8px; overflow: hidden; }
@@ -39,7 +40,7 @@
         .sub-item-pc { padding: 8px 15px; font-size: 13px; color: var(--gray); cursor: pointer; border-radius: 5px; }
         .sub-item-pc:hover { color: var(--primary); font-weight: 600; }
 
-        /* --- MOBILE NAV (CLICK) --- */
+        /* --- MOBILE NAV --- */
         .mobile-nav-bar { display: none; background: white; padding: 10px 15px; border-bottom: 1px solid #eee; position: sticky; top: 62px; z-index: 999; }
         .m-drop-btn { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; background: white; font-weight: 700; display: flex; justify-content: space-between; }
         .m-menu-overlay { display: none; position: fixed; top: 115px; left: 0; width: 100%; height: 100%; background: white; z-index: 2000; overflow-y: auto; padding: 20px; }
@@ -67,22 +68,45 @@
         .p-name { font-size: 13px; font-weight: 600; height: 36px; overflow: hidden; margin-bottom: 5px; }
         .p-price { color: var(--primary); font-weight: 800; }
 
-        /* --- CSS DETAIL PRODUK PRO (HP & PC) --- */
+        /* --- CSS DETAIL PRODUK PRO --- */
         .pro-detail-wrapper { display: flex; gap: 40px; background: white; padding: 30px; border-radius: 15px; }
         .pro-detail-media { flex: 1; position: sticky; top: 100px; height: fit-content; }
         .pro-detail-media img { width: 100%; border-radius: 12px; aspect-ratio: 1/1; object-fit: cover; }
         .pro-detail-info { flex: 1; }
         .pro-back-btn { border: none; background: #f0f0f0; padding: 8px 15px; border-radius: 20px; font-weight: 600; cursor: pointer; margin-bottom: 20px; transition: 0.2s; }
-        .pro-back-btn:hover { background: #e0e0e0; }
         .pro-title { font-size: 24px; font-weight: 800; margin: 0 0 10px 0; color: var(--dark); }
         .pro-price { font-size: 28px; font-weight: 800; color: var(--primary); margin-bottom: 20px; }
         .pro-desc-label { font-weight: 800; border-top: 1px solid #eee; padding-top: 20px; margin-top: 20px; display: block; }
         .pro-desc-content { color: var(--gray); line-height: 1.6; margin-top: 10px; font-size: 15px; white-space: pre-line; }
-        
         .pro-actions { display: flex; gap: 15px; margin-top: 30px; }
         .pro-btn { flex: 1; padding: 15px; border-radius: 10px; font-weight: 800; cursor: pointer; border: none; transition: 0.2s; }
         .pro-btn-cart { background: var(--primary-light); color: var(--primary); border: 1px solid var(--primary); }
         .pro-btn-buy { background: var(--primary); color: var(--white); }
+
+        /* --- CSS CHECKOUT/KERANJANG PRO --- */
+        .checkout-layout { display: flex; gap: 20px; align-items: flex-start; }
+        .checkout-main { flex: 1; background: white; border-radius: 15px; padding: 25px; }
+        .checkout-side { width: 380px; background: white; border-radius: 15px; padding: 25px; position: sticky; top: 90px; }
+        
+        .cart-item { display: flex; gap: 15px; padding: 15px 0; border-bottom: 1px solid var(--border); }
+        .cart-item img { width: 80px; height: 80px; border-radius: 10px; object-fit: cover; }
+        .cart-item-info { flex: 1; }
+        .cart-item-name { font-weight: 700; font-size: 15px; margin-bottom: 5px; }
+        .cart-item-price { color: var(--primary); font-weight: 800; }
+        
+        .qty-control { display: flex; align-items: center; gap: 12px; margin-top: 10px; }
+        .qty-btn { width: 28px; height: 28px; border-radius: 50%; border: 1px solid #ddd; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .delete-btn { color: #ff4d4d; border: none; background: none; font-size: 12px; font-weight: 600; cursor: pointer; margin-left: auto; }
+
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 8px; color: var(--gray); }
+        .form-input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; outline: none; transition: 0.3s; }
+        .form-input:focus { border-color: var(--primary); }
+
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-weight: 600; }
+        .total-price { font-size: 20px; font-weight: 800; color: var(--primary); border-top: 1px dashed #ddd; padding-top: 15px; margin-top: 15px; }
+        
+        .btn-wa { width: 100%; padding: 16px; border-radius: 12px; background: #25D366; color: white; border: none; font-weight: 800; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 20px; }
 
         @media (max-width: 768px) {
             .sidebar-pc { display: none; }
@@ -90,20 +114,16 @@
             .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
             .container { padding: 10px; }
 
-            /* Detail HP Mode */
             .pro-detail-wrapper { flex-direction: column; padding: 0 0 100px 0; gap: 0; background: var(--bg); }
             .pro-detail-media { position: relative; top: 0; }
             .pro-detail-media img { border-radius: 0; }
             .pro-detail-info { padding: 20px; background: white; border-radius: 20px 20px 0 0; margin-top: -20px; position: relative; }
-            .pro-title { font-size: 18px; }
-            .pro-price { font-size: 22px; }
-            
-            /* Sticky Bottom Action HP */
-            .pro-actions { 
-                position: fixed; bottom: 0; left: 0; right: 0; background: white; 
-                padding: 15px; box-shadow: 0 -5px 15px rgba(0,0,0,0.05); z-index: 2000; margin-top: 0;
-            }
-            .pro-back-btn { position: absolute; top: -50px; left: 15px; background: rgba(255,255,255,0.9); }
+            .pro-actions { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 15px; box-shadow: 0 -5px 15px rgba(0,0,0,0.05); z-index: 2000; margin-top: 0; }
+
+            /* Checkout Mobile */
+            .checkout-layout { flex-direction: column; padding-bottom: 120px; }
+            .checkout-side { width: 100%; position: static; }
+            .btn-wa { position: fixed; bottom: 15px; left: 15px; right: 15px; width: calc(100% - 30px); z-index: 3000; box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4); }
         }
 
         .view-section { display: none; }
@@ -146,7 +166,11 @@
     </div>
 </div>
 
-<div id="checkout-view" class="view-section"><div class="container"><div id="checkout-content" style="width:100%"></div></div></div>
+<div id="checkout-view" class="view-section">
+    <div class="container" style="display:block;">
+        <div id="checkout-content"></div>
+    </div>
+</div>
 
 <div id="toast">✅ Berhasil ditambah</div>
 
@@ -198,22 +222,17 @@
         `).join('');
     }
 
-    // --- PERBAIKAN FUNGSI DETAIL PRODUK PRO ---
     function openDetail(id) {
         const p = allProduk.find(x => x.id == id);
         document.getElementById('detail-content').innerHTML = `
             <div class="pro-detail-wrapper">
-                <div class="pro-detail-media">
-                    <img src="${p.foto}" alt="${p.nama}">
-                </div>
+                <div class="pro-detail-media"><img src="${p.foto}" alt="${p.nama}"></div>
                 <div class="pro-detail-info">
                     <button class="pro-back-btn" onclick="showView('catalog-view')">← Kembali</button>
                     <h2 class="pro-title">${p.nama}</h2>
                     <div class="pro-price">Rp ${p.harga.toLocaleString()}</div>
-                    
                     <span class="pro-desc-label">Deskripsi Produk</span>
                     <p class="pro-desc-content">${p.desc || 'Tidak ada deskripsi.'}</p>
-                    
                     <div class="pro-actions">
                         <button onclick="addToCart(${p.id}, false)" class="pro-btn pro-btn-cart">+ Keranjang</button>
                         <button onclick="addToCart(${p.id}, true)" class="pro-btn pro-btn-buy">Beli Sekarang</button>
@@ -227,27 +246,112 @@
         const item = allProduk.find(x => x.id == id);
         const ada = cart.find(x => x.id == id);
         if(ada) ada.qty++; else cart.push({...item, qty: 1});
-        document.getElementById('badge-count').innerText = cart.reduce((s, i) => s + i.qty, 0);
+        updateBadge();
+        if(direct) renderCheckout(); else showToast();
+    }
 
-        if(direct) {
-            renderCheckout();
-        } else {
-            const toast = document.getElementById("toast");
-            toast.className = "show";
-            setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 2000);
+    function updateBadge() {
+        document.getElementById('badge-count').innerText = cart.reduce((s, i) => s + i.qty, 0);
+    }
+
+    function showToast() {
+        const t = document.getElementById("toast");
+        t.className = "show";
+        setTimeout(() => { t.className = ""; }, 2000);
+    }
+
+    // --- LOGIKA CHECKOUT PRO ---
+    function updateQty(id, delta) {
+        const item = cart.find(x => x.id == id);
+        if(item) {
+            item.qty += delta;
+            if(item.qty <= 0) cart = cart.filter(x => x.id !== id);
         }
+        updateBadge();
+        renderCheckout();
+    }
+
+    function renderCheckout() {
+        showView('checkout-view');
+        const total = cart.reduce((s, i) => s + (i.harga * i.qty), 0);
+        
+        if(cart.length === 0) {
+            document.getElementById('checkout-content').innerHTML = `
+                <div style="text-align:center; padding:50px; background:white; border-radius:15px;">
+                    <p style="font-weight:700; color:var(--gray);">Keranjang Anda Kosong</p>
+                    <button class="pro-back-btn" onclick="showView('catalog-view')">Mulai Belanja</button>
+                </div>`;
+            return;
+        }
+
+        document.getElementById('checkout-content').innerHTML = `
+            <div class="checkout-layout">
+                <div class="checkout-main">
+                    <h3 style="margin-top:0">Item Belanja</h3>
+                    ${cart.map(item => `
+                        <div class="cart-item">
+                            <img src="${item.foto}">
+                            <div class="cart-item-info">
+                                <div class="cart-item-name">${item.nama}</div>
+                                <div class="cart-item-price">Rp ${(item.harga * item.qty).toLocaleString()}</div>
+                                <div class="qty-control">
+                                    <button class="qty-btn" onclick="updateQty(${item.id}, -1)">-</button>
+                                    <span style="font-weight:800">${item.qty}</span>
+                                    <button class="qty-btn" onclick="updateQty(${item.id}, 1)">+</button>
+                                    <button class="delete-btn" onclick="updateQty(${item.id}, -${item.qty})">Hapus</button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <div class="checkout-side">
+                    <h3 style="margin-top:0">Data Pengiriman</h3>
+                    <div class="form-group">
+                        <label>Nama Penerima</label>
+                        <input type="text" id="cust-name" class="form-input" placeholder="Nama lengkap">
+                    </div>
+                    <div class="form-group">
+                        <label>Alamat Lengkap</label>
+                        <textarea id="cust-addr" class="form-input" rows="3" placeholder="Jl. Nama Jalan, No Rumah, Kel/Kec"></textarea>
+                    </div>
+                    
+                    <div class="summary-row" style="margin-top:20px;">
+                        <span>Subtotal</span>
+                        <span>Rp ${total.toLocaleString()}</span>
+                    </div>
+                    <div class="summary-row total-price">
+                        <span>Total Bayar</span>
+                        <span>Rp ${total.toLocaleString()}</span>
+                    </div>
+                    
+                    <button class="btn-wa" onclick="sendWhatsApp()">
+                        <span>Pesan via WhatsApp</span>
+                    </button>
+                    <button onclick="showView('catalog-view')" style="width:100%; border:none; background:none; font-weight:700; color:var(--gray); margin-top:15px; cursor:pointer;">← Lanjut Belanja</button>
+                </div>
+            </div>`;
+    }
+
+    function sendWhatsApp() {
+        const name = document.getElementById('cust-name').value;
+        const addr = document.getElementById('cust-addr').value;
+        if(!name || !addr) return alert('Mohon isi nama dan alamat!');
+
+        let msg = `Halo Admin Backbone Store,\nSaya ingin memesan:\n\n`;
+        cart.forEach(item => {
+            msg += `- ${item.nama} (${item.qty}x) = Rp ${(item.harga * item.qty).toLocaleString()}\n`;
+        });
+        const total = cart.reduce((s, i) => s + (i.harga * i.qty), 0);
+        msg += `\n*Total: Rp ${total.toLocaleString()}*\n\n*Nama:* ${name}\n*Alamat:* ${addr}`;
+        
+        window.open(`https://wa.me/${WA_ADMIN}?text=${encodeURIComponent(msg)}`);
     }
 
     function toggleMSub(el) { el.nextElementSibling.classList.toggle('active'); }
     function toggleMMenu() { const o = document.getElementById('m-overlay'); o.style.display = o.style.display === 'block' ? 'none' : 'block'; }
     function search() { const q = document.getElementById('main-search').value.toLowerCase(); renderProduk(allProduk.filter(p => p.nama.toLowerCase().includes(q))); }
     function showView(id) { document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active-v')); document.getElementById(id).classList.add('active-v'); window.scrollTo(0,0); }
-    
-    // Placeholder checkout logic
-    function renderCheckout() { 
-        showView('checkout-view'); 
-        document.getElementById('checkout-content').innerHTML = `<h2>Halaman Checkout</h2><button class="pro-back-btn" onclick="showView('catalog-view')">← Kembali Belanja</button>`;
-    }
 
     init();
 </script>
