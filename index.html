@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Andry Backbone Store - Professional Box Menu</title>
+    <title>Andry Backbone Store - Responsive Pro</title>
     <style>
         :root { --primary: #ee4d2d; --bg: #f5f5f5; --white: #ffffff; --text: #333; --border: #eee; }
         
@@ -16,75 +16,35 @@
         header { position: sticky; top: 0; z-index: 2000; background: var(--white); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         nav { padding: 10px 15px; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid var(--border); }
         .nav-title { font-weight: bold; font-size: 1.2rem; color: var(--primary); cursor: pointer; }
-        
         .search-container { padding: 8px 15px; background: var(--white); border-bottom: 1px solid var(--border); }
         .search-bar { width: 100%; max-width: 800px; margin: auto; display: block; padding: 10px 15px; border: 1px solid #ddd; border-radius: 20px; outline: none; background: #f9f9f9; font-size: 14px; box-sizing: border-box; }
 
         /* Main Layout */
         .main-wrapper { display: flex; max-width: 1200px; margin: auto; padding: 20px 15px; gap: 20px; }
 
-        /* SIDEBAR PC */
+        /* SIDEBAR PC (Box Melayang / Hover) */
         .sidebar { width: 260px; flex-shrink: 0; }
         .side-box { background: white; border-radius: 8px; padding: 20px; position: sticky; top: 120px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .side-title { font-weight: bold; margin-bottom: 15px; border-bottom: 2px solid var(--primary); display: inline-block; padding-bottom: 5px; }
 
-        /* LOGIKA SUB-KATEGORI BOX PRO (KHUSUS PC) */
         @media (min-width: 769px) {
-            .cat-group { position: relative; margin-bottom: 5px; }
-            .cat-main { 
-                padding: 10px 12px; 
-                display: flex; 
-                justify-content: space-between;
-                align-items: center;
-                font-weight: 500; 
-                cursor: pointer; 
-                border-radius: 6px;
-                transition: 0.2s;
-            }
+            .cat-group { position: relative; }
+            .cat-main { padding: 10px; display: flex; justify-content: space-between; cursor: pointer; border-radius: 5px; transition: 0.2s; }
             .cat-main:hover { background: #fff5f2; color: var(--primary); }
             .cat-main::after { content: '›'; font-size: 18px; color: #ccc; }
-
+            
             .sub-list { 
-                display: none; 
-                position: absolute;
-                left: 100%; /* Muncul di samping kanan menu utama */
-                top: 0;
-                background: white;
-                min-width: 200px;
-                padding: 15px;
-                border-radius: 8px;
-                box-shadow: 5px 5px 20px rgba(0,0,0,0.15);
-                border: 1px solid #eee;
-                z-index: 100;
-                margin-left: 10px;
-                flex-direction: column;
-                gap: 10px;
+                display: none; position: absolute; left: 100%; top: 0; background: white; 
+                min-width: 200px; padding: 15px; border-radius: 8px; 
+                box-shadow: 5px 5px 20px rgba(0,0,0,0.15); border: 1px solid #eee; z-index: 100;
+                margin-left: 10px; flex-direction: column; gap: 10px;
             }
             .cat-group:hover .sub-list { display: flex; }
-            
-            /* Panah kecil pada box */
-            .sub-list::before {
-                content: '';
-                position: absolute;
-                left: -8px;
-                top: 15px;
-                width: 0; height: 0;
-                border-top: 8px solid transparent;
-                border-bottom: 8px solid transparent;
-                border-right: 8px solid white;
-            }
-
-            .sub-item { 
-                font-size: 14px; 
-                color: #555; 
-                cursor: pointer; 
-                padding: 5px 0;
-                border-bottom: 1px solid #f9f9f9;
-            }
-            .sub-item:hover { color: var(--primary); padding-left: 5px; }
+            .sub-item { font-size: 14px; color: #555; cursor: pointer; padding: 5px 0; border-bottom: 1px solid #f9f9f9; }
+            .sub-item:hover { color: var(--primary); }
         }
 
-        /* TAMPILAN HP (TETAP) */
+        /* TAMPILAN KHUSUS HP (SATU SUB SATU BOX) */
         .cat-trigger { display: none; background: #fff; padding: 12px 15px; margin: 10px; border-radius: 8px; font-weight: bold; border: 1px solid #ddd; cursor: pointer; justify-content: space-between; align-items: center; }
 
         @media (max-width: 768px) {
@@ -92,33 +52,45 @@
             .sidebar { display: none; width: 100%; } 
             .sidebar.active { display: block; }
             .cat-trigger { display: flex; }
-            .sub-list { display: flex; flex-direction: row; flex-wrap: wrap; gap: 8px; margin: 10px 0; padding: 10px; background: #f9f9f9; border-radius: 5px; }
-            .cat-main { color: var(--primary); font-weight: bold; display: block; margin-top: 10px; }
-            .cat-main::after { content: ''; }
+
+            /* Grid Sub Kategori di HP agar satu sub satu box */
+            .sub-list { 
+                display: grid; 
+                grid-template-columns: repeat(2, 1fr); /* 2 Box per baris di HP */
+                gap: 8px; 
+                margin: 10px 0 20px 0; 
+            }
+            .sub-item { 
+                background: white; 
+                padding: 12px 5px; 
+                text-align: center; 
+                border-radius: 8px; 
+                font-size: 12px; 
+                border: 1px solid #ddd; 
+                color: #444;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            }
+            .cat-main { color: var(--primary); font-weight: bold; display: block; margin-top: 15px; font-size: 14px; }
             .catalog-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
-            .side-box { position: static; box-shadow: none; padding: 10px; }
+            .side-box { position: static; box-shadow: none; background: transparent; padding: 0; }
         }
 
-        /* GRID PRODUK */
+        /* PRODUK GRID */
         .content { flex-grow: 1; }
         .catalog-grid { display: grid; gap: 12px; }
         @media (min-width: 769px) { .catalog-grid { grid-template-columns: repeat(4, 1fr); } }
 
-        /* Card Styling */
-        .card { background: white; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); transition: 0.2s; cursor: pointer; }
-        .card:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .card { background: white; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
         .card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; }
         .card-info { padding: 10px; }
-        .card-nama { font-size: 13px; height: 2.8em; overflow: hidden; line-height: 1.4; margin-bottom: 5px; color: #444; }
-        .card-price { color: var(--primary); font-weight: bold; font-size: 15px; }
+        .card-nama { font-size: 13px; height: 2.8em; overflow: hidden; line-height: 1.4; color: #444; }
+        .card-price { color: var(--primary); font-weight: bold; }
 
-        /* Floating Cart */
         .cart-float { position: fixed; bottom: 25px; right: 25px; background: var(--primary); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); font-size: 24px; z-index: 1500; }
         #cart-count { position: absolute; top: 0; right: 0; background: #000; font-size: 11px; padding: 2px 6px; border-radius: 10px; }
 
         .view { display: none; }
         .active-view { display: block; }
-        
         #toast { visibility: hidden; background: rgba(0,0,0,0.85); color: white; padding: 12px 25px; position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); border-radius: 30px; z-index: 3000; font-size: 14px; }
         #toast.show { visibility: visible; }
     </style>
@@ -128,7 +100,7 @@
 <header>
     <nav><div class="nav-title" onclick="window.location.reload()">Andry Backbone Store</div></nav>
     <div class="search-container">
-        <input type="text" id="input-search" class="search-bar" placeholder="Cari golok, pisau, dll..." onkeyup="jalankanFilter()">
+        <input type="text" id="input-search" class="search-bar" placeholder="Cari produk..." onkeyup="jalankanFilter()">
     </div>
 </header>
 
@@ -142,9 +114,7 @@
             <div class="side-box">
                 <div class="side-title">KATEGORI</div>
                 <div id="menu-kategori">
-                    <div class="cat-group">
-                        <span class="cat-main" onclick="resetFilter()">Semua Produk</span>
-                    </div>
+                    <div class="cat-group"><span class="cat-main" onclick="resetFilter()">Semua Produk</span></div>
                 </div>
             </div>
         </aside>
@@ -153,7 +123,7 @@
 </div>
 
 <div id="detail-view" class="view" style="padding: 20px 5%;">
-    <div onclick="tampilkanKatalog()" style="cursor:pointer; margin-bottom:20px; color:#666;">← Kembali</div>
+    <div onclick="tampilkanKatalog()" style="cursor:pointer; margin-bottom:20px;">← Kembali</div>
     <div id="detail-content" style="background:white; padding:20px; border-radius:8px; display:flex; flex-wrap:wrap; gap:20px;"></div>
 </div>
 
@@ -192,7 +162,6 @@
         const res = await fetch(baseGSheet + "&gid=0");
         const data = parseCSV(await res.text()).slice(1);
         let struktur = {};
-
         semuaProduk = data.map((col, idx) => {
             if(!col[0]) return null;
             const katFull = col[2] || "Lainnya";
@@ -202,7 +171,6 @@
             if(sub) struktur[utama].add(sub);
             return { id: idx, nama: col[0], harga: parseInt(col[1].replace(/[^\d]/g, "")) || 0, utama, sub, foto: col[3], desc: col[4], berat: parseInt(col[5]) || 0 };
         }).filter(p => p !== null);
-
         renderMenu(struktur);
         renderKatalog(semuaProduk);
     }
@@ -251,14 +219,7 @@
     function tampilkanDetail(id) {
         const p = semuaProduk.find(x => x.id == id);
         produkAktif = p;
-        document.getElementById('detail-content').innerHTML = `
-            <img src="${p.foto}" style="width:100%; max-width:400px; border-radius:8px;">
-            <div style="flex:1; min-width:300px;">
-                <h2>${p.nama}</h2>
-                <h3 style="color:var(--primary);">Rp ${p.harga.toLocaleString()}</h3>
-                <p style="white-space:pre-line; color:#666;">${p.desc}</p>
-                <button onclick="tambahKeKeranjang()" style="padding:15px; background:var(--primary); color:white; border:none; width:100%; font-weight:bold; border-radius:5px; cursor:pointer;">+ TAMBAH KERANJANG</button>
-            </div>`;
+        document.getElementById('detail-content').innerHTML = `<img src="${p.foto}" style="width:100%; max-width:400px; border-radius:8px;"><div style="flex:1; min-width:300px;"><h2>${p.nama}</h2><h3 style="color:var(--primary);">Rp ${p.harga.toLocaleString()}</h3><p style="white-space:pre-line; color:#666;">${p.desc}</p><button onclick="tambahKeKeranjang()" style="padding:15px; background:var(--primary); color:white; border:none; width:100%; font-weight:bold; border-radius:5px; cursor:pointer;">+ TAMBAH KERANJANG</button></div>`;
         switchView('detail-view');
     }
 
@@ -274,24 +235,17 @@
         const list = document.getElementById('cart-items-list');
         if(keranjang.length === 0) { list.innerHTML = "Kosong"; return; }
         document.getElementById('checkout-section').style.display = 'block';
-        list.innerHTML = keranjang.map((item, idx) => `
-            <div style="display:flex; gap:10px; border-bottom:1px solid #eee; padding:10px 0;">
-                <img src="${item.foto}" style="width:50px; height:50px; object-fit:cover;">
-                <div style="flex:1;">${item.nama}<br><b>Rp ${item.harga.toLocaleString()}</b></div>
-                <button onclick="hapusItem(${idx})" style="color:red; border:none; background:none;">✕</button>
-            </div>`).join('');
+        list.innerHTML = keranjang.map((item, idx) => `<div style="display:flex; gap:10px; border-bottom:1px solid #eee; padding:10px 0;"><img src="${item.foto}" style="width:50px; height:50px; object-fit:cover;"><div style="flex:1;">${item.nama}<br><b>Rp ${item.harga.toLocaleString()}</b></div><button onclick="hapusItem(${idx})" style="color:red; border:none; background:none;">✕</button></div>`).join('');
         hitungTotal();
     }
 
     function hapusItem(idx) { keranjang.splice(idx, 1); tampilkanKeranjang(); }
-
     function hitungTotal() {
         const sub = keranjang.reduce((s, i) => s + (i.harga * i.qty), 0);
         const berat = keranjang.reduce((s, i) => s + (i.berat * i.qty), 0);
         const tarif = parseInt(document.getElementById('cust-region').selectedOptions[0]?.getAttribute('data-ongkir')) || 0;
         document.getElementById('sum-total').innerText = "Rp " + (sub + (Math.ceil(berat/1000) * tarif)).toLocaleString();
     }
-
     async function loadOngkir() {
         const res = await fetch(ongkirGSheet);
         const data = parseCSV(await res.text()).slice(1);
@@ -299,20 +253,13 @@
         select.innerHTML = '<option value="0" data-ongkir="0">-- Pilih Wilayah --</option>';
         data.forEach(col => { if(col[0]) select.innerHTML += `<option value="${col[0]}" data-ongkir="${col[1]}">${col[0]}</option>`; });
     }
-
-    function switchView(id) {
-        document.querySelectorAll('.view').forEach(v => v.classList.remove('active-view'));
-        document.getElementById(id).classList.add('active-view');
-        window.scrollTo(0,0);
-    }
-
+    function switchView(id) { document.querySelectorAll('.view').forEach(v => v.classList.remove('active-view')); document.getElementById(id).classList.add('active-view'); window.scrollTo(0,0); }
     function checkoutWA() {
         const addr = document.getElementById('cust-addr').value;
         if(!addr) return alert("Isi alamat!");
         const listText = keranjang.map(i => `- ${i.nama} (x${i.qty})`).join("%0A");
         window.open(`https://wa.me/${nomorWA}?text=Pesanan Baru:%0A${listText}%0A%0AAlamat: ${addr}`);
     }
-
     init();
 </script>
 </body>
