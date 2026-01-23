@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BACKBONE STORE - Pro UX</title>
+    <title>BACKBONE STORE - Pro Hybrid Nav</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -16,7 +16,6 @@
             --shadow: 0 4px 15px rgba(0,0,0,0.08);
         }
 
-        /* Dasar & Anti-Download */
         * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
         body { margin: 0; background-color: var(--bg); color: var(--dark); -webkit-user-select: none; user-select: none; }
         img { pointer-events: none; -webkit-user-drag: none; }
@@ -30,45 +29,46 @@
 
         .container { max-width: 1200px; margin: auto; padding: 20px; display: flex; gap: 30px; }
 
-        /* --- SIDEBAR PC (HOVER SYSTEM) --- */
+        /* --- SIDEBAR PC (HOVER DOWN SYSTEM) --- */
         .sidebar-pc { width: 240px; flex-shrink: 0; }
         .sticky-side { position: sticky; top: 90px; }
-        .pc-cat-group { position: relative; margin-bottom: 5px; }
+        
+        .pc-cat-group { margin-bottom: 5px; border-radius: 8px; overflow: hidden; }
         
         .pc-cat-main { 
-            padding: 12px 15px; border-radius: 8px; font-weight: 700; font-size: 14px; 
-            cursor: pointer; display: flex; justify-content: space-between; transition: 0.2s;
+            padding: 12px 15px; font-weight: 700; font-size: 14px; 
+            cursor: pointer; display: flex; justify-content: space-between; 
+            transition: 0.3s; background: transparent;
         }
-        
-        /* Logika Hover PC */
-        .pc-sub-flyout { 
-            display: none; position: absolute; left: 100%; top: 0; width: 200px; 
-            background: white; border-radius: 8px; box-shadow: var(--shadow); 
-            padding: 10px; z-index: 100; margin-left: 10px;
+
+        /* Container Sub yang akan melebar ke bawah */
+        .pc-sub-dropdown { 
+            max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; 
+            background: #ffffff; padding-left: 10px;
         }
-        .pc-cat-group:hover .pc-sub-flyout { display: block; }
-        .pc-cat-group:hover .pc-cat-main { background: var(--primary-light); color: var(--primary); }
 
-        .sub-item-pc { padding: 8px 12px; font-size: 13px; color: var(--gray); cursor: pointer; border-radius: 5px; }
-        .sub-item-pc:hover { background: #f9f9f9; color: var(--primary); }
+        /* LOGIKA HOVER PC: Muncul di bawah */
+        .pc-cat-group:hover { background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
+        .pc-cat-group:hover .pc-sub-dropdown { max-height: 500px; } /* Angka besar agar muat banyak sub */
+        .pc-cat-group:hover .pc-cat-main { color: var(--primary); background: var(--primary-light); }
 
-        /* --- MENU HP (CLICK SYSTEM) --- */
+        .sub-item-pc { padding: 8px 15px; font-size: 13px; color: var(--gray); cursor: pointer; border-radius: 5px; }
+        .sub-item-pc:hover { color: var(--primary); font-weight: 600; }
+
+        /* --- MOBILE NAV (CLICK DROPDOWN) --- */
         .mobile-nav-bar { display: none; background: white; padding: 10px 15px; border-bottom: 1px solid #eee; position: sticky; top: 62px; z-index: 999; }
         .m-drop-btn { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; background: white; font-weight: 700; display: flex; justify-content: space-between; }
         
         .m-menu-overlay { display: none; position: fixed; top: 115px; left: 0; width: 100%; height: 100%; background: white; z-index: 2000; overflow-y: auto; padding: 20px; }
-        .m-cat-item { border-bottom: 1px solid #f5f5f5; }
-        .m-cat-header { padding: 15px 0; font-weight: 800; display: flex; justify-content: space-between; cursor: pointer; }
+        .m-cat-header { padding: 15px 0; font-weight: 800; display: flex; justify-content: space-between; cursor: pointer; border-bottom: 1px solid #f5f5f5; }
         
-        /* Logika Click HP */
-        .m-sub-container { display: none; padding: 0 0 15px 15px; }
+        .m-sub-container { display: none; padding: 10px 0 10px 20px; }
         .m-sub-container.active { display: block; }
         .m-sub-link { padding: 10px 0; color: var(--gray); font-size: 14px; font-weight: 600; display: block; }
 
-        /* GRID & PRODUK */
+        /* GRID */
         .main-content { flex: 1; }
         .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-        
         @media (max-width: 768px) {
             .sidebar-pc { display: none; }
             .mobile-nav-bar { display: block; }
@@ -76,6 +76,7 @@
             .container { padding: 15px; }
         }
 
+        /* CARDS */
         .product-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); cursor: pointer; }
         .thumb { width: 100%; aspect-ratio: 1/1; object-fit: cover; }
         .p-info { padding: 12px; }
@@ -93,7 +94,7 @@
     <div class="nav-inner">
         <a class="logo" onclick="location.reload()">BACKBONE.</a>
         <div class="search-wrapper">
-            <input type="text" id="main-search" class="search-bar" placeholder="Cari koleksi..." onkeyup="search()">
+            <input type="text" id="main-search" class="search-bar" placeholder="Cari barang..." onkeyup="search()">
         </div>
         <div style="position:relative; cursor:pointer;" onclick="renderCheckout()">
             🛒<span id="badge-count" class="cart-badge">0</span>
@@ -103,13 +104,13 @@
 
 <div class="mobile-nav-bar">
     <button class="m-drop-btn" onclick="toggleMMenu()">
-        <span id="m-label">Jelajahi Kategori</span>
+        <span id="m-label">Kategori Produk</span>
         <span>▾</span>
     </button>
 </div>
 
 <div class="m-menu-overlay" id="m-overlay">
-    <div onclick="filterData('all','all'); toggleMMenu();" style="padding:15px 0; font-weight:800; color:var(--primary); border-bottom:1px solid #f5f5f5;">Beranda / Semua Produk</div>
+    <div onclick="filterData('all','all'); toggleMMenu();" style="padding:15px 0; font-weight:800; color:var(--primary); border-bottom:1px solid #f5f5f5;">Semua Produk</div>
     <div id="m-list-inject"></div>
 </div>
 
@@ -117,16 +118,16 @@
     <div class="container">
         <aside class="sidebar-pc">
             <div class="sticky-side">
-                <div style="font-weight:800; font-size:11px; color:#ccc; margin-bottom:15px; letter-spacing:1px;">CATEGORY MENU</div>
+                <div style="font-weight:800; font-size:11px; color:#ccc; margin-bottom:15px; letter-spacing:1px;">DAFTAR KATEGORI</div>
                 <div class="pc-cat-group" onclick="filterData('all','all')">
-                    <div class="pc-cat-main">Beranda</div>
+                    <div class="pc-cat-main">Semua Produk</div>
                 </div>
                 <div id="pc-list-inject"></div>
             </div>
         </aside>
 
         <main class="main-content">
-            <div id="product-list" class="product-grid">Memuat katalog...</div>
+            <div id="product-list" class="product-grid">Memuat...</div>
         </main>
     </div>
 </div>
@@ -172,12 +173,14 @@
         for(let ut in treeKategori) {
             let subs = Array.from(treeKategori[ut]);
 
-            // PC HOVER TEMPLATE
+            // PC HOVER DOWN TEMPLATE
             let pcHtml = `
                 <div class="pc-cat-group">
-                    <div class="pc-cat-main" onclick="filterData('${ut}','all')">${ut} ${subs.length ? '<span>›</span>' : ''}</div>
-                    ${subs.length ? `<div class="pc-sub-flyout">
-                        <div class="sub-item-pc" style="font-weight:bold; color:var(--dark)" onclick="filterData('${ut}','all')">Semua ${ut}</div>
+                    <div class="pc-cat-main" onclick="filterData('${ut}','all')">
+                        ${ut} ${subs.length ? '<span style="font-size:10px;">▼</span>' : ''}
+                    </div>
+                    ${subs.length ? `<div class="pc-sub-dropdown">
+                        <div class="sub-item-pc" style="font-weight:bold; color:var(--dark); margin-top:5px;" onclick="filterData('${ut}','all')">Lihat Semua</div>
                         ${subs.map(s => `<div class="sub-item-pc" onclick="filterData('${ut}','${s}')">${s}</div>`).join('')}
                     </div>` : ''}
                 </div>`;
@@ -185,7 +188,7 @@
 
             // HP CLICK TEMPLATE
             let mHtml = `
-                <div class="m-cat-item">
+                <div style="border-bottom: 1px solid #f5f5f5;">
                     <div class="m-cat-header" onclick="toggleMSub(this, '${ut}')">
                         <span>${ut}</span>
                         <span>${subs.length ? '▾' : ''}</span>
@@ -202,10 +205,8 @@
     // Logic HP Click
     function toggleMSub(el, ut) {
         const sub = el.nextElementSibling;
-        if(!sub.innerHTML.trim()) { // Jika tidak ada sub
-            filterData(ut, 'all');
-            toggleMMenu();
-            return;
+        if(!sub.innerHTML.trim()) { 
+            filterData(ut, 'all'); toggleMMenu(); return;
         }
         document.querySelectorAll('.m-sub-container').forEach(c => { if(c !== sub) c.classList.remove('active') });
         sub.classList.toggle('active');
@@ -235,11 +236,10 @@
         `).join('');
     }
 
-    // Detail, Cart, & Checkout (Standar Marketplace)
     function openDetail(id) {
         const p = allProduk.find(x => x.id == id);
         document.getElementById('detail-content').innerHTML = `
-            <div style="display:flex; flex-wrap:wrap; background:white;">
+            <div style="display:flex; flex-wrap:wrap; background:white; max-width:1000px; margin:auto;">
                 <img src="${p.foto}" style="width:100%; max-width:500px; aspect-ratio:1/1; object-fit:cover;">
                 <div style="flex:1; padding:30px; min-width:300px;">
                     <button onclick="showView('catalog-view')" style="border:none; background:none; color:var(--primary); font-weight:bold; cursor:pointer;">← Kembali</button>
@@ -261,7 +261,7 @@
         const ada = cart.find(x => x.id == id);
         if(ada) ada.qty++; else cart.push({...item, qty: 1});
         document.getElementById('badge-count').innerText = cart.reduce((s, i) => s + i.qty, 0);
-        if(check) renderCheckout(); else alert("Produk masuk keranjang!");
+        if(check) renderCheckout(); else alert("Berhasil ditambah!");
     }
 
     function renderCheckout() {
@@ -269,28 +269,18 @@
         showView('checkout-view');
         const content = document.getElementById('checkout-content');
         content.innerHTML = `
-            <div style="background:white; padding:20px; border-radius:12px; box-shadow:var(--shadow);">
-                <h3 style="margin:0 0 20px 0">Checkout</h3>
-                ${cart.map((item, idx) => `
-                    <div style="display:flex; gap:15px; padding:10px 0; border-bottom:1px solid #f5f5f5;">
-                        <img src="${item.foto}" style="width:50px; height:50px; object-fit:cover; border-radius:5px;">
-                        <div style="flex:1">
-                            <div style="font-size:13px; font-weight:700;">${item.nama}</div>
-                            <div style="font-size:12px; color:var(--primary); font-weight:bold;">${item.qty} x Rp ${item.harga.toLocaleString()}</div>
-                        </div>
-                    </div>
-                `).join('')}
+            <div style="background:white; padding:25px; border-radius:12px; box-shadow:var(--shadow); max-width:600px; margin:auto;">
+                <h3 style="margin-top:0">Checkout</h3>
+                ${cart.map((item, idx) => `<div style="padding:10px 0; border-bottom:1px solid #eee;">${item.nama} (${item.qty})</div>`).join('')}
                 <div style="margin-top:20px;">
-                    <input type="text" id="c-name" class="search-bar" style="margin-bottom:10px; background:white; border:1px solid #ddd;" placeholder="Nama Penerima">
+                    <input type="text" id="c-name" class="search-bar" style="margin-bottom:10px; background:white; border:1px solid #ddd;" placeholder="Nama Anda">
                     <select id="c-city" onchange="updateTotal()" class="search-bar" style="margin-bottom:10px; background:white; border:1px solid #ddd;">
                         <option value="0" data-tarif="0">Pilih Kota</option>
                         ${dataOngkir.map(o => `<option value="${o.kota}" data-tarif="${o.tarif}">${o.kota}</option>`).join('')}
                     </select>
-                    <textarea id="c-address" class="search-bar" style="height:80px; margin-bottom:20px; background:white; border:1px solid #ddd;" placeholder="Alamat Lengkap"></textarea>
-                    <div style="display:flex; justify-content:space-between; font-weight:800; font-size:18px; color:var(--primary);">
-                        <span>Total:</span><span id="txt-tot">Rp 0</span>
-                    </div>
-                    <button onclick="gasKeWA()" style="width:100%; padding:15px; border-radius:8px; border:none; background:var(--primary); color:white; font-weight:800; margin-top:20px; cursor:pointer;">PESAN VIA WA</button>
+                    <textarea id="c-address" class="search-bar" style="height:80px; margin-bottom:15px; background:white; border:1px solid #ddd;" placeholder="Alamat"></textarea>
+                    <div style="font-weight:800; font-size:20px; color:var(--primary); text-align:right;" id="txt-tot">Total: Rp 0</div>
+                    <button onclick="gasKeWA()" style="width:100%; padding:15px; border-radius:8px; border:none; background:var(--primary); color:white; font-weight:800; margin-top:20px; cursor:pointer;">HUBUNGI WA</button>
                 </div>
             </div>
         `;
@@ -306,10 +296,8 @@
     function updateTotal() {
         if(!document.getElementById('txt-tot')) return;
         const sub = cart.reduce((s, i) => s + (i.harga * i.qty), 0);
-        const berat = cart.reduce((s, i) => s + (i.berat * i.qty), 0);
         const tarif = parseInt(document.getElementById('c-city').selectedOptions[0].getAttribute('data-tarif')) || 0;
-        const ong = Math.ceil(berat/1000) * tarif;
-        document.getElementById('txt-tot').innerText = "Rp " + (sub + ong).toLocaleString();
+        document.getElementById('txt-tot').innerText = "Total: Rp " + (sub + tarif).toLocaleString();
     }
 
     function gasKeWA() {
