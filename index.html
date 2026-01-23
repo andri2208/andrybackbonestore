@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Andry Backbone Store - Final PC & HP</title>
+    <title>Andry Backbone Store - Final Version</title>
     <style>
         :root { --primary: #ee4d2d; --bg: #f5f5f5; --white: #ffffff; --text: #333; --border: #eee; }
         
-        /* Proteksi Anti-Download & Dasar */
+        /* Proteksi Anti-Download */
         body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); margin: 0; color: var(--text); -webkit-user-select: none; user-select: none; }
         img { pointer-events: none; -webkit-user-drag: none; }
         input, textarea { -webkit-user-select: text; user-select: text; }
@@ -19,32 +19,26 @@
         .search-container { padding: 8px 15px; background: var(--white); border-bottom: 1px solid var(--border); }
         .search-bar { width: 100%; max-width: 800px; margin: auto; display: block; padding: 10px 15px; border: 1px solid #ddd; border-radius: 20px; outline: none; background: #f9f9f9; font-size: 14px; box-sizing: border-box; }
 
-        /* --- FOKUS TAMPILAN PRODUK PC (KEMBALI RAPI) --- */
+        /* Layout Utama PC */
         .main-wrapper { display: flex; max-width: 1200px; margin: auto; padding: 20px 15px; gap: 25px; align-items: flex-start; }
         .content { flex: 1; }
-        
-        .catalog-grid { 
-            display: grid; 
-            grid-template-columns: repeat(4, 1fr); /* Tetap 4 kolom di PC */
-            gap: 15px; 
-        }
+        .catalog-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
 
+        /* Sidebar PC */
         .sidebar { width: 250px; flex-shrink: 0; }
         .side-box { background: white; border-radius: 8px; padding: 15px; position: sticky; top: 130px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
 
         @media (min-width: 769px) {
             .cat-group { margin-bottom: 5px; }
-            .cat-main { padding: 12px; display: flex; justify-content: space-between; cursor: pointer; border-radius: 6px; font-size: 14px; font-weight: 600; transition: 0.2s; }
+            .cat-main { padding: 12px; display: flex; justify-content: space-between; cursor: pointer; border-radius: 6px; font-size: 14px; font-weight: 600; }
             .cat-main:hover { background: #fff5f2; color: var(--primary); }
-            
-            /* Sub menu PC tampil di bawah kategori utama saat hover */
             .sub-list { display: none; flex-direction: column; padding-left: 15px; border-left: 2px solid #eee; margin-top: 5px; }
             .cat-group:hover .sub-list { display: flex; }
             .sub-item { font-size: 13px; color: #666; cursor: pointer; padding: 6px 0; }
             .sub-item:hover { color: var(--primary); }
         }
 
-        /* --- TAMPILAN HP (KUNCI: 2 KOLOM & ACCORDION) --- */
+        /* Tampilan HP (Kunci: 2 Kolom & Accordion) */
         .cat-trigger { display: none; background: #fff; padding: 12px 15px; margin: 10px; border-radius: 8px; font-weight: bold; border: 1px solid #ddd; cursor: pointer; justify-content: space-between; align-items: center; }
 
         @media (max-width: 768px) {
@@ -52,32 +46,35 @@
             .sidebar { display: none; width: 100%; } 
             .sidebar.active { display: block; }
             .cat-trigger { display: flex; }
-
-            /* Grid 2 Kolom Produk di HP */
             .catalog-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-
             .cat-group { background: white; border-radius: 8px; margin-bottom: 10px; border: 1px solid #eee; }
             .cat-main { padding: 15px; display: flex; justify-content: space-between; font-weight: bold; font-size: 14px; }
             .sub-list { display: none; flex-direction: column; background: #fafafa; }
-            .sub-list.show { display: flex; } /* Accordion HP */
-            .sub-item { padding: 12px 20px; font-size: 13px; border-top: 1px solid #eee; color: #555; }
-            
+            .sub-list.show { display: flex; }
+            .sub-item { padding: 12px 20px; font-size: 13px; border-top: 1px solid #eee; }
             .side-box { position: static; box-shadow: none; background: transparent; padding: 0; }
         }
 
-        /* Styling Produk Card (PC & HP) */
+        /* Produk Card */
         .card { background: white; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); cursor: pointer; transition: 0.3s; }
         .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
         .card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; }
         .card-info { padding: 12px; }
-        .card-nama { font-size: 13px; height: 2.8em; overflow: hidden; line-height: 1.4; color: #444; font-weight: 500; }
+        .card-nama { font-size: 13px; height: 2.8em; overflow: hidden; line-height: 1.4; color: #444; }
         .card-price { color: var(--primary); font-weight: bold; font-size: 15px; margin-top: 8px; }
+
+        /* Tombol Beli */
+        .btn-buy { background: var(--primary); color: white; border: none; padding: 12px; width: 100%; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .btn-wa { background: #25d366; color: white; border: none; padding: 12px; width: 100%; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 8px; display: block; text-decoration: none; text-align: center; }
 
         /* Floating Cart */
         .cart-float { position: fixed; bottom: 25px; right: 25px; background: var(--primary); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 1500; cursor: pointer; }
-        
+        #cart-count { position: absolute; top: 0; right: 0; background: #000; font-size: 11px; padding: 2px 6px; border-radius: 10px; }
+
         .view { display: none; }
         .active-view { display: block; }
+        #toast { visibility: hidden; background: #333; color: #fff; text-align: center; border-radius: 30px; padding: 12px; position: fixed; z-index: 3000; left: 50%; bottom: 100px; transform: translateX(-50%); font-size: 14px; }
+        #toast.show { visibility: visible; }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -98,15 +95,11 @@
         <aside class="sidebar" id="sidebar-menu">
             <div class="side-box">
                 <div id="menu-kategori">
-                    <div class="cat-group">
-                        <span class="cat-main" onclick="resetFilter()" style="color:var(--primary);">Semua Produk</span>
-                    </div>
+                    <div class="cat-group"><span class="cat-main" onclick="resetFilter()" style="color:var(--primary);">Semua Produk</span></div>
                 </div>
             </div>
         </aside>
-        <main class="content">
-            <div id="produk-list" class="catalog-grid">Memuat produk...</div>
-        </main>
+        <main class="content"><div id="produk-list" class="catalog-grid">Memuat produk...</div></main>
     </div>
 </div>
 
@@ -115,17 +108,28 @@
     <div id="detail-content"></div>
 </div>
 
-<div class="cart-float" onclick="alert('Fungsi Keranjang Segera Hadir')">🛒</div>
+<div id="cart-view" class="view" style="padding: 20px 5%;">
+    <div style="background:white; padding:20px; border-radius:8px; max-width:600px; margin:auto;">
+        <h3>Keranjang Belanja</h3>
+        <div id="cart-items-list"></div>
+        <div id="checkout-section" style="display:none; margin-top:20px;">
+            <button onclick="checkoutWA()" class="btn-buy">PESAN VIA WHATSAPP</button>
+        </div>
+    </div>
+</div>
+
+<div class="cart-float" onclick="tampilkanKeranjang()">🛒<span id="cart-count">0</span></div>
+<div id="toast">Produk ditambahkan!</div>
 
 <script>
     const baseGSheet = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRtNoerhDtHch7TNHVbItg23RG4nneoZ8hv5MBR1Cr40iU5alO8a2O4EUR90YgleMH4-E-6zGJsEgcN/pub?output=csv";
+    const nomorWA = "6281574938272";
     let semuaProduk = [];
-    let filterSekarang = "Semua";
+    let keranjang = [];
+    let produkAktif = null;
 
     async function init() { await loadProduk(); }
     function toggleMobileMenu() { document.getElementById('sidebar-menu').classList.toggle('active'); }
-
-    // Fungsi Accordion HP
     function toggleSubMenuHP(el) {
         if(window.innerWidth <= 768) {
             const subList = el.nextElementSibling;
@@ -138,59 +142,44 @@
     function parseCSV(text) { return text.split("\n").map(row => row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/"/g, "").trim())); }
 
     async function loadProduk() {
-        try {
-            const res = await fetch(baseGSheet + "&gid=0");
-            const data = parseCSV(await res.text()).slice(1);
-            let struktur = {};
-            semuaProduk = data.map((col, idx) => {
-                if(!col[0]) return null;
-                const katFull = col[2] || "Lainnya";
-                let utama = katFull, sub = "";
-                if(katFull.includes(">")) { [utama, sub] = katFull.split(">").map(s => s.trim()); }
-                if(!struktur[utama]) struktur[utama] = new Set();
-                if(sub) struktur[utama].add(sub);
-                return { id: idx, nama: col[0], harga: parseInt(col[1].replace(/[^\d]/g, "")) || 0, utama, sub, foto: col[3], desc: col[4] };
-            }).filter(p => p !== null);
-            renderMenu(struktur);
-            renderKatalog(semuaProduk);
-        } catch(e) { console.error("Gagal muat data"); }
+        const res = await fetch(baseGSheet + "&gid=0");
+        const data = parseCSV(await res.text()).slice(1);
+        let struktur = {};
+        semuaProduk = data.map((col, idx) => {
+            if(!col[0]) return null;
+            const katFull = col[2] || "Lainnya";
+            let utama = katFull, sub = "";
+            if(katFull.includes(">")) { [utama, sub] = katFull.split(">").map(s => s.trim()); }
+            if(!struktur[utama]) struktur[utama] = new Set();
+            if(sub) struktur[utama].add(sub);
+            return { id: idx, nama: col[0], harga: parseInt(col[1].replace(/[^\d]/g, "")) || 0, utama, sub, foto: col[3], desc: col[4] };
+        }).filter(p => p !== null);
+        renderMenu(struktur);
+        renderKatalog(semuaProduk);
     }
 
     function renderMenu(struktur) {
         const menu = document.getElementById('menu-kategori');
         for (const [utama, subs] of Object.entries(struktur)) {
-            let html = `
-                <div class="cat-group">
-                    <div class="cat-main" onclick="toggleSubMenuHP(this)">
-                        <span>${utama}</span>
-                        <span class="pc-only"></span>
-                    </div>
-                    <div class="sub-list">
-                        <div class="sub-item" onclick="filterProduk('${utama}')">Semua ${utama}</div>`;
-            subs.forEach(s => { 
-                html += `<div class="sub-item" onclick="filterProduk('${s}')">${s}</div>`; 
-            });
+            let html = `<div class="cat-group"><div class="cat-main" onclick="toggleSubMenuHP(this)"><span>${utama}</span></div><div class="sub-list"><div class="sub-item" onclick="filterProduk('${utama}')">Semua ${utama}</div>`;
+            subs.forEach(s => { html += `<div class="sub-item" onclick="filterProduk('${s}')">${s}</div>`; });
             html += `</div></div>`;
             menu.innerHTML += html;
         }
     }
 
     function filterProduk(target) {
-        filterSekarang = target;
         if(window.innerWidth <= 768) toggleMobileMenu();
-        jalankanFilter();
+        const hasil = semuaProduk.filter(p => p.utama === target || p.sub === target);
+        renderKatalog(hasil);
         switchView('catalog-view');
     }
 
-    function resetFilter() {
-        filterSekarang = "Semua";
-        if(window.innerWidth <= 768) toggleMobileMenu();
-        jalankanFilter();
-    }
+    function resetFilter() { renderKatalog(semuaProduk); if(window.innerWidth <= 768) toggleMobileMenu(); }
 
     function jalankanFilter() {
         const kw = document.getElementById('input-search').value.toLowerCase();
-        const hasil = semuaProduk.filter(p => p.nama.toLowerCase().includes(kw) && (filterSekarang === "Semua" || p.utama === filterSekarang || p.sub === filterSekarang));
+        const hasil = semuaProduk.filter(p => p.nama.toLowerCase().includes(kw));
         renderKatalog(hasil);
     }
 
@@ -207,16 +196,39 @@
 
     function tampilkanDetail(id) {
         const p = semuaProduk.find(x => x.id == id);
+        produkAktif = p;
         document.getElementById('detail-content').innerHTML = `
             <div style="background:white; padding:20px; border-radius:8px; display:flex; flex-wrap:wrap; gap:20px;">
                 <img src="${p.foto}" style="width:100%; max-width:400px; border-radius:8px;">
                 <div style="flex:1; min-width:300px;">
                     <h2>${p.nama}</h2>
                     <h3 style="color:var(--primary);">Rp ${p.harga.toLocaleString()}</h3>
-                    <p style="white-space:pre-line; color:#666;">${p.desc}</p>
+                    <p style="white-space:pre-line; color:#666; margin-bottom:20px;">${p.desc}</p>
+                    <button class="btn-buy" onclick="tambahKeKeranjang()">🛒 TAMBAH KE KERANJANG</button>
+                    <a class="btn-wa" href="https://wa.me/${nomorWA}?text=Halo, saya ingin tanya produk: ${p.nama}" target="_blank">💬 TANYA VIA WHATSAPP</a>
                 </div>
             </div>`;
         switchView('detail-view');
+    }
+
+    function tambahKeKeranjang() {
+        const ada = keranjang.find(x => x.id === produkAktif.id);
+        if(ada) ada.qty++; else keranjang.push({...produkAktif, qty: 1});
+        document.getElementById('cart-count').innerText = keranjang.reduce((s, i) => s + i.qty, 0);
+        const t = document.getElementById('toast'); t.className = "show"; setTimeout(() => t.className = "", 2000);
+    }
+
+    function tampilkanKeranjang() {
+        switchView('cart-view');
+        const list = document.getElementById('cart-items-list');
+        if(keranjang.length === 0) { list.innerHTML = "Kosong"; return; }
+        document.getElementById('checkout-section').style.display = 'block';
+        list.innerHTML = keranjang.map((item, idx) => `<div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee;"><span>${item.nama} (x${item.qty})</span><b>Rp ${(item.harga * item.qty).toLocaleString()}</b></div>`).join('');
+    }
+
+    function checkoutWA() {
+        const daftar = keranjang.map(i => `- ${i.nama} (x${i.qty})`).join("%0A");
+        window.open(`https://wa.me/${nomorWA}?text=Pesanan Baru:%0A${daftar}`);
     }
 
     function switchView(id) {
