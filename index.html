@@ -411,6 +411,16 @@
 
     function openDetail(id) {
         const p = allProduk.find(x => x.id == id);
+        
+        // --- BAGIAN DESKRIPSI PRODUK (HP & PC) ---
+        const descBaru = `Bilah 40 cm
+Lebar 4 cm
+Tebal 4 mm
+Handle 14 cm tanduk bule
+Sarung amboyna
+Acc kuningan
+Baja bohler N695`;
+
         document.getElementById('detail-content').innerHTML = `
             <div class="pro-detail-wrapper">
                 <div class="pro-detail-media"><img src="${p.foto}" oncontextmenu="return false;"></div>
@@ -419,7 +429,7 @@
                     <h2 class="pro-title">${p.nama}</h2>
                     <div class="pro-price">Rp ${p.harga.toLocaleString()}</div>
                     <span class="pro-desc-label">Deskripsi</span>
-                    <p class="pro-desc-content">${p.desc || '-'}</p>
+                    <p class="pro-desc-content">${descBaru}</p>
                     <div class="pro-actions">
                         <button onclick="addToCart(${p.id}, false)" class="pro-btn pro-btn-cart">+ Keranjang</button>
                         <button onclick="addToCart(${p.id}, true)" class="pro-btn pro-btn-buy">Beli Sekarang</button>
@@ -454,4 +464,3 @@
 </script>
 </body>
 </html>
-
