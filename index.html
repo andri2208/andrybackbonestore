@@ -29,7 +29,6 @@
             -webkit-tap-highlight-color: transparent;
         }
         
-        /* Mengizinkan input tetap bisa diketik */
         input, textarea, select {
             -webkit-user-select: text !important;
             user-select: text !important;
@@ -39,18 +38,15 @@
             margin: 0; 
             background-color: var(--bg); 
             color: var(--dark); 
-            /* Mencegah refresh tarik bawah di mobile jika tidak perlu */
             overscroll-behavior-y: contain;
         }
         
-        /* Proteksi Gambar Tambahan */
         img { 
             pointer-events: none; 
             -webkit-user-drag: none;
             user-drag: none;
             user-select: none;
             -moz-user-select: none;
-            /* Watermark halus via filter jika diperlukan */
             filter: contrast(105%);
         }
 
@@ -111,8 +107,11 @@
         .pro-back-btn { border: none; background: #f0f0f0; padding: 8px 15px; border-radius: 20px; font-weight: 600; cursor: pointer; margin-bottom: 20px; transition: 0.2s; }
         .pro-title { font-size: 24px; font-weight: 800; margin: 0 0 10px 0; color: var(--dark); }
         .pro-price { font-size: 28px; font-weight: 800; color: var(--primary); margin-bottom: 20px; }
-        .pro-desc-label { font-weight: 800; border-top: 1px solid #eee; padding-top: 20px; margin-top: 20px; display: block; }
-        .pro-desc-content { color: var(--gray); line-height: 1.6; margin-top: 10px; font-size: 15px; white-space: pre-line; }
+        
+        /* DESKRIPSI STYLE */
+        .pro-desc-label { font-weight: 800; border-top: 1px solid #eee; padding-top: 20px; margin-top: 20px; display: block; color: var(--dark); text-transform: uppercase; font-size: 14px; }
+        .pro-desc-content { color: var(--dark); line-height: 1.8; margin-top: 10px; font-size: 15px; white-space: pre-line; font-weight: 600; }
+
         .pro-actions { display: flex; gap: 15px; margin-top: 30px; }
         .pro-btn { flex: 1; padding: 15px; border-radius: 10px; font-weight: 800; cursor: pointer; border: none; transition: 0.2s; }
         .pro-btn-cart { background: var(--primary-light); color: var(--primary); border: 1px solid var(--primary); }
@@ -212,7 +211,6 @@
 <div id="toast">✅ Berhasil ditambah</div>
 
 <script>
-    // Anti-Inspect & Anti-Download Protection
     function disableInspect(e) {
         if(e.ctrlKey && (e.keyCode === 67 || e.keyCode === 85 || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 83)) {
             return false;
@@ -303,9 +301,15 @@
 
     function openDetail(id) {
         const p = allProduk.find(x => x.id == id);
-        // Deskripsi default jika data di sheet kosong
-        const defaultDesc = `Bilah 40 cm\nLebar 4 cm\nTebal 4 mm\nHandle 14 cm tanduk bule\nSarung amboyna\nAcc kuningan\nBaja bohler N695`;
-        const deskripsiFix = p.desc || defaultDesc;
+        
+        // --- BAGIAN YANG DIUBAH SESUAI PERMINTAAN ---
+        const deskripsiFix = `Baja SUP9
+Handle sonokeling
+Bahan tas imitasi super
+Bilah 31,5 cm / 19,5 cm / 12 cm / 9 cm
+Handle 13,5cm / 13,5 cm / 11 cm / 11 cm
+Lebar 6,5 cm / 9 cm
+Honing OAL 40 cm`;
 
         document.getElementById('detail-content').innerHTML = `
             <div class="pro-detail-wrapper">
@@ -316,7 +320,7 @@
                     <button class="pro-back-btn" onclick="showView('catalog-view')">← Kembali</button>
                     <h2 class="pro-title">${p.nama}</h2>
                     <div class="pro-price">Rp ${p.harga.toLocaleString()}</div>
-                    <span class="pro-desc-label">Deskripsi Produk</span>
+                    <span class="pro-desc-label">Spesifikasi Bilah</span>
                     <p class="pro-desc-content">${deskripsiFix}</p>
                     <div class="pro-actions">
                         <button onclick="addToCart(${p.id}, false)" class="pro-btn pro-btn-cart">+ Keranjang</button>
