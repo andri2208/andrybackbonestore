@@ -3,91 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Andry Backbone Store - Final Version</title>
+    <title>Andry Backbone Store - Professional Edition</title>
     <style>
-        :root { --primary: #ee4d2d; --bg: #f5f5f5; --white: #ffffff; --text: #333; --border: #eee; }
+        :root { 
+            --primary: #ee4d2d; 
+            --primary-dark: #d73211;
+            --bg: #f5f5f5; 
+            --white: #ffffff; 
+            --text-main: #212121;
+            --text-sub: #757575;
+            --border: #e0e0e0; 
+            --shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
         
-        /* Proteksi Anti-Download */
-        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); margin: 0; color: var(--text); -webkit-user-select: none; user-select: none; }
+        /* Anti-Download & Smooth Scrolling */
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { 
+            font-family: 'Inter', -apple-system, sans-serif; 
+            background: var(--bg); 
+            margin: 0; 
+            color: var(--text-main); 
+            -webkit-user-select: none; user-select: none;
+            scroll-behavior: smooth;
+        }
         img { pointer-events: none; -webkit-user-drag: none; }
-        input, textarea { -webkit-user-select: text; user-select: text; }
 
-        /* Header & Search */
-        header { position: sticky; top: 0; z-index: 2000; background: var(--white); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        nav { padding: 10px 15px; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid var(--border); }
-        .nav-title { font-weight: bold; font-size: 1.2rem; color: var(--primary); cursor: pointer; }
-        .search-container { padding: 8px 15px; background: var(--white); border-bottom: 1px solid var(--border); }
-        .search-bar { width: 100%; max-width: 800px; margin: auto; display: block; padding: 10px 15px; border: 1px solid #ddd; border-radius: 20px; outline: none; background: #f9f9f9; font-size: 14px; box-sizing: border-box; }
+        /* HEADER PRO */
+        header { position: sticky; top: 0; z-index: 2000; background: var(--white); box-shadow: 0 1px 12px rgba(0,0,0,0.1); }
+        .nav-container { max-width: 1200px; margin: auto; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; }
+        .nav-title { font-weight: 800; font-size: 1.4rem; color: var(--primary); letter-spacing: -0.5px; cursor: pointer; }
+        
+        .search-box { flex: 1; max-width: 600px; margin: 0 20px; position: relative; }
+        .search-bar { width: 100%; padding: 10px 18px; border: 1px solid var(--border); border-radius: 8px; background: #f0f0f2; outline: none; transition: 0.3s; font-size: 14px; }
+        .search-bar:focus { background: white; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(238, 77, 45, 0.1); }
 
-        /* Layout Utama PC */
-        .main-wrapper { display: flex; max-width: 1200px; margin: auto; padding: 20px 15px; gap: 25px; align-items: flex-start; }
-        .content { flex: 1; }
-        .catalog-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
-
-        /* Sidebar PC */
-        .sidebar { width: 250px; flex-shrink: 0; }
-        .side-box { background: white; border-radius: 8px; padding: 15px; position: sticky; top: 130px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-
+        /* LAYOUT PC */
+        .main-wrapper { display: flex; max-width: 1200px; margin: auto; padding: 25px 20px; gap: 30px; }
+        .sidebar { width: 260px; flex-shrink: 0; }
+        .side-box { background: var(--white); border-radius: 12px; padding: 10px; position: sticky; top: 100px; box-shadow: var(--shadow); }
+        
         @media (min-width: 769px) {
-            .cat-group { margin-bottom: 5px; }
-            .cat-main { padding: 12px; display: flex; justify-content: space-between; cursor: pointer; border-radius: 6px; font-size: 14px; font-weight: 600; }
+            .cat-group { margin-bottom: 2px; }
+            .cat-main { padding: 12px 15px; display: flex; justify-content: space-between; cursor: pointer; border-radius: 8px; font-size: 14px; font-weight: 500; transition: 0.2s; }
             .cat-main:hover { background: #fff5f2; color: var(--primary); }
-            .sub-list { display: none; flex-direction: column; padding-left: 15px; border-left: 2px solid #eee; margin-top: 5px; }
+            .cat-main::after { content: '→'; font-size: 12px; opacity: 0.3; transition: 0.3s; }
+            .cat-main:hover::after { opacity: 1; transform: translateX(3px); }
+            
+            .sub-list { display: none; flex-direction: column; padding: 5px 0 10px 25px; }
             .cat-group:hover .sub-list { display: flex; }
-            .sub-item { font-size: 13px; color: #666; cursor: pointer; padding: 6px 0; }
+            .sub-item { font-size: 13px; color: var(--text-sub); cursor: pointer; padding: 8px 0; transition: 0.2s; }
             .sub-item:hover { color: var(--primary); }
         }
 
-        /* Tampilan HP (Kunci: 2 Kolom & Accordion) */
-        .cat-trigger { display: none; background: #fff; padding: 12px 15px; margin: 10px; border-radius: 8px; font-weight: bold; border: 1px solid #ddd; cursor: pointer; justify-content: space-between; align-items: center; }
+        /* GRID PRODUK PRO */
+        .catalog-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        .card { background: var(--white); border-radius: 10px; overflow: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; border: 1px solid transparent; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+        .card:hover { transform: translateY(-6px); box-shadow: 0 12px 25px rgba(0,0,0,0.12); border-color: var(--primary); }
+        .card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; background: #eee; }
+        .card-info { padding: 12px; }
+        .card-nama { font-size: 14px; height: 40px; overflow: hidden; line-height: 1.4; color: var(--text-main); margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+        .card-price { color: var(--primary); font-weight: 700; font-size: 16px; display: flex; align-items: center; }
+
+        /* TAMPILAN HP (KUNCI 2 KOLOM & ACCORDION) */
+        .mobile-nav-trigger { display: none; background: white; padding: 15px; margin: 10px 15px; border-radius: 10px; font-weight: 700; box-shadow: var(--shadow); cursor: pointer; justify-content: space-between; align-items: center; border: 1px solid var(--border); }
 
         @media (max-width: 768px) {
-            .main-wrapper { flex-direction: column; padding: 10px; }
-            .sidebar { display: none; width: 100%; } 
+            .nav-container { padding: 10px; }
+            .search-box { margin: 0 10px; }
+            .mobile-nav-trigger { display: flex; }
+            .main-wrapper { flex-direction: column; padding: 0 15px 80px 15px; }
+            .sidebar { display: none; width: 100%; }
             .sidebar.active { display: block; }
-            .cat-trigger { display: flex; }
             .catalog-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-            .cat-group { background: white; border-radius: 8px; margin-bottom: 10px; border: 1px solid #eee; }
-            .cat-main { padding: 15px; display: flex; justify-content: space-between; font-weight: bold; font-size: 14px; }
-            .sub-list { display: none; flex-direction: column; background: #fafafa; }
+            
+            .cat-group { background: white; border-radius: 10px; margin-bottom: 8px; border: 1px solid var(--border); }
+            .cat-main { padding: 15px; font-weight: 700; display: flex; justify-content: space-between; font-size: 14px; }
+            .sub-list { display: none; flex-direction: column; background: #fafafa; border-top: 1px solid #f0f0f0; }
             .sub-list.show { display: flex; }
-            .sub-item { padding: 12px 20px; font-size: 13px; border-top: 1px solid #eee; }
-            .side-box { position: static; box-shadow: none; background: transparent; padding: 0; }
+            .sub-item { padding: 12px 20px; font-size: 14px; color: var(--text-sub); border-bottom: 1px solid #f0f0f0; }
         }
 
-        /* Produk Card */
-        .card { background: white; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); cursor: pointer; transition: 0.3s; }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; }
-        .card-info { padding: 12px; }
-        .card-nama { font-size: 13px; height: 2.8em; overflow: hidden; line-height: 1.4; color: #444; }
-        .card-price { color: var(--primary); font-weight: bold; font-size: 15px; margin-top: 8px; }
+        /* DETAIL PRODUK PRO */
+        .detail-card { background: white; border-radius: 15px; display: flex; flex-wrap: wrap; gap: 30px; padding: 30px; box-shadow: var(--shadow); }
+        .detail-img { width: 100%; max-width: 450px; border-radius: 12px; object-fit: cover; }
+        .detail-info { flex: 1; min-width: 300px; }
+        .detail-price { font-size: 28px; color: var(--primary); font-weight: 800; margin: 15px 0; }
+        .detail-desc { line-height: 1.6; color: var(--text-sub); margin-bottom: 25px; font-size: 15px; }
 
-        /* Tombol Beli */
-        .btn-buy { background: var(--primary); color: white; border: none; padding: 12px; width: 100%; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        .btn-wa { background: #25d366; color: white; border: none; padding: 12px; width: 100%; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 8px; display: block; text-decoration: none; text-align: center; }
+        /* BUTTONS */
+        .btn-group { display: flex; gap: 10px; }
+        .btn { padding: 15px 25px; border-radius: 8px; font-weight: 700; cursor: pointer; border: none; transition: 0.3s; font-size: 14px; flex: 1; text-align: center; text-decoration: none; }
+        .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(238, 77, 45, 0.3); }
+        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); }
+        .btn-secondary { background: #25d366; color: white; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3); }
+        .btn-secondary:hover { background: #1eb956; transform: translateY(-2px); }
 
-        /* Floating Cart */
-        .cart-float { position: fixed; bottom: 25px; right: 25px; background: var(--primary); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 1500; cursor: pointer; }
-        #cart-count { position: absolute; top: 0; right: 0; background: #000; font-size: 11px; padding: 2px 6px; border-radius: 10px; }
+        /* FLOATING CART & TOAST */
+        .cart-float { position: fixed; bottom: 25px; right: 25px; background: var(--primary); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 20px rgba(238,77,45,0.4); z-index: 1500; cursor: pointer; transition: 0.3s; }
+        .cart-float:hover { transform: scale(1.1); }
+        #cart-count { position: absolute; top: -5px; right: -5px; background: #212121; color: white; font-size: 11px; padding: 4px 8px; border-radius: 10px; font-weight: 800; border: 2px solid white; }
 
-        .view { display: none; }
+        .view { display: none; animation: fadeIn 0.4s ease; }
         .active-view { display: block; }
-        #toast { visibility: hidden; background: #333; color: #fff; text-align: center; border-radius: 30px; padding: 12px; position: fixed; z-index: 3000; left: 50%; bottom: 100px; transform: translateX(-50%); font-size: 14px; }
-        #toast.show { visibility: visible; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body oncontextmenu="return false;">
 
 <header>
-    <nav><div class="nav-title" onclick="window.location.reload()">Andry Backbone Store</div></nav>
-    <div class="search-container">
-        <input type="text" id="input-search" class="search-bar" placeholder="Cari produk..." onkeyup="jalankanFilter()">
+    <div class="nav-container">
+        <div class="nav-title" onclick="window.location.reload()">BACKBONE.</div>
+        <div class="search-box">
+            <input type="text" id="input-search" class="search-bar" placeholder="Cari barang impianmu..." onkeyup="jalankanFilter()">
+        </div>
     </div>
 </header>
 
-<div class="cat-trigger" onclick="toggleMobileMenu()">
-    <span>PILIH KATEGORI</span><span>▼</span>
+<div class="mobile-nav-trigger" onclick="toggleMobileMenu()">
+    <span>BELANJA BERDASARKAN KATEGORI</span>
+    <span>▼</span>
 </div>
 
 <div id="catalog-view" class="view active-view">
@@ -95,41 +129,38 @@
         <aside class="sidebar" id="sidebar-menu">
             <div class="side-box">
                 <div id="menu-kategori">
-                    <div class="cat-group"><span class="cat-main" onclick="resetFilter()" style="color:var(--primary);">Semua Produk</span></div>
+                    <div class="cat-group">
+                        <div class="cat-main" onclick="resetFilter()" style="color:var(--primary); font-weight:800;">Semua Produk</div>
+                    </div>
                 </div>
             </div>
         </aside>
-        <main class="content"><div id="produk-list" class="catalog-grid">Memuat produk...</div></main>
+        <main class="content">
+            <div id="produk-list" class="catalog-grid">Memuat katalog...</div>
+        </main>
     </div>
 </div>
 
-<div id="detail-view" class="view" style="padding: 20px 5%;">
-    <div onclick="switchView('catalog-view')" style="cursor:pointer; margin-bottom:20px; font-weight:bold;">← Kembali</div>
+<div id="detail-view" class="view" style="padding: 30px 5%;">
+    <div onclick="switchView('catalog-view')" style="cursor:pointer; margin-bottom:25px; color: var(--text-sub); font-weight:600; display:flex; align-items:center; gap:8px;">
+        ← KEMBALI KE KATALOG
+    </div>
     <div id="detail-content"></div>
 </div>
 
-<div id="cart-view" class="view" style="padding: 20px 5%;">
-    <div style="background:white; padding:20px; border-radius:8px; max-width:600px; margin:auto;">
-        <h3>Keranjang Belanja</h3>
-        <div id="cart-items-list"></div>
-        <div id="checkout-section" style="display:none; margin-top:20px;">
-            <button onclick="checkoutWA()" class="btn-buy">PESAN VIA WHATSAPP</button>
-        </div>
-    </div>
+<div class="cart-float" onclick="alert('Keranjang akan segera aktif!')">
+    🛒 <span id="cart-count">0</span>
 </div>
-
-<div class="cart-float" onclick="tampilkanKeranjang()">🛒<span id="cart-count">0</span></div>
-<div id="toast">Produk ditambahkan!</div>
 
 <script>
     const baseGSheet = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRtNoerhDtHch7TNHVbItg23RG4nneoZ8hv5MBR1Cr40iU5alO8a2O4EUR90YgleMH4-E-6zGJsEgcN/pub?output=csv";
     const nomorWA = "6281574938272";
     let semuaProduk = [];
     let keranjang = [];
-    let produkAktif = null;
 
     async function init() { await loadProduk(); }
     function toggleMobileMenu() { document.getElementById('sidebar-menu').classList.toggle('active'); }
+    
     function toggleSubMenuHP(el) {
         if(window.innerWidth <= 768) {
             const subList = el.nextElementSibling;
@@ -142,27 +173,37 @@
     function parseCSV(text) { return text.split("\n").map(row => row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/"/g, "").trim())); }
 
     async function loadProduk() {
-        const res = await fetch(baseGSheet + "&gid=0");
-        const data = parseCSV(await res.text()).slice(1);
-        let struktur = {};
-        semuaProduk = data.map((col, idx) => {
-            if(!col[0]) return null;
-            const katFull = col[2] || "Lainnya";
-            let utama = katFull, sub = "";
-            if(katFull.includes(">")) { [utama, sub] = katFull.split(">").map(s => s.trim()); }
-            if(!struktur[utama]) struktur[utama] = new Set();
-            if(sub) struktur[utama].add(sub);
-            return { id: idx, nama: col[0], harga: parseInt(col[1].replace(/[^\d]/g, "")) || 0, utama, sub, foto: col[3], desc: col[4] };
-        }).filter(p => p !== null);
-        renderMenu(struktur);
-        renderKatalog(semuaProduk);
+        try {
+            const res = await fetch(baseGSheet + "&gid=0");
+            const data = parseCSV(await res.text()).slice(1);
+            let struktur = {};
+            semuaProduk = data.map((col, idx) => {
+                if(!col[0]) return null;
+                const katFull = col[2] || "Lainnya";
+                let utama = katFull, sub = "";
+                if(katFull.includes(">")) { [utama, sub] = katFull.split(">").map(s => s.trim()); }
+                if(!struktur[utama]) struktur[utama] = new Set();
+                if(sub) struktur[utama].add(sub);
+                return { id: idx, nama: col[0], harga: parseInt(col[1].replace(/[^\d]/g, "")) || 0, utama, sub, foto: col[3], desc: col[4] };
+            }).filter(p => p !== null);
+            renderMenu(struktur);
+            renderKatalog(semuaProduk);
+        } catch(e) { console.error("Data error"); }
     }
 
     function renderMenu(struktur) {
         const menu = document.getElementById('menu-kategori');
         for (const [utama, subs] of Object.entries(struktur)) {
-            let html = `<div class="cat-group"><div class="cat-main" onclick="toggleSubMenuHP(this)"><span>${utama}</span></div><div class="sub-list"><div class="sub-item" onclick="filterProduk('${utama}')">Semua ${utama}</div>`;
-            subs.forEach(s => { html += `<div class="sub-item" onclick="filterProduk('${s}')">${s}</div>`; });
+            let html = `
+                <div class="cat-group">
+                    <div class="cat-main" onclick="toggleSubMenuHP(this)">
+                        <span>${utama}</span>
+                    </div>
+                    <div class="sub-list">
+                        <div class="sub-item" onclick="filterProduk('${utama}')">Lihat Semua ${utama}</div>`;
+            subs.forEach(s => { 
+                html += `<div class="sub-item" onclick="filterProduk('${s}')">${s}</div>`; 
+            });
             html += `</div></div>`;
             menu.innerHTML += html;
         }
@@ -186,49 +227,31 @@
     function renderKatalog(data) {
         document.getElementById('produk-list').innerHTML = data.map(p => `
             <div class="card" onclick="tampilkanDetail(${p.id})">
-                <img src="${p.foto}">
+                <img src="${p.foto}" loading="lazy">
                 <div class="card-info">
                     <div class="card-nama">${p.nama}</div>
-                    <div class="card-price">Rp ${p.harga.toLocaleString()}</div>
+                    <div class="card-price">Rp ${p.harga.toLocaleString('id-ID')}</div>
                 </div>
             </div>`).join('');
     }
 
     function tampilkanDetail(id) {
         const p = semuaProduk.find(x => x.id == id);
-        produkAktif = p;
         document.getElementById('detail-content').innerHTML = `
-            <div style="background:white; padding:20px; border-radius:8px; display:flex; flex-wrap:wrap; gap:20px;">
-                <img src="${p.foto}" style="width:100%; max-width:400px; border-radius:8px;">
-                <div style="flex:1; min-width:300px;">
-                    <h2>${p.nama}</h2>
-                    <h3 style="color:var(--primary);">Rp ${p.harga.toLocaleString()}</h3>
-                    <p style="white-space:pre-line; color:#666; margin-bottom:20px;">${p.desc}</p>
-                    <button class="btn-buy" onclick="tambahKeKeranjang()">🛒 TAMBAH KE KERANJANG</button>
-                    <a class="btn-wa" href="https://wa.me/${nomorWA}?text=Halo, saya ingin tanya produk: ${p.nama}" target="_blank">💬 TANYA VIA WHATSAPP</a>
+            <div class="detail-card">
+                <img src="${p.foto}" class="detail-img">
+                <div class="detail-info">
+                    <span style="color:var(--primary); font-weight:bold; font-size:12px; letter-spacing:1px; text-transform:uppercase;">${p.utama} / ${p.sub}</span>
+                    <h1 style="margin:10px 0; font-size:28px; line-height:1.2;">${p.nama}</h1>
+                    <div class="detail-price">Rp ${p.harga.toLocaleString('id-ID')}</div>
+                    <div class="detail-desc">${p.desc || 'Tidak ada deskripsi produk.'}</div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="alert('Ditambahkan!')">🛒 KERANJANG</button>
+                        <a class="btn btn-secondary" href="https://wa.me/${nomorWA}?text=Halo, saya tertarik dengan: ${p.nama}" target="_blank">💬 CHAT ADMIN</a>
+                    </div>
                 </div>
             </div>`;
         switchView('detail-view');
-    }
-
-    function tambahKeKeranjang() {
-        const ada = keranjang.find(x => x.id === produkAktif.id);
-        if(ada) ada.qty++; else keranjang.push({...produkAktif, qty: 1});
-        document.getElementById('cart-count').innerText = keranjang.reduce((s, i) => s + i.qty, 0);
-        const t = document.getElementById('toast'); t.className = "show"; setTimeout(() => t.className = "", 2000);
-    }
-
-    function tampilkanKeranjang() {
-        switchView('cart-view');
-        const list = document.getElementById('cart-items-list');
-        if(keranjang.length === 0) { list.innerHTML = "Kosong"; return; }
-        document.getElementById('checkout-section').style.display = 'block';
-        list.innerHTML = keranjang.map((item, idx) => `<div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee;"><span>${item.nama} (x${item.qty})</span><b>Rp ${(item.harga * item.qty).toLocaleString()}</b></div>`).join('');
-    }
-
-    function checkoutWA() {
-        const daftar = keranjang.map(i => `- ${i.nama} (x${i.qty})`).join("%0A");
-        window.open(`https://wa.me/${nomorWA}?text=Pesanan Baru:%0A${daftar}`);
     }
 
     function switchView(id) {
