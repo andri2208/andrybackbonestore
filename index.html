@@ -2,140 +2,136 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Andry Backbone Store - Hover Sidebar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Andry Backbone Store - Mobile Optimized</title>
     <style>
         :root { --primary: #ee4d2d; --bg: #f5f5f5; --white: #ffffff; --text: #333; --border: #eee; }
-        body { font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto; background: var(--bg); margin: 0; color: var(--text); -webkit-user-select: none; user-select: none; }
         
-        /* Anti-Download Policy */
+        /* Reset & Protection */
+        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); margin: 0; color: var(--text); -webkit-user-select: none; user-select: none; }
         img { pointer-events: none; -webkit-user-drag: none; }
         input, textarea { -webkit-user-select: text; user-select: text; }
 
-        /* Navigation */
-        nav { background: var(--white); padding: 10px 5%; position: sticky; top: 0; z-index: 1000; box-shadow: 0 1px 5px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: space-between; }
-        .nav-title { font-weight: bold; font-size: 1.2rem; color: var(--primary); cursor: pointer; }
-        .cart-btn { cursor: pointer; position: relative; font-size: 1.4rem; }
-        #cart-count { background: var(--primary); color: white; font-size: 10px; padding: 2px 6px; border-radius: 10px; position: absolute; top: -5px; right: -10px; }
-
-        .main-wrapper { display: flex; max-width: 1200px; margin: auto; padding: 20px 5%; gap: 20px; }
-
-        /* SIDEBAR HOVER LOGIC */
-        .sidebar { width: 250px; flex-shrink: 0; }
-        .side-box { background: white; border-radius: 8px; padding: 15px; position: sticky; top: 80px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .side-title { font-weight: bold; margin-bottom: 15px; border-bottom: 2px solid var(--primary); display: inline-block; padding-bottom: 5px; }
+        /* Header & Sticky Search */
+        header { position: sticky; top: 0; z-index: 2000; background: var(--white); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        nav { padding: 10px 15px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
+        .nav-title { font-weight: bold; font-size: 1.1rem; color: var(--primary); }
         
-        .cat-group { margin-bottom: 5px; position: relative; }
-        .cat-main { font-weight: bold; display: block; padding: 10px; cursor: pointer; color: #444; border-radius: 5px; transition: 0.2s; background: #fafafa; margin-bottom: 2px; }
-        .cat-main:hover { background: #f0f0f0; color: var(--primary); }
+        .search-container { padding: 8px 15px; background: var(--white); }
+        .search-bar { width: 100%; padding: 10px 15px; border: 1px solid #ddd; border-radius: 20px; outline: none; background: #f9f9f9; font-size: 14px; box-sizing: border-box; }
+
+        /* Mobile Layout */
+        .main-wrapper { display: flex; flex-direction: column; }
+
+        /* Kategori Mobile (Sentuh untuk Muncul) */
+        .category-mobile { background: var(--white); padding: 10px 15px; border-bottom: 1px solid var(--border); }
+        .cat-trigger { background: #f0f0f0; padding: 8px 15px; border-radius: 5px; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; }
+        .cat-trigger::after { content: '▼'; font-size: 10px; }
         
-        /* SEMBUNYIKAN SUB SECARA DEFAULT */
-        .sub-list { 
-            display: none; 
-            padding-left: 15px; 
-            margin-bottom: 10px;
-            border-left: 2px solid #ddd;
-            margin-left: 10px;
+        #menu-kategori { display: none; margin-top: 10px; background: #fff; }
+        #menu-kategori.active { display: block; }
+        
+        .cat-group { margin-bottom: 15px; }
+        .cat-main { font-weight: bold; display: block; color: var(--primary); margin-bottom: 5px; font-size: 15px; }
+        .sub-list { display: flex; flex-wrap: wrap; gap: 8px; }
+        .sub-item { background: #f9f9f9; padding: 5px 12px; border-radius: 15px; font-size: 13px; border: 1px solid #ddd; }
+
+        /* Grid Produk 2 Kolom di HP */
+        .content { padding: 10px; }
+        .catalog-grid { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); /* 2 Kolom di HP */
+            gap: 10px; 
         }
-
-        /* MUNCULKAN SAAT HOVER */
-        .cat-group:hover .sub-list { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 8px; 
-            padding-top: 5px;
-            padding-bottom: 5px;
-        }
-
-        .sub-item { font-size: 0.9rem; color: #666; cursor: pointer; transition: 0.2s; padding: 3px 0; }
-        .sub-item:hover { color: var(--primary); padding-left: 5px; }
-
-        /* Content Area */
-        .content { flex-grow: 1; }
-        .search-bar { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; outline: none; }
-        .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; }
         
-        /* Product Card */
-        .card { background: white; border-radius: 4px; overflow: hidden; cursor: pointer; transition: 0.2s; border: 1px solid var(--border); }
-        .card:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        /* Card Styling */
+        .card { background: white; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); display: flex; flex-direction: column; }
         .card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; }
-        .card-info { padding: 10px; }
-        .card-nama { font-size: 0.85rem; height: 2.5em; overflow: hidden; margin-bottom: 5px; color: #555; }
-        .card-price { color: var(--primary); font-weight: bold; font-size: 1.1rem; }
+        .card-info { padding: 8px; flex-grow: 1; }
+        .card-nama { font-size: 13px; height: 2.8em; overflow: hidden; line-height: 1.4; margin-bottom: 4px; color: #444; }
+        .card-price { color: var(--primary); font-weight: bold; font-size: 14px; }
 
+        /* Views */
         .view { display: none; }
         .active-view { display: block; }
 
-        .detail-card { background: white; padding: 20px; border-radius: 8px; display: flex; flex-wrap: wrap; gap: 30px; }
-        .detail-img { width: 100%; max-width: 400px; border-radius: 8px; }
-        .price-tag { font-size: 2rem; color: var(--primary); font-weight: bold; background: #fafafa; padding: 10px; border-radius: 5px; margin: 15px 0; }
+        /* Footer Cart Button Mobile */
+        .cart-float { position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-size: 24px; z-index: 1000; }
+        #cart-count { position: absolute; top: 0; right: 0; background: black; font-size: 10px; padding: 3px 6px; border-radius: 10px; }
 
-        .cart-item { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); align-items: center; }
-        .cart-item img { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; }
-        .btn-wa { background: var(--primary); color: white; border: none; padding: 15px 30px; font-weight: bold; cursor: pointer; border-radius: 5px; width: 100%; margin-top: 15px; }
-
-        #toast { visibility: hidden; background: #333; color: white; padding: 12px 25px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 5px; z-index: 3000; }
-        #toast.show { visibility: visible; }
-
-        @media (max-width: 768px) {
-            .main-wrapper { flex-direction: column; }
-            .sidebar { width: 100%; }
-            /* Di Mobile lebih baik muncul terus agar user bisa klik */
-            .sub-list { display: flex; flex-direction: row; flex-wrap: wrap; gap: 10px; border-left: none; padding-left: 0; }
+        /* Desktop Adjustments (Layar Lebar) */
+        @media (min-width: 769px) {
+            .catalog-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+            .main-wrapper { flex-direction: row; max-width: 1200px; margin: auto; padding-top: 20px; }
+            .sidebar { width: 250px; display: block !important; }
+            #menu-kategori { display: block !important; }
+            .cat-trigger { display: none; }
         }
+
+        /* Detail View Mobile */
+        .detail-card { background: white; min-height: 100vh; padding-bottom: 80px; }
+        .detail-img { width: 100%; aspect-ratio: 1/1; object-fit: cover; }
+        .detail-info { padding: 15px; }
+        .price-tag { font-size: 24px; color: var(--primary); font-weight: bold; margin: 10px 0; }
+        .action-bar { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 10px; display: flex; gap: 10px; border-top: 1px solid #eee; }
+        .btn-buy { flex: 1; padding: 15px; border-radius: 5px; font-weight: bold; border: none; cursor: pointer; }
+
+        #toast { visibility: hidden; background: rgba(0,0,0,0.8); color: white; padding: 10px 20px; position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); border-radius: 20px; z-index: 3000; font-size: 13px; }
+        #toast.show { visibility: visible; }
     </style>
 </head>
 <body oncontextmenu="return false;">
 
-<nav>
-    <div class="nav-title" onclick="resetFilter()">Andry Backbone Store</div>
-    <div class="cart-btn" onclick="tampilkanKeranjang()">
-        🛒<span id="cart-count">0</span>
+<header>
+    <nav>
+        <div class="nav-title" onclick="resetFilter()">Andry Backbone Store</div>
+        <div style="font-size: 1.2rem;">🔍</div>
+    </nav>
+    <div class="search-container">
+        <input type="text" id="input-search" class="search-bar" placeholder="Cari golok, pisau..." onkeyup="jalankanFilter()">
     </div>
-</nav>
+</header>
 
 <div id="catalog-view" class="view active-view">
-    <div class="main-wrapper">
-        <aside class="sidebar">
-            <div class="side-box">
-                <div class="side-title">KATEGORI</div>
-                <div id="menu-kategori">
-                    <div class="cat-group">
-                        <span class="cat-main" onclick="resetFilter()">Semua Produk</span>
-                    </div>
-                </div>
+    <div class="category-mobile">
+        <div class="cat-trigger" onclick="toggleMenu()">PILIH KATEGORI PRODUK</div>
+        <div id="menu-kategori">
+            <span class="sub-item" style="margin-bottom:10px; display:inline-block;" onclick="resetFilter()">Tampilkan Semua</span>
             </div>
-        </aside>
+    </div>
+    
+    <div class="main-wrapper">
         <main class="content">
-            <input type="text" id="input-search" class="search-bar" placeholder="Cari produk..." onkeyup="jalankanFilter()">
-            <div id="produk-list" class="catalog-grid">Memuat data...</div>
+            <div id="produk-list" class="catalog-grid">Memuat produk...</div>
         </main>
     </div>
 </div>
 
-<div id="detail-view" class="view" style="padding: 20px 5%;">
-    <div onclick="tampilkanKatalog()" style="cursor:pointer; margin-bottom:20px;">← Kembali</div>
+<div id="detail-view" class="view">
     <div class="detail-card" id="detail-content"></div>
 </div>
 
-<div id="cart-view" class="view" style="padding: 20px 5%;">
-    <div style="background:white; padding:20px; border-radius:8px; max-width:600px; margin:auto;">
-        <h2>Keranjang Belanja</h2>
+<div id="cart-view" class="view" style="padding: 15px;">
+    <div onclick="tampilkanKatalog()" style="margin-bottom:20px;">← Kembali</div>
+    <div style="background:white; padding:15px; border-radius:8px;">
+        <h3>Keranjang</h3>
         <div id="cart-items-list"></div>
-        <div id="checkout-section" style="display:none; margin-top:20px;">
-            <label>Pilih Wilayah:</label>
-            <select id="cust-region" onchange="hitungTotal()" style="width:100%; padding:10px; margin:10px 0;"></select>
-            <textarea id="cust-addr" placeholder="Alamat Lengkap..." style="width:100%; padding:10px; height:80px; box-sizing:border-box;"></textarea>
-            <div style="text-align:right; margin-top:15px; border-top:1px solid #eee; padding-top:15px;">
-                <div style="font-size:1.2rem;">Total: <span id="sum-total" style="color:var(--primary); font-weight:bold;">Rp 0</span></div>
-                <button class="btn-wa" onclick="checkoutWA()">PESAN VIA WHATSAPP</button>
+        <div id="checkout-section" style="display:none;">
+            <select id="cust-region" onchange="hitungTotal()" style="width:100%; padding:12px; margin:10px 0;"></select>
+            <textarea id="cust-addr" placeholder="Alamat Lengkap..." style="width:100%; padding:10px; height:80px;"></textarea>
+            <div style="text-align:right; margin-top:15px;">
+                <p>Total: <span id="sum-total" style="color:var(--primary); font-weight:bold;">Rp 0</span></p>
+                <button onclick="checkoutWA()" style="width:100%; background:var(--primary); color:white; border:none; padding:15px; font-weight:bold; border-radius:5px;">PESAN SEKARANG</button>
             </div>
         </div>
-        <div id="empty-cart" style="text-align:center; padding:30px;">Keranjang kosong.</div>
     </div>
 </div>
 
-<div id="toast">Berhasil ditambahkan!</div>
+<div class="cart-float" onclick="tampilkanKeranjang()">
+    🛒<span id="cart-count">0</span>
+</div>
+
+<div id="toast">Produk ditambahkan!</div>
 
 <script>
     const baseGSheet = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRtNoerhDtHch7TNHVbItg23RG4nneoZ8hv5MBR1Cr40iU5alO8a2O4EUR90YgleMH4-E-6zGJsEgcN/pub?output=csv";
@@ -145,11 +141,14 @@
     let semuaProduk = [];
     let keranjang = [];
     let filterSekarang = "Semua";
-    let produkAktif = null;
 
     async function init() {
         await loadProduk();
         await loadOngkir();
+    }
+
+    function toggleMenu() {
+        document.getElementById('menu-kategori').classList.toggle('active');
     }
 
     function parseCSV(text) {
@@ -164,19 +163,11 @@
         semuaProduk = data.map((col, idx) => {
             if(col.length < 2 || !col[0]) return null;
             const katFull = col[2] || "Lainnya";
-            
-            let utama = "Lainnya";
-            let sub = "";
-            if(katFull.includes(">")) {
-                const parts = katFull.split(">").map(s => s.trim());
-                utama = parts[0];
-                sub = parts[1];
-            } else {
-                utama = katFull;
-            }
+            let [utama, sub] = katFull.split(">").map(s => s.trim());
+            if(!sub) { utama = "Lainnya"; sub = katFull; }
             
             if(!struktur[utama]) struktur[utama] = new Set();
-            if(sub) struktur[utama].add(sub);
+            struktur[utama].add(sub);
 
             return { id: idx, nama: col[0], harga: parseInt(col[1].replace(/[^\d]/g, "")) || 0, utama, sub, foto: col[3], desc: col[4], berat: parseInt(col[5]) || 0 };
         }).filter(p => p !== null);
@@ -185,24 +176,10 @@
         renderKatalog(semuaProduk);
     }
 
-    async function loadOngkir() {
-        const res = await fetch(ongkirGSheet);
-        const data = parseCSV(await res.text()).slice(1);
-        const select = document.getElementById('cust-region');
-        select.innerHTML = '<option value="0" data-ongkir="0">-- Pilih Wilayah --</option>';
-        data.forEach(col => {
-            if(col.length >= 2) {
-                select.innerHTML += `<option value="${col[0]}" data-ongkir="${col[1]}">${col[0]} (Rp ${parseInt(col[1]).toLocaleString()}/kg)</option>`;
-            }
-        });
-    }
-
     function renderMenu(struktur) {
         const menu = document.getElementById('menu-kategori');
         for (const [utama, subs] of Object.entries(struktur)) {
-            let html = `<div class="cat-group">
-                <span class="cat-main" onclick="filterProduk('${utama}')">${utama}</span>
-                <div class="sub-list">`;
+            let html = `<div class="cat-group"><span class="cat-main">${utama}</span><div class="sub-list">`;
             subs.forEach(s => { html += `<span class="sub-item" onclick="filterProduk('${s}')">${s}</span>`; });
             html += `</div></div>`;
             menu.innerHTML += html;
@@ -211,8 +188,8 @@
 
     function filterProduk(target) {
         filterSekarang = target;
+        toggleMenu();
         jalankanFilter();
-        switchView('catalog-view');
     }
 
     function resetFilter() {
@@ -225,37 +202,35 @@
     function jalankanFilter() {
         const kw = document.getElementById('input-search').value.toLowerCase();
         const hasil = semuaProduk.filter(p => {
-            const cocokNama = p.nama.toLowerCase().includes(kw);
-            const cocokKat = (filterSekarang === "Semua" || p.utama === filterSekarang || p.sub === filterSekarang);
-            return cocokNama && cocokKat;
+            return p.nama.toLowerCase().includes(kw) && (filterSekarang === "Semua" || p.utama === filterSekarang || p.sub === filterSekarang);
         });
         renderKatalog(hasil);
     }
 
     function renderKatalog(data) {
-        const list = document.getElementById('produk-list');
-        list.innerHTML = data.length ? data.map(p => `
+        document.getElementById('produk-list').innerHTML = data.map(p => `
             <div class="card" onclick="tampilkanDetail(${p.id})">
                 <img src="${p.foto}">
                 <div class="card-info">
                     <div class="card-nama">${p.nama}</div>
                     <div class="card-price">Rp ${p.harga.toLocaleString()}</div>
                 </div>
-            </div>`).join('') : "Produk tidak ditemukan.";
+            </div>`).join('');
     }
 
     function tampilkanDetail(id) {
-        produkAktif = semuaProduk.find(x => x.id == id);
+        const p = semuaProduk.find(x => x.id == id);
+        produkAktif = p;
         document.getElementById('detail-content').innerHTML = `
-            <div style="flex:1; min-width:300px;"><img src="${produkAktif.foto}" class="detail-img"></div>
-            <div style="flex:1; min-width:300px;">
-                <h1>${produkAktif.nama}</h1>
-                <div class="price-tag">Rp ${produkAktif.harga.toLocaleString()}</div>
-                <p><strong>Berat:</strong> ${produkAktif.berat} gram</p>
-                <p style="white-space:pre-line; line-height:1.6; color:#666;">${produkAktif.desc}</p>
-                <div style="display:flex; gap:10px;">
-                    <button onclick="tambahKeKeranjang()" style="flex:1; padding:15px; border:1px solid var(--primary); color:var(--primary); background:white; font-weight:bold; cursor:pointer;">+ Keranjang</button>
-                    <button onclick="beliSekarang()" style="flex:1; padding:15px; background:var(--primary); color:white; border:none; font-weight:bold; cursor:pointer;">Beli Sekarang</button>
+            <img src="${p.foto}" class="detail-img">
+            <div class="detail-info">
+                <div onclick="tampilkanKatalog()" style="color:#666; margin-bottom:10px;">← Kembali</div>
+                <h1 style="font-size:20px; margin:0;">${p.nama}</h1>
+                <div class="price-tag">Rp ${p.harga.toLocaleString()}</div>
+                <p style="font-size:14px; color:#666; line-height:1.6;">${p.desc}</p>
+                <div class="action-bar">
+                    <button onclick="tambahKeKeranjang()" class="btn-buy" style="background:#fff; border:1px solid var(--primary); color:var(--primary);">+ Keranjang</button>
+                    <button onclick="beliSekarang()" class="btn-buy" style="background:var(--primary); color:#fff;">Beli Sekarang</button>
                 </div>
             </div>`;
         switchView('detail-view');
@@ -264,7 +239,7 @@
     function tambahKeKeranjang() {
         const ada = keranjang.find(x => x.id === produkAktif.id);
         if(ada) ada.qty++; else keranjang.push({...produkAktif, qty: 1});
-        updateCartCount();
+        document.getElementById('cart-count').innerText = keranjang.reduce((s, i) => s + i.qty, 0);
         const t = document.getElementById('toast'); t.className = "show"; setTimeout(() => t.className = "", 2000);
     }
 
@@ -273,37 +248,33 @@
     function tampilkanKeranjang() {
         switchView('cart-view');
         const list = document.getElementById('cart-items-list');
-        if(keranjang.length === 0) {
-            list.innerHTML = "";
-            document.getElementById('checkout-section').style.display = 'none';
-            document.getElementById('empty-cart').style.display = 'block';
-            return;
-        }
-        document.getElementById('empty-cart').style.display = 'none';
+        if(keranjang.length === 0) { list.innerHTML = "Kosong"; return; }
         document.getElementById('checkout-section').style.display = 'block';
         list.innerHTML = keranjang.map((item, idx) => `
-            <div class="cart-item">
-                <img src="${item.foto}">
-                <div style="flex:1;">
-                    <div style="font-weight:bold; font-size:0.9rem;">${item.nama}</div>
-                    <div style="color:var(--primary);">Rp ${item.harga.toLocaleString()}</div>
-                </div>
-                <input type="number" value="${item.qty}" min="1" onchange="ubahQty(${idx}, this.value)" style="width:40px; padding:5px;">
-                <button onclick="hapusItem(${idx})" style="border:none; background:none; color:red; cursor:pointer;">✕</button>
+            <div style="display:flex; gap:10px; margin-bottom:10px; border-bottom:1px solid #eee; padding-bottom:10px;">
+                <img src="${item.foto}" style="width:50px; height:50px;">
+                <div style="flex:1; font-size:13px;">${item.nama}<br><b>Rp ${item.harga.toLocaleString()}</b></div>
+                <input type="number" value="${item.qty}" style="width:35px;" onchange="ubahQty(${idx}, this.value)">
             </div>`).join('');
         hitungTotal();
     }
 
-    function ubahQty(idx, v) { keranjang[idx].qty = parseInt(v) || 1; hitungTotal(); updateCartCount(); }
-    function hapusItem(idx) { keranjang.splice(idx, 1); tampilkanKeranjang(); updateCartCount(); }
-    function updateCartCount() { document.getElementById('cart-count').innerText = keranjang.reduce((s, i) => s + i.qty, 0); }
+    function ubahQty(idx, v) { keranjang[idx].qty = parseInt(v) || 1; hitungTotal(); }
 
     function hitungTotal() {
-        const subtotal = keranjang.reduce((s, i) => s + (i.harga * i.qty), 0);
-        const beratTotal = keranjang.reduce((s, i) => s + (i.berat * i.qty), 0);
-        const beratKg = Math.ceil(beratTotal / 1000);
+        const sub = keranjang.reduce((s, i) => s + (i.harga * i.qty), 0);
+        const berat = keranjang.reduce((s, i) => s + (i.berat * i.qty), 0);
         const tarif = parseInt(document.getElementById('cust-region').selectedOptions[0]?.getAttribute('data-ongkir')) || 0;
-        document.getElementById('sum-total').innerText = "Rp " + (subtotal + (beratKg * tarif)).toLocaleString();
+        const total = sub + (Math.ceil(berat/1000) * tarif);
+        document.getElementById('sum-total').innerText = "Rp " + total.toLocaleString();
+    }
+
+    async function loadOngkir() {
+        const res = await fetch(ongkirGSheet);
+        const data = parseCSV(await res.text()).slice(1);
+        const select = document.getElementById('cust-region');
+        select.innerHTML = '<option value="0" data-ongkir="0">-- Pilih Wilayah --</option>';
+        data.forEach(col => { if(col[0]) select.innerHTML += `<option value="${col[0]}" data-ongkir="${col[1]}">${col[0]}</option>`; });
     }
 
     function switchView(id) {
@@ -314,14 +285,8 @@
 
     function checkoutWA() {
         const addr = document.getElementById('cust-addr').value;
-        const region = document.getElementById('cust-region').value;
-        if(!addr || region == "0") return alert("Isi Alamat & Wilayah!");
-        const sub = keranjang.reduce((s, i) => s + (i.harga * i.qty), 0);
-        const beratKg = Math.ceil(keranjang.reduce((s, i) => s + (i.berat * i.qty), 0) / 1000);
-        const tarif = parseInt(document.getElementById('cust-region').selectedOptions[0].getAttribute('data-ongkir'));
-        const total = sub + (beratKg * tarif);
-        const listText = keranjang.map(i => `- ${i.nama} (x${i.qty})`).join("%0A");
-        const pesan = `Halo Andry Backbone,%0A%0A*PESANAN BARU*%0A${listText}%0A%0A*Total: Rp ${total.toLocaleString()}*%0A%0A*Alamat:*%0A${addr}%0A*Wilayah:* ${region}`;
+        if(!addr) return alert("Isi alamat!");
+        const pesan = `Pesanan Baru:%0A${keranjang.map(i => `- ${i.nama} x${i.qty}`).join('%0A')}%0A%0AAlamat: ${addr}`;
         window.open(`https://wa.me/${nomorWA}?text=${pesan}`);
     }
 
