@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Andry Backbone Store - Hover PC & Dropdown HP</title>
+    <title>Andry Backbone Store - Professional Box Menu</title>
     <style>
         :root { --primary: #ee4d2d; --bg: #f5f5f5; --white: #ffffff; --text: #333; --border: #eee; }
         
@@ -28,30 +28,63 @@
         .side-box { background: white; border-radius: 8px; padding: 20px; position: sticky; top: 120px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .side-title { font-weight: bold; margin-bottom: 15px; border-bottom: 2px solid var(--primary); display: inline-block; padding-bottom: 5px; }
 
-        /* LOGIKA HOVER SUB-KATEGORI (KHUSUS PC) */
+        /* LOGIKA SUB-KATEGORI BOX PRO (KHUSUS PC) */
         @media (min-width: 769px) {
-            .sub-list { 
-                display: none; /* Sembunyi default di PC */
-                flex-direction: column; 
-                gap: 8px; 
-                padding-left: 15px; 
-                border-left: 2px solid var(--primary);
-                margin: 5px 0 15px 5px;
-            }
-            .cat-group:hover .sub-list { 
-                display: flex; /* Muncul saat kursor di atas cat-group */
-            }
+            .cat-group { position: relative; margin-bottom: 5px; }
             .cat-main { 
-                padding: 8px 0; 
-                display: block; 
-                font-weight: bold; 
+                padding: 10px 12px; 
+                display: flex; 
+                justify-content: space-between;
+                align-items: center;
+                font-weight: 500; 
                 cursor: pointer; 
-                transition: 0.3s;
+                border-radius: 6px;
+                transition: 0.2s;
             }
-            .cat-main:hover { color: var(--primary); }
+            .cat-main:hover { background: #fff5f2; color: var(--primary); }
+            .cat-main::after { content: '›'; font-size: 18px; color: #ccc; }
+
+            .sub-list { 
+                display: none; 
+                position: absolute;
+                left: 100%; /* Muncul di samping kanan menu utama */
+                top: 0;
+                background: white;
+                min-width: 200px;
+                padding: 15px;
+                border-radius: 8px;
+                box-shadow: 5px 5px 20px rgba(0,0,0,0.15);
+                border: 1px solid #eee;
+                z-index: 100;
+                margin-left: 10px;
+                flex-direction: column;
+                gap: 10px;
+            }
+            .cat-group:hover .sub-list { display: flex; }
+            
+            /* Panah kecil pada box */
+            .sub-list::before {
+                content: '';
+                position: absolute;
+                left: -8px;
+                top: 15px;
+                width: 0; height: 0;
+                border-top: 8px solid transparent;
+                border-bottom: 8px solid transparent;
+                border-right: 8px solid white;
+            }
+
+            .sub-item { 
+                font-size: 14px; 
+                color: #555; 
+                cursor: pointer; 
+                padding: 5px 0;
+                border-bottom: 1px solid #f9f9f9;
+            }
+            .sub-item:hover { color: var(--primary); padding-left: 5px; }
         }
 
-        /* TAMPILAN HP (TIDAK BERUBAH) */
+        /* TAMPILAN HP (TETAP) */
         .cat-trigger { display: none; background: #fff; padding: 12px 15px; margin: 10px; border-radius: 8px; font-weight: bold; border: 1px solid #ddd; cursor: pointer; justify-content: space-between; align-items: center; }
 
         @media (max-width: 768px) {
@@ -59,9 +92,9 @@
             .sidebar { display: none; width: 100%; } 
             .sidebar.active { display: block; }
             .cat-trigger { display: flex; }
-            /* Di HP sub-list tetap muncul saat menu terbuka */
-            .sub-list { display: flex; flex-direction: row; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+            .sub-list { display: flex; flex-direction: row; flex-wrap: wrap; gap: 8px; margin: 10px 0; padding: 10px; background: #f9f9f9; border-radius: 5px; }
             .cat-main { color: var(--primary); font-weight: bold; display: block; margin-top: 10px; }
+            .cat-main::after { content: ''; }
             .catalog-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
             .side-box { position: static; box-shadow: none; padding: 10px; }
         }
@@ -95,7 +128,7 @@
 <header>
     <nav><div class="nav-title" onclick="window.location.reload()">Andry Backbone Store</div></nav>
     <div class="search-container">
-        <input type="text" id="input-search" class="search-bar" placeholder="Cari produk..." onkeyup="jalankanFilter()">
+        <input type="text" id="input-search" class="search-bar" placeholder="Cari golok, pisau, dll..." onkeyup="jalankanFilter()">
     </div>
 </header>
 
@@ -109,7 +142,9 @@
             <div class="side-box">
                 <div class="side-title">KATEGORI</div>
                 <div id="menu-kategori">
-                    <span class="cat-main" onclick="resetFilter()">Semua Produk</span>
+                    <div class="cat-group">
+                        <span class="cat-main" onclick="resetFilter()">Semua Produk</span>
+                    </div>
                 </div>
             </div>
         </aside>
@@ -118,7 +153,7 @@
 </div>
 
 <div id="detail-view" class="view" style="padding: 20px 5%;">
-    <div onclick="tampilkanKatalog()" style="cursor:pointer; margin-bottom:20px;">← Kembali</div>
+    <div onclick="tampilkanKatalog()" style="cursor:pointer; margin-bottom:20px; color:#666;">← Kembali</div>
     <div id="detail-content" style="background:white; padding:20px; border-radius:8px; display:flex; flex-wrap:wrap; gap:20px;"></div>
 </div>
 
@@ -149,16 +184,9 @@
     let keranjang = [];
     let filterSekarang = "Semua";
 
-    async function init() {
-        await loadProduk();
-        await loadOngkir();
-    }
-
+    async function init() { await loadProduk(); await loadOngkir(); }
     function toggleMobileMenu() { document.getElementById('sidebar-menu').classList.toggle('active'); }
-
-    function parseCSV(text) {
-        return text.split("\n").map(row => row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/"/g, "").trim()));
-    }
+    function parseCSV(text) { return text.split("\n").map(row => row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/"/g, "").trim())); }
 
     async function loadProduk() {
         const res = await fetch(baseGSheet + "&gid=0");
@@ -169,9 +197,7 @@
             if(!col[0]) return null;
             const katFull = col[2] || "Lainnya";
             let utama = katFull, sub = "";
-            if(katFull.includes(">")) {
-                [utama, sub] = katFull.split(">").map(s => s.trim());
-            }
+            if(katFull.includes(">")) { [utama, sub] = katFull.split(">").map(s => s.trim()); }
             if(!struktur[utama]) struktur[utama] = new Set();
             if(sub) struktur[utama].add(sub);
             return { id: idx, nama: col[0], harga: parseInt(col[1].replace(/[^\d]/g, "")) || 0, utama, sub, foto: col[3], desc: col[4], berat: parseInt(col[5]) || 0 };
@@ -185,7 +211,7 @@
         const menu = document.getElementById('menu-kategori');
         for (const [utama, subs] of Object.entries(struktur)) {
             let html = `<div class="cat-group"><span class="cat-main" onclick="filterProduk('${utama}')">${utama}</span><div class="sub-list">`;
-            subs.forEach(s => { html += `<span class="sub-item" onclick="filterProduk('${s}')" style="cursor:pointer; font-size:14px; color:#666;">${s}</span>`; });
+            subs.forEach(s => { html += `<span class="sub-item" onclick="filterProduk('${s}')">${s}</span>`; });
             html += `</div></div>`;
             menu.innerHTML += html;
         }
