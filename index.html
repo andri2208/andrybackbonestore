@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BACKBONE STORE - Professional Edition</title>
+    <title>BACKBONE STORE - Pro Mobile & PC</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -13,59 +13,64 @@
             --gray: #757575;
             --light-bg: #f5f5f7;
             --white: #ffffff;
-            --shadow: 0 4px 12px rgba(0,0,0,0.05);
+            --shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
         * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { margin: 0; background-color: var(--light-bg); color: var(--dark); -webkit-user-select: none; user-select: none; }
+        body { margin: 0; background-color: var(--light-bg); color: var(--dark); -webkit-user-select: none; user-select: none; overflow-x: hidden; }
         img { pointer-events: none; -webkit-user-drag: none; }
 
+        /* HEADER */
         header { background: var(--white); position: sticky; top: 0; z-index: 1000; box-shadow: 0 1px 0 rgba(0,0,0,0.05); }
-        .nav-inner { max-width: 1200px; margin: auto; padding: 15px 20px; display: flex; align-items: center; gap: 20px; }
-        .logo { font-weight: 800; font-size: 1.6rem; color: var(--primary); cursor: pointer; text-decoration: none; letter-spacing: -1px; }
-        .search-wrapper { flex: 1; position: relative; }
-        .search-bar { width: 100%; padding: 12px 18px; border-radius: 10px; border: 1px solid #e0e0e0; background: #f9f9f9; outline: none; }
+        .nav-inner { max-width: 1200px; margin: auto; padding: 12px 15px; display: flex; align-items: center; gap: 15px; }
+        .logo { font-weight: 800; font-size: 1.4rem; color: var(--primary); cursor: pointer; text-decoration: none; }
+        .search-wrapper { flex: 1; }
+        .search-bar { width: 100%; padding: 10px 15px; border-radius: 8px; border: 1px solid #eee; background: #f5f5f5; outline: none; font-size: 14px; }
 
-        /* SIDEBAR & SUB-KATEGORI CSS */
-        .container { max-width: 1200px; margin: auto; padding: 25px 20px; display: flex; gap: 35px; }
-        .sidebar { width: 240px; flex-shrink: 0; }
-        .sticky-side { position: sticky; top: 100px; }
+        /* NAVIGASI KATEGORI (KUNCI PERBAIKAN HP) */
+        .cat-nav-wrapper { background: white; border-bottom: 1px solid #eee; position: sticky; top: 60px; z-index: 999; }
+        .scroll-x { display: flex; overflow-x: auto; white-space: nowrap; padding: 10px 15px; gap: 8px; scrollbar-width: none; }
+        .scroll-x::-webkit-scrollbar { display: none; }
         
-        .cat-parent { margin-bottom: 5px; }
-        .cat-main-btn { width: 100%; text-align: left; padding: 12px 15px; border-radius: 8px; border: none; background: transparent; cursor: pointer; font-weight: 700; font-size: 14px; color: #444; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
-        .cat-main-btn:hover { background: var(--primary-light); color: var(--primary); }
-        .cat-main-btn.active { background: var(--primary); color: white; }
+        .pill { padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 700; cursor: pointer; background: #f0f0f0; color: #555; transition: 0.2s; border: 1px solid transparent; }
+        .pill.active { background: var(--primary-light); color: var(--primary); border-color: var(--primary); }
         
-        .sub-container { display: none; padding-left: 15px; margin-top: 5px; }
-        .sub-container.show { display: block; }
-        .sub-item { padding: 8px 15px; font-size: 13px; color: var(--gray); cursor: pointer; border-radius: 6px; transition: 0.2s; font-weight: 500; }
-        .sub-item:hover { color: var(--primary); background: #fdfdfd; }
-        .sub-item.active { color: var(--primary); font-weight: 700; }
+        /* Baris Sub-Kategori */
+        #sub-nav-container { background: #fafafa; border-bottom: 1px solid #f0f0f0; display: none; }
+        #sub-nav-container.show { display: block; }
+        .pill-sub { padding: 6px 14px; border-radius: 15px; font-size: 12px; font-weight: 600; cursor: pointer; color: #777; }
+        .pill-sub.active { color: var(--primary); text-decoration: underline; text-underline-offset: 4px; }
 
-        /* GRID */
+        /* LAYOUT MAIN */
+        .container { max-width: 1200px; margin: auto; padding: 15px; display: flex; gap: 25px; }
+        .sidebar-pc { width: 220px; flex-shrink: 0; display: block; }
         .main-content { flex: 1; }
-        .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-        @media (max-width: 768px) { 
-            .product-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } 
-            .sidebar { display: none; } 
-            .container { padding: 15px; }
+
+        /* GRID PRODUK */
+        .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+        .product-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); cursor: pointer; transition: 0.3s; }
+        .product-card:hover { transform: translateY(-3px); }
+        .thumb { width: 100%; aspect-ratio: 1/1; object-fit: cover; }
+        .info { padding: 12px; }
+        .p-name { font-size: 13px; font-weight: 600; height: 36px; overflow: hidden; margin-bottom: 5px; line-height: 1.4; }
+        .p-price { color: var(--primary); font-weight: 800; font-size: 14px; }
+
+        @media (max-width: 768px) {
+            .sidebar-pc { display: none; } /* Sembunyikan sidebar di HP */
+            .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .nav-inner { gap: 10px; }
+            .logo { font-size: 1.2rem; }
         }
 
-        .product-card { background: var(--white); border-radius: 16px; overflow: hidden; transition: 0.3s; box-shadow: var(--shadow); cursor: pointer; border: 1px solid transparent; }
-        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .thumb { width: 100%; aspect-ratio: 1/1; object-fit: cover; }
-        .info { padding: 15px; }
-        .name { font-size: 13px; font-weight: 600; height: 38px; overflow: hidden; margin-bottom: 8px; line-height: 1.4; }
-        .price { color: var(--primary); font-weight: 800; font-size: 1.1rem; }
-
-        #toast { visibility: hidden; background: #333; color: #fff; text-align: center; border-radius: 50px; padding: 14px 25px; position: fixed; z-index: 2000; left: 50%; bottom: 30px; transform: translateX(-50%); font-size: 14px; }
-        #toast.show { visibility: visible; animation: fadeinout 2s forwards; }
-        @keyframes fadeinout { 0% { bottom: 0; opacity: 0; } 20% { bottom: 30px; opacity: 1; } 80% { bottom: 30px; opacity: 1; } 100% { bottom: 0; opacity: 0; } }
-        
-        .cart-count { background: var(--dark); color: white; padding: 2px 7px; border-radius: 20px; font-size: 10px; position: absolute; top: -5px; right: -5px; border: 2px solid white; }
-        
+        /* VIEW CONTROL */
         .view-section { display: none; }
         .active-v { display: block; }
+
+        /* TOAST & CART BADGE */
+        #toast { visibility: hidden; background: #333; color: white; padding: 12px 25px; border-radius: 50px; position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 3000; font-size: 13px; }
+        #toast.show { visibility: visible; animation: fadeinout 2s forwards; }
+        @keyframes fadeinout { 0%, 100% { opacity: 0; } 20%, 80% { opacity: 1; } }
+        .cart-badge { background: var(--primary); color: white; font-size: 10px; padding: 2px 6px; border-radius: 10px; position: absolute; top: -5px; right: -5px; border: 2px solid white; }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -74,39 +79,45 @@
     <div class="nav-inner">
         <a class="logo" onclick="location.reload()">BACKBONE.</a>
         <div class="search-wrapper">
-            <input type="text" id="main-search" class="search-bar" placeholder="Cari koleksi terbaik..." onkeyup="filterProduk()">
+            <input type="text" id="main-search" class="search-bar" placeholder="Cari barang..." onkeyup="searchProduk()">
         </div>
-        <div style="position:relative; cursor:pointer; font-size: 1.4rem;" onclick="renderCheckout()">
-            🛒<span id="badge-count" class="cart-count">0</span>
+        <div style="position:relative; cursor:pointer;" onclick="renderCheckout()">
+            🛒<span id="badge-count" class="cart-badge">0</span>
         </div>
     </div>
 </header>
 
+<nav class="cat-nav-wrapper">
+    <div class="scroll-x" id="main-cat-nav">
+        <div class="pill active" onclick="filterData('all', 'all', this)">Semua</div>
+    </div>
+    <div id="sub-nav-container">
+        <div class="scroll-x" id="sub-cat-nav" style="padding: 5px 15px 10px 15px;">
+            </div>
+    </div>
+</nav>
+
 <div id="catalog-view" class="view-section active-v">
     <div class="container">
-        <aside class="sidebar">
-            <div class="sticky-side">
-                <div style="font-weight:800; font-size:11px; color:#999; letter-spacing:1.5px; margin-bottom:15px;">KATEGORI PRODUK</div>
-                <div id="cat-list-container">
-                    </div>
-            </div>
-        </aside>
-
         <main class="main-content">
-            <div id="product-list" class="product-grid">Memuat katalog...</div>
+            <div id="product-list" class="product-grid">Memuat produk...</div>
         </main>
     </div>
 </div>
 
-<div id="detail-view" class="view-section" style="padding: 40px 5%;">
-    <div id="detail-content" style="max-width:1200px; margin:auto; background:white; border-radius:24px; overflow:hidden; box-shadow:var(--shadow);"></div>
+<div id="detail-view" class="view-section">
+    <div style="max-width:800px; margin:auto; background:white; min-height:100vh; padding-bottom:80px;">
+        <div id="detail-content"></div>
+    </div>
 </div>
 
-<div id="checkout-view" class="view-section" style="padding: 40px 5%;">
-    <div id="checkout-content" style="max-width:1200px; margin:auto;"></div>
+<div id="checkout-view" class="view-section">
+    <div class="container">
+        <div id="checkout-content" style="width:100%"></div>
+    </div>
 </div>
 
-<div id="toast">✅ Produk berhasil ditambah</div>
+<div id="toast">✅ Berhasil ditambah</div>
 
 <script>
     const GS_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRtNoerhDtHch7TNHVbItg23RG4nneoZ8hv5MBR1Cr40iU5alO8a2O4EUR90YgleMH4-E-6zGJsEgcN/pub?output=csv";
@@ -114,12 +125,13 @@
     const WA_ADMIN = "6281574938272";
 
     let allProduk = [];
+    let treeKategori = {};
     let cart = [];
     let dataOngkir = [];
 
-    async function init() { 
-        await loadData(); 
-        await loadOngkir(); 
+    async function init() {
+        await loadData();
+        await loadOngkir();
     }
 
     function parseCSV(text) { return text.split("\n").map(row => row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/"/g, "").trim())); }
@@ -127,74 +139,64 @@
     async function loadData() {
         const res = await fetch(GS_URL + "&gid=0");
         const data = parseCSV(await res.text()).slice(1);
-        let tree = {};
-
+        
         allProduk = data.map((col, idx) => {
             if(!col[0]) return null;
             const fullKat = col[2] || "Lainnya";
             const [ut, sub] = fullKat.includes(">") ? fullKat.split(">").map(s => s.trim()) : [fullKat.trim(), ""];
             
-            if(!tree[ut]) tree[ut] = new Set();
-            if(sub) tree[ut].add(sub);
+            if(!treeKategori[ut]) treeKategori[ut] = new Set();
+            if(sub) treeKategori[ut].add(sub);
 
             return { id: idx, nama: col[0], harga: parseInt(col[1].replace(/[^\d]/g, "")) || 0, utama: ut, sub: sub, foto: col[3], desc: col[4], berat: parseInt(col[5]) || 0 };
         }).filter(p => p);
 
-        renderSidebar(tree);
+        renderNavUtama();
         renderProduk(allProduk);
     }
 
-    function renderSidebar(tree) {
-        const container = document.getElementById('cat-list-container');
-        container.innerHTML = `<button class="cat-main-btn active" onclick="filterData('all', 'all', this)">Semua Produk</button>`;
-        
-        for(let parent in tree) {
-            let subs = Array.from(tree[parent]);
-            let html = `<div class="cat-parent">
-                <button class="cat-main-btn" onclick="toggleSubMenu(this, '${parent}')">
-                    ${parent} ${subs.length > 0 ? '<span>▾</span>' : ''}
-                </button>
-                <div class="sub-container">
-                    <div class="sub-item" onclick="filterData('${parent}', 'all', this)">Lihat Semua</div>`;
-            
-            subs.forEach(s => {
-                html += `<div class="sub-item" onclick="filterData('${parent}', '${s}', this)">${s}</div>`;
-            });
-            
-            html += `</div></div>`;
-            container.innerHTML += html;
+    function renderNavUtama() {
+        const container = document.getElementById('main-cat-nav');
+        for(let ut in treeKategori) {
+            container.innerHTML += `<div class="pill" onclick="handleMainClick('${ut}', this)">${ut}</div>`;
         }
     }
 
-    function toggleSubMenu(btn, parent) {
-        const sub = btn.nextElementSibling;
-        const isShow = sub.classList.contains('show');
-        
-        // Reset All
-        document.querySelectorAll('.sub-container').forEach(s => s.classList.remove('show'));
-        document.querySelectorAll('.cat-main-btn').forEach(b => b.classList.remove('active'));
-
-        if(!isShow) {
-            sub.classList.add('show');
-            btn.classList.add('active');
-        }
-        
-        // Jika tidak punya sub, langsung filter
-        if(sub.children.length === 1) { // Hanya ada "Lihat Semua"
-             filterData(parent, 'all', btn);
-        }
-    }
-
-    function filterData(p, s, el) {
-        // Active Style
-        document.querySelectorAll('.sub-item, .cat-main-btn').forEach(i => i.classList.remove('active'));
+    function handleMainClick(ut, el) {
+        // Reset Style
+        document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
         el.classList.add('active');
 
-        let hasil = allProduk;
-        if(p !== 'all') {
-            hasil = allProduk.filter(item => item.utama === p && (s === 'all' || item.sub === s));
+        const subs = Array.from(treeKategori[ut]);
+        const subNav = document.getElementById('sub-nav-container');
+        const subContent = document.getElementById('sub-cat-nav');
+
+        if(subs.length > 0) {
+            subNav.classList.add('show');
+            subContent.innerHTML = `<div class="pill-sub active" onclick="filterData('${ut}', 'all', this)">Semua ${ut}</div>`;
+            subs.forEach(s => {
+                subContent.innerHTML += `<div class="pill-sub" onclick="filterData('${ut}', '${s}', this)">${s}</div>`;
+            });
+        } else {
+            subNav.classList.remove('show');
+            filterData(ut, 'all', el);
         }
         
+        // Filter produk berdasarkan kategori utama
+        filterData(ut, 'all', el);
+    }
+
+    function filterData(ut, sub, el) {
+        // Active sub style
+        if(el.classList.contains('pill-sub')) {
+            document.querySelectorAll('.pill-sub').forEach(p => p.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        let hasil = allProduk;
+        if(ut !== 'all') {
+            hasil = allProduk.filter(p => p.utama === ut && (sub === 'all' || p.sub === sub));
+        }
         renderProduk(hasil);
         showView('catalog-view');
     }
@@ -202,11 +204,10 @@
     function renderProduk(list) {
         document.getElementById('product-list').innerHTML = list.map(p => `
             <div class="product-card" onclick="openDetail(${p.id})">
-                <img src="${p.foto}" class="thumb" loading="lazy">
+                <img src="${p.foto}" class="thumb">
                 <div class="info">
-                    <div class="name">${p.nama}</div>
-                    <div style="font-size:11px; color:#999; margin-bottom:5px;">${p.sub || p.utama}</div>
-                    <div class="price">Rp ${p.harga.toLocaleString('id-ID')}</div>
+                    <div class="p-name">${p.nama}</div>
+                    <div class="p-price">Rp ${p.harga.toLocaleString()}</div>
                 </div>
             </div>
         `).join('');
@@ -215,21 +216,17 @@
     function openDetail(id) {
         const p = allProduk.find(x => x.id == id);
         document.getElementById('detail-content').innerHTML = `
-            <div style="display:flex; flex-wrap:wrap;">
-                <img src="${p.foto}" style="width:100%; max-width:550px; aspect-ratio:1/1; object-fit:cover;">
-                <div style="flex:1; padding:40px; min-width:320px;">
-                    <button onclick="showView('catalog-view')" style="background:none; border:none; color:var(--primary); font-weight:800; cursor:pointer; padding:0; margin-bottom:20px;">← KEMBALI</button>
-                    <div style="color:var(--gray); font-size:12px; font-weight:700; margin-bottom:10px; letter-spacing:1px;">
-                        ${p.utama.toUpperCase()} ${p.sub ? '> ' + p.sub.toUpperCase() : ''}
-                    </div>
-                    <h1 style="font-size:2.4rem; margin:0 0 15px 0; letter-spacing:-1px; line-height:1.1;">${p.nama}</h1>
-                    <div style="font-size:2rem; color:var(--primary); font-weight:800; margin-bottom:25px;">Rp ${p.harga.toLocaleString('id-ID')}</div>
-                    <p style="color:#555; line-height:1.8; margin-bottom:35px; font-size:15px;">${p.desc}</p>
-                    <div style="display:flex; gap:15px;">
-                        <button onclick="addToCart(${p.id}, false)" style="flex:1; padding:18px; border-radius:12px; border:2px solid var(--primary); background:white; color:var(--primary); font-weight:800; cursor:pointer;">+ KERANJANG</button>
-                        <button onclick="addToCart(${p.id}, true)" style="flex:1; padding:18px; border-radius:12px; border:none; background:var(--primary); color:white; font-weight:800; cursor:pointer;">BELI SEKARANG</button>
-                    </div>
-                </div>
+            <img src="${p.foto}" style="width:100%; aspect-ratio:1/1; object-fit:cover;">
+            <div style="padding:20px;">
+                <button onclick="showView('catalog-view')" style="border:none; background:none; color:var(--primary); font-weight:bold; margin-bottom:15px; cursor:pointer;">← KEMBALI</button>
+                <div style="font-size:12px; color:#999; font-weight:700;">${p.utama} > ${p.sub}</div>
+                <h1 style="font-size:1.5rem; margin:10px 0;">${p.nama}</h1>
+                <div style="font-size:1.4rem; color:var(--primary); font-weight:800; margin-bottom:20px;">Rp ${p.harga.toLocaleString()}</div>
+                <p style="color:#666; line-height:1.6; font-size:14px; margin-bottom:30px;">${p.desc}</p>
+            </div>
+            <div style="position:fixed; bottom:0; width:100%; max-width:800px; background:white; padding:12px; border-top:1px solid #eee; display:flex; gap:10px;">
+                <button onclick="addToCart(${p.id}, false)" style="flex:1; padding:15px; border-radius:10px; border:1px solid var(--primary); background:white; color:var(--primary); font-weight:800; cursor:pointer;">+ KERANJANG</button>
+                <button onclick="addToCart(${p.id}, true)" style="flex:1; padding:15px; border-radius:10px; border:none; background:var(--primary); color:white; font-weight:800; cursor:pointer;">BELI SEKARANG</button>
             </div>
         `;
         showView('detail-view');
@@ -239,69 +236,61 @@
         const item = allProduk.find(x => x.id == id);
         const ada = cart.find(x => x.id == id);
         if(ada) ada.qty++; else cart.push({...item, qty: 1});
-        updateBadge();
-        if(checkout) renderCheckout(); else showToast("✅ Tersimpan di keranjang");
+        document.getElementById('badge-count').innerText = cart.reduce((s, i) => s + i.qty, 0);
+        if(checkout) renderCheckout(); 
+        else { showToast("✅ Berhasil ditambah"); }
     }
 
-    function updateBadge() { document.getElementById('badge-count').innerText = cart.reduce((s, i) => s + i.qty, 0); }
-
     function showToast(msg) {
-        const t = document.getElementById("toast");
-        t.innerText = msg; t.className = "show";
-        setTimeout(() => { t.className = ""; }, 2000);
+        const t = document.getElementById("toast"); t.innerText = msg; t.className = "show";
+        setTimeout(() => t.className = "", 2000);
     }
 
     function renderCheckout() {
-        if(cart.length === 0) return showToast("⚠️ Keranjang kosong");
+        if(cart.length === 0) return alert("Keranjang kosong");
         showView('checkout-view');
         const content = document.getElementById('checkout-content');
         content.innerHTML = `
-            <div style="display:grid; grid-template-columns: 1.2fr 0.8fr; gap:25px;">
-                <div style="background:white; padding:30px; border-radius:20px; box-shadow:var(--shadow);">
-                    <h2 style="margin:0 0 25px 0;">Item Pesanan</h2>
-                    ${cart.map((item, idx) => `
-                        <div style="display:flex; align-items:center; gap:20px; padding:20px 0; border-bottom:1px solid #f5f5f5;">
-                            <img src="${item.foto}" style="width:70px; height:70px; border-radius:12px; object-fit:cover;">
-                            <div style="flex:1">
-                                <div style="font-weight:700; font-size:15px;">${item.nama}</div>
-                                <div style="color:var(--primary); font-weight:800; font-size:14px; margin-top:5px;">Rp ${item.harga.toLocaleString('id-ID')}</div>
-                                <div style="display:flex; align-items:center; gap:15px; margin-top:12px;">
-                                    <button onclick="ubahQty(${idx}, -1)" style="width:30px; height:30px; border-radius:50%; border:1px solid #ddd; background:white; cursor:pointer;">-</button>
-                                    <span style="font-weight:800;">${item.qty}</span>
-                                    <button onclick="ubahQty(${idx}, 1)" style="width:30px; height:30px; border-radius:50%; border:1px solid #ddd; background:white; cursor:pointer;">+</button>
-                                    <button onclick="hapusItem(${idx})" style="margin-left:auto; border:none; background:none; color:red; font-size:12px; font-weight:700; cursor:pointer;">HAPUS</button>
-                                </div>
+            <div style="background:white; padding:20px; border-radius:15px; margin-bottom:20px;">
+                <h3 style="margin-top:0">Ringkasan</h3>
+                ${cart.map((item, idx) => `
+                    <div style="display:flex; gap:15px; padding:10px 0; border-bottom:1px solid #f9f9f9;">
+                        <img src="${item.foto}" style="width:50px; height:50px; border-radius:8px; object-fit:cover;">
+                        <div style="flex:1">
+                            <div style="font-size:13px; font-weight:600;">${item.nama}</div>
+                            <div style="color:var(--primary); font-weight:800; font-size:12px;">Rp ${item.harga.toLocaleString()}</div>
+                            <div style="margin-top:8px; display:flex; align-items:center; gap:10px;">
+                                <button onclick="ubahQty(${idx}, -1)" style="width:24px; height:24px; border-radius:50%; border:1px solid #ddd; background:white;">-</button>
+                                <span style="font-weight:bold;">${item.qty}</span>
+                                <button onclick="ubahQty(${idx}, 1)" style="width:24px; height:24px; border-radius:50%; border:1px solid #ddd; background:white;">+</button>
+                                <button onclick="hapusItem(${idx})" style="margin-left:auto; border:none; background:none; color:red; font-size:11px; font-weight:bold;">HAPUS</button>
                             </div>
                         </div>
-                    `).join('')}
-                </div>
-                <div style="background:white; padding:30px; border-radius:20px; box-shadow:var(--shadow); height:fit-content;">
-                    <h2 style="margin:0 0 25px 0;">Data Pengiriman</h2>
-                    <input type="text" id="c-name" style="width:100%; padding:14px; border:1px solid #ddd; border-radius:10px; margin-bottom:15px;" placeholder="Nama Lengkap">
-                    <input type="number" id="c-phone" style="width:100%; padding:14px; border:1px solid #ddd; border-radius:10px; margin-bottom:15px;" placeholder="No. WhatsApp">
-                    <select id="c-city" onchange="updateTotalDisplay()" style="width:100%; padding:14px; border:1px solid #ddd; border-radius:10px; margin-bottom:15px;">
-                        <option value="0" data-tarif="0">Pilih Kota Pengiriman</option>
-                        ${dataOngkir.map(o => `<option value="${o.kota}" data-tarif="${o.tarif}">${o.kota}</option>`).join('')}
-                    </select>
-                    <textarea id="c-address" style="width:100%; padding:14px; border:1px solid #ddd; border-radius:10px; margin-bottom:15px; height:100px;" placeholder="Alamat Lengkap"></textarea>
-                    
-                    <div style="border-top:2px dashed #eee; padding-top:20px;">
-                        <div style="display:flex; justify-content:space-between; margin-bottom:10px;"><span>Subtotal</span><span id="txt-sub">Rp 0</span></div>
-                        <div style="display:flex; justify-content:space-between; margin-bottom:10px;"><span>Ongkir</span><span id="txt-ong">Rp 0</span></div>
-                        <div style="display:flex; justify-content:space-between; font-weight:800; font-size:1.4rem; color:var(--primary); margin-top:15px;">
-                            <span>TOTAL</span><span id="txt-tot">Rp 0</span>
-                        </div>
                     </div>
-                    <button onclick="gasKeWA()" style="width:100%; padding:18px; border-radius:12px; border:none; background:var(--primary); color:white; font-weight:800; margin-top:25px; cursor:pointer; font-size:16px;">KIRIM PESANAN KE WA</button>
+                `).join('')}
+            </div>
+            <div style="background:white; padding:20px; border-radius:15px;">
+                <h3 style="margin-top:0">Pengiriman</h3>
+                <input type="text" id="c-name" class="search-bar" style="background:white; margin-bottom:10px; border:1px solid #ddd;" placeholder="Nama Penerima">
+                <input type="number" id="c-phone" class="search-bar" style="background:white; margin-bottom:10px; border:1px solid #ddd;" placeholder="Nomor WhatsApp">
+                <select id="c-city" onchange="updateTotalDisplay()" class="search-bar" style="background:white; margin-bottom:10px; border:1px solid #ddd;">
+                    <option value="0" data-tarif="0">Pilih Wilayah</option>
+                    ${dataOngkir.map(o => `<option value="${o.kota}" data-tarif="${o.tarif}">${o.kota}</option>`).join('')}
+                </select>
+                <textarea id="c-address" class="search-bar" style="background:white; height:80px; border:1px solid #ddd;" placeholder="Alamat Lengkap"></textarea>
+                <div style="margin-top:15px; border-top:1px solid #eee; padding-top:15px;">
+                    <div style="display:flex; justify-content:space-between; font-size:14px; margin-bottom:5px;"><span>Ongkir</span><span id="txt-ong">Rp 0</span></div>
+                    <div style="display:flex; justify-content:space-between; font-weight:800; font-size:18px; color:var(--primary);"><span>Total Akhir</span><span id="txt-tot">Rp 0</span></div>
                 </div>
+                <button onclick="gasKeWA()" style="width:100%; padding:15px; border-radius:10px; border:none; background:var(--primary); color:white; font-weight:800; margin-top:20px;">ORDER VIA WHATSAPP</button>
             </div>
         `;
         updateTotalDisplay();
     }
 
-    function ubahQty(idx, n) { cart[idx].qty += n; if(cart[idx].qty < 1) cart[idx].qty = 1; renderCheckout(); updateBadge(); }
-    function hapusItem(idx) { cart.splice(idx, 1); if(cart.length === 0) showView('catalog-view'); else renderCheckout(); updateBadge(); }
-
+    function ubahQty(idx, n) { cart[idx].qty += n; if(cart[idx].qty < 1) cart[idx].qty = 1; renderCheckout(); }
+    function hapusItem(idx) { cart.splice(idx, 1); if(cart.length === 0) showView('catalog-view'); else renderCheckout(); }
+    
     async function loadOngkir() {
         const res = await fetch(ONG_URL);
         const data = parseCSV(await res.text()).slice(1);
@@ -309,25 +298,24 @@
     }
 
     function updateTotalDisplay() {
-        if(!document.getElementById('txt-sub')) return;
+        if(!document.getElementById('txt-tot')) return;
         const sub = cart.reduce((s, i) => s + (i.harga * i.qty), 0);
         const berat = cart.reduce((s, i) => s + (i.berat * i.qty), 0);
         const tarif = parseInt(document.getElementById('c-city').selectedOptions[0].getAttribute('data-tarif')) || 0;
         const ong = Math.ceil(berat/1000) * tarif;
-        document.getElementById('txt-sub').innerText = "Rp " + sub.toLocaleString('id-ID');
-        document.getElementById('txt-ong').innerText = "Rp " + ong.toLocaleString('id-ID');
-        document.getElementById('txt-tot').innerText = "Rp " + (sub + ong).toLocaleString('id-ID');
+        document.getElementById('txt-ong').innerText = "Rp " + ong.toLocaleString();
+        document.getElementById('txt-tot').innerText = "Rp " + (sub + ong).toLocaleString();
     }
 
     function gasKeWA() {
         const n = document.getElementById('c-name').value, p = document.getElementById('c-phone').value, k = document.getElementById('c-city').value, a = document.getElementById('c-address').value;
         if(!n || !p || k == "0" || !a) return alert("Lengkapi data!");
         const items = cart.map(i => `- ${i.nama} (x${i.qty})`).join('%0A');
-        const text = `Halo Admin, Saya mau order:%0A${items}%0A%0A*Pengiriman*%0ANama: ${n}%0AWA: ${p}%0AKota: ${k}%0AAlamat: ${a}%0A%0A*Total:* ${document.getElementById('txt-tot').innerText}`;
+        const text = `Halo Admin, Pesanan Baru:%0A${items}%0A%0A*Penerima:* ${n}%0A*WA:* ${p}%0A*Alamat:* ${a} (${k})%0A%0A*Total:* ${document.getElementById('txt-tot').innerText}`;
         window.open(`https://wa.me/${WA_ADMIN}?text=${text}`);
     }
 
-    function filterProduk() {
+    function searchProduk() {
         const q = document.getElementById('main-search').value.toLowerCase();
         renderProduk(allProduk.filter(p => p.nama.toLowerCase().includes(q)));
     }
